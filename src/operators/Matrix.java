@@ -1,16 +1,19 @@
+package operators;
+
 public class Matrix {
 
   // Atribut
   // atribut default ukuran baris dan kolom, amankah sesuai harapan?
   int rowSize;
   int colSize;
-  float[][] Mat = new float[rowSize][colSize];
+  double[][] Mat = new double[rowSize][colSize];
+
   // atribut isSquare untuk Matrix persegi
   boolean isSquare = (rowSize == colSize)? true : false;
   boolean isAugmented = false; // default
 
   // Methods
-  // coba bikin konstruktor
+  // ------------------------------ KONSTRUKTOR  ------------------------------//
   Matrix(int rowSize, int colSize) {
     this.rowSize = rowSize;
     this.colSize = colSize;
@@ -35,7 +38,84 @@ public class Matrix {
       }
     }
   }
+  // ------------------------------ GETTER  ------------------------------//
+  public int getRow(){      // mendapatkan rowSize
+    return this.rowSize;
+  }
+
+  public int getCol(){      // mendapatkan colSize
+    return this.colSize;
+  }
+
+  public double getELMT(int i, int j){      // mendapatkan ELMT pada baris i, kolom j
+    return (this.Mat[i][j]);
+  }
+
+  public Matrix getMatConst(Matrix Mat){    // Mengembalikan Matrix konstanta
+    // Prekondisi : isAugmented
+    Matrix MatConst = new Matrix(Mat.getRow(), Mat.getCol() -1);
+    int i, j ; 
+    for(i = 0 ; i < Mat.getRow() -1 ; i ++){
+      for(j = 0 ; j < Mat.getCol() -1 ; j++){
+        setELMT(i, j, this.Mat[i][j]);
+      }
+    }
+    return MatConst;
+  }
   
+  // ------------------------------ SETTER ------------------------------//
+  public void setRow(int row){      // Mengisi rowSize
+    this.rowSize = row;
+  }
+
+  public void setCol(int col){      // Mengisi colSize
+    this.colSize = col;
+  }
+
+  public void setELMT(int i, int j, double val){    // Mengisi ELMT(i,j) dengan val
+    this.Mat[i][j] = val;
+  }
+  
+  // ------------------------------ OPERATORS ------------------------------//
+  public Matrix getMinorMat(Matrix Mat, int a, int b){    // Mengembalikan Matrix Minor
+  // Prekondisi : isAugmented
+    Matrix MinorMat = new Matrix(Mat.getRow() -1, Mat.getCol() -2);
+    int i, j ;
+    for(i = 0 ; i < MinorMat.getRow()  ; i ++){
+      for(j = 0 ; j < MinorMat.getCol()  ; j++){
+        if(i >= a && j >= b){
+          setELMT(i, j, Mat.getELMT(i+1, j +1));
+        }
+        else if (i >= a ){
+          setELMT(i, j, Mat.getELMT(i+1, j ));
+        }
+        else if (j >= b ){
+          setELMT(i, j, Mat.getELMT(i, j +1));
+        }
+      }
+    }
+    return MinorMat ;
+  }
+
+  public Matrix getKofaktor(Matrix Mat, int a, int b){    // Mengembalikan Kofaktor
+  // Prekondisi isAugmented
+    Matrix kofaktor = (getMinorMat(Mat, a, b));
+    int sign = (a+b) % 2 == 0 ? 1 : -1;
+    kofaktor.scalarMultiply(sign);
+    return kofaktor ;
+  }
+
+  void scalarMultiply(double scale) {                     // Mengalikan Matrix dengan konstanta scale
+    int i, j;
+    for (i = 0; i < this.rowSize; i++) {
+      for (j = 0; j < this.colSize; j++) {
+        this.Mat[i][j] *= scale;
+      }
+    }
+  }
+
+  // NOTES : code di bawah ini belum terpakai// !!!!!!!!!!!!!!!!!!!!!!!
+  // ------------------------------ IO ------------------------------//
   // read elemennya ntar dulu yaaa
   void readMatrix(int n, int m) {
     int i, j;
@@ -67,7 +147,7 @@ public class Matrix {
 
   void transpose() {
     int i, j;
-    float[][] tempMat = new float[this.rowSize][this.colSize];
+    double[][] tempMat = new double[this.rowSize][this.colSize];
     int temp;
 
     tempMat = this.Mat;
@@ -120,32 +200,23 @@ public class Matrix {
     }
     return MHasil;
   }
-
-  void scalarMultiply(float scale) {
-    int i, j;
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        this.Mat[i][j] *= scale;
-      }
-    }
-  }
   
   // 3 OBE Operations
   void swapRow(int row1, int row2) {
     // swap doang gess
-    float[] temp;
+    double[] temp;
     temp = this.Mat[row1];
     this.Mat[row1] = this.Mat[row2];
     this.Mat[row2] = temp;
   }
 
-  void divideRow(int row, float divisor) {
+  void divideRow(int row, double divisor) {
     for (int i = 0; i < this.colSize; i++) {
       this.Mat[row][i] /= divisor;
     }
   }
 
-  void subtractRow(int row, int subtractorRow, float subtractorMagnitude) {
+  void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
     for (int i = 0; i < this.colSize; i++) {
       this.Mat[row][i] -= this.Mat[subtractorRow][i] * subtractorMagnitude;
     }
@@ -207,13 +278,13 @@ public class Matrix {
     this.transpose();
   }
 
-  float determinant() {
-    float det = 1;
+  double determinant() {
+    double det = 1;
     return det;
   }
 
   void inverseEkspansiKofaktor() {
-    float inverseDet = 1/this.determinant();
+    double inverseDet = 1/this.determinant();
     this.adjoin();
     this.scalarMultiply(inverseDet);
   }
@@ -261,5 +332,5 @@ public class Matrix {
       return;
     }
   }
-}
 
+}
