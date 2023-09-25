@@ -18,8 +18,8 @@ public class Matrix {
   // Methods
   // ------------------------------ KONSTRUKTOR ------------------------------//
   public Matrix(int rowSize, int colSize) {
-    this.rowSize = rowSize;
-    this.colSize = colSize;
+    setCol(colSize);
+    setRow(rowSize);
     this.Mat = new double[rowSize][colSize];
 
     int i, j;
@@ -32,8 +32,8 @@ public class Matrix {
 
   // overloading for default params
   Matrix() {
-    this.rowSize = 10;
-    this.colSize = 10;
+    setCol(10);
+    setRow(10);
     this.Mat = new double[rowSize][colSize];
 
     int i, j;
@@ -46,11 +46,11 @@ public class Matrix {
 
   // ------------------------------ GETTER ------------------------------//
   public int getRow() { // mendapatkan rowSize
-    return this.rowSize;
+    return getRow();
   }
 
   public int getCol() { // mendapatkan colSize
-    return this.colSize;
+    return getCol();
   }
 
   public double getELMT(int i, int j) { // mendapatkan ELMT pada baris i, kolom j
@@ -106,16 +106,97 @@ public class Matrix {
   }
 
   public void copyMatrix(Matrix Mat) {
-    this.rowSize = Mat.getRow();
-    this.colSize = Mat.getCol();
+    setRow(Mat.getRow());
+    setCol(Mat.getRow());
     int i, j;
-    for (i = 0; i < this.getRow(); i++) {
-      for (j = 0; j < this.getCol(); j++) {
+    for (i = 0; i < getRow(); i++) {
+      for (j = 0; j < getCol(); j++) {
         setELMT(i, j, Mat.getELMT(i, j));
       }
     }
   }
 
+  public void swapRow(int row1, int row2) {
+    // swap doang gess
+    double[] temp;
+    temp = getRowELMT(row1);
+    setRowELMT(row1, getRowELMT(row2));
+    setRowELMT(row2, temp);
+  }
+
+  public void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
+    for (int j = 0; j < getCol(); j++) {
+      setELMT(row, j, getELMT(row, j) - (getELMT(subtractorRow, j) * subtractorMagnitude));
+    }
+  }
+
+  public void scalarMultiply(double scale) { // Mengalikan Matrix dengan konstanta scale
+    int i, j;
+    for (i = 0; i < getRow(); i++) {
+      for (j = 0; j < getCol(); j++) {
+        setELMT(i, j, getELMT(i, j) * scale);
+      }
+    }
+  }
+
+  // Operasi- operasi Matrix
+  Matrix plus(Matrix M2) {
+    int i, j;
+    Matrix MHasil = new Matrix(getRow(), getCol());
+    // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
+    for (i = 0; i < getRow(); i++) {
+      for (j = 0; j < getCol(); j++) {
+        MHasil.setELMT(i, j, this.getELMT(i, j) + M2.getELMT(i,j));
+      }
+    }
+    return MHasil;
+  }
+
+  Matrix minus(Matrix M2) {
+    int i, j;
+    Matrix MHasil = new Matrix(getRow(), getCol());
+    // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
+    for (i = 0; i < getRow(); i++) {
+      for (j = 0; j < getCol(); j++) {
+        MHasil.setELMT(i, j, this.getELMT(i, j) - M2.getELMT(i,j));
+      }
+    }
+    return MHasil;
+  }
+
+  Matrix mult(Matrix M2) {
+    int i, j, k;
+    Matrix MHasil = new Matrix(getRow(), getCol());
+    // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
+    for (i = 0; i < getRow(); i++) {
+      for (j = 0; j < getCol(); j++) {
+        MHasil.setELMT(i, j, 0);
+        for (k = 0; k < getCol(); k++) {
+          MHasil.setELMT(i, j, MHasil.getELMT(i, j)+this.getELMT(i, j) - M2.getELMT(i,j));
+        }
+      }
+    }
+    return MHasil;
+  }
+
+
+  void divideRow(int row, double divisor) {
+    for (int j = 0; j < getCol(); j++) {
+      double temp = this.getELMT(row, j);
+      setELMT(row, j, getELMT(row, j) /2 );
+      if (getELMT(row, j) == -0.00) {
+        setELMT(row, j, 0);
+      }
+      if (Float.isNaN((float) getELMT(row, j))) {
+        setELMT(row, j, 0);
+      }
+      if (Float.isInfinite((float) getELMT(row, j))) {
+        setELMT(row, j, temp);
+      }
+    }
+  }
+
+  // ------------------------------ MENCARI DETERMINAN  -------------------------------- //
   public static Matrix getMinorMat(Matrix Mat, int a, int b) { // Mengembalikan Matrix Minor
     // Prekondisi : isAugmented
     Matrix MinorMat = new Matrix(Mat.getRow() - 1, Mat.getCol() - 2);
@@ -138,23 +219,6 @@ public class Matrix {
     // Prekondisi isAugmented
     return detKofaktor((Matrix.getMinorMat(Mat, a, b)));
   }
-
-  public void swapRow(int row1, int row2) {
-    // swap doang gess
-    double[] temp;
-    temp = getRowELMT(row1);
-    setRowELMT(row1, getRowELMT(row2));
-    setRowELMT(row2, temp);
-  }
-
-  public void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
-    for (int j = 0; j < getCol(); j++) {
-      setELMT(row, j, getELMT(row, j) - (getELMT(subtractorRow, j) * subtractorMagnitude));
-    }
-  }
-
-  // ------------------------------ MENCARI DETERMINAN
-  // -------------------------------- //
   public static double detKofaktor(Matrix Mat) {
     // Prekondisi : isSquare, isAugmented
     if (Mat.getCol() == 1) { // Basis
@@ -221,7 +285,48 @@ public class Matrix {
     return Madj;
   }
 
-  // NOTES : code di bawah ini belum terpakai// !!!!!!!!!!!!!!!!!!!!!!!
+  // ------------------------------ Mencari SPL ----------------------------//
+  // strictGauss: leading 1 must be perfectly diagonalized
+  void strictGauss() {
+    // n: row/col, gausa pake param ini, kan udah didefine sebagai atribut
+
+    // bikin tiap generate leading 1 dari baris atas ke bawah
+    for (int i = 0; i < getRow(); i++) {
+      // biar jadi Matrix eselon, harus bikin calon leading 1 yg mungkin blm 1
+      if (this.Mat[0][0] == 0) {
+        for (int j = 1; j < getRow(); j++) {
+          if (getELMT(j, 0)!= 0) {
+            this.swapRow(0, j);
+            break;
+          }
+        }
+      }
+      // ga bakal ada kasus 0 semuanya, karena pasti setiap variabel berguna
+
+      // mari kita buat tiap baris menjadi leading 1
+      // blum bikin kasus untuk yg variabelnya habis kan bakal i != j
+      // track col sampe 0 nya habis
+      this.divideRow(i, this.getELMT(i, i)); // harusnya ini row cari dulu yg leading one
+
+      // kurangi semua nilai kolom dari baris2 di bawah supaya baris tsb punya leading
+      // 1
+      for (int j = i + 1; j < getRow(); j++) {
+        this.subtractRow(j, i, this.getELMT(j, i));
+      }
+    }
+  }
+
+  void strictGaussJordan() {
+    this.strictGauss();
+    for (int i = 1; i < getRow(); i++) {
+      // seharusnya cari dulu leading one
+      // kurangi baris2 di atas agar lebih tereduksi
+      for (int j = i - 1; j >= 0; j--) {
+        this.subtractRow(j, i, this.getELMT(j, i));
+      }
+    }
+  }
+
   // ------------------------------ IO ------------------------------//
   public void readMatrix(int n, int m) {
     int i, j;
@@ -240,141 +345,6 @@ public class Matrix {
         System.out.print(this.Mat[i][j] + " ");
       }
       System.out.println();
-    }
-  }
-
-  // void transpose(int n, int m, int Matt[][]) {
-  // int i, j;
-  // for (i = 0; i < n; i++) {
-  // for (j = 0; j < m; j++) {
-  // Matt[j][i] = this.Mat[i][j];
-  // }
-  // }
-  // }
-
-  void scalarMultiply(double scale) { // Mengalikan Matrix dengan konstanta scale
-    int i, j;
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        this.Mat[i][j] *= scale;
-      }
-    }
-  }
-
-  // void transpose() {
-  // int i, j;
-  // double[][] tempMat = new double[this.rowSize][this.colSize];
-  // int temp;
-
-  // tempMat = this.Mat;
-  // for (i = 0; i < this.rowSize; i++) {
-  // for (j = 0; j < this.colSize; j++) {
-  // this.Mat[j][i] = tempMat[i][j];
-  // }
-  // }
-  // temp = this.rowSize;
-  // this.colSize = this.rowSize;
-  // this.rowSize = temp;
-  // }
-
-  // Operasi- operasi Matrix
-  Matrix plus(Matrix M2) {
-    int i, j;
-    Matrix MHasil = new Matrix(this.rowSize, this.colSize);
-    // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        MHasil.Mat[i][j] = this.Mat[i][j] + M2.Mat[i][j];
-      }
-    }
-    return MHasil;
-  }
-
-  Matrix minus(Matrix M2) {
-    int i, j;
-    Matrix MHasil = new Matrix(this.rowSize, this.colSize);
-    // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        MHasil.Mat[i][j] = this.Mat[i][j] - M2.Mat[i][j];
-      }
-    }
-    return MHasil;
-  }
-
-  Matrix mult(Matrix M2) {
-    int i, j, k;
-    Matrix MHasil = new Matrix(this.rowSize, this.colSize);
-    // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        MHasil.Mat[i][j] = 0;
-        for (k = 0; k < this.colSize; k++) {
-          MHasil.Mat[i][j] += this.Mat[i][k] * M2.Mat[k][j];
-        }
-      }
-    }
-    return MHasil;
-  }
-
-  // 3 OBE Operations
-  // void swapRow(int row1, int row2) {
-  // // swap doang gess
-  // double[] temp;
-  // temp = this.Mat[row1];
-  // this.Mat[row1] = this.Mat[row2];
-  // this.Mat[row2] = temp;
-  // }
-
-  void divideRow(int row, double divisor) {
-    for (int i = 0; i < this.colSize; i++) {
-      double temp = this.Mat[row][i];
-      this.Mat[row][i] /= divisor;
-      if (this.Mat[row][i] == -0.00) {
-        this.Mat[row][i] = 0;
-      }
-      if (Float.isNaN((float) this.Mat[row][i])) {
-        this.Mat[row][i] = 0;
-      }
-      if (Float.isInfinite((float) this.Mat[row][i])) {
-        this.Mat[row][i] = temp;
-      }
-    }
-  }
-
-  // void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
-  // for (int i = 0; i < this.colSize; i++) {
-  // this.Mat[row][i] -= this.Mat[subtractorRow][i] * subtractorMagnitude;
-  // }
-  // }
-
-  // strictGauss: leading 1 must be perfectly diagonalized
-  void strictGauss() {
-    // n: row/col, gausa pake param ini, kan udah didefine sebagai atribut
-
-    // bikin tiap generate leading 1 dari baris atas ke bawah
-    for (int i = 0; i < this.rowSize; i++) {
-      // biar jadi Matrix eselon, harus bikin calon leading 1 yg mungkin blm 1
-      if (this.Mat[0][0] == 0) {
-        for (int j = 1; j < this.rowSize; j++) {
-          if (this.Mat[j][0] != 0) {
-            this.swapRow(0, j);
-            break;
-          }
-        }
-      }
-      // ga bakal ada kasus 0 semuanya, karena pasti setiap variabel berguna
-
-      // mari kita buat tiap baris menjadi leading 1
-      // blum bikin kasus untuk yg variabelnya habis kan bakal i != j
-      // track col sampe 0 nya habis
-      this.divideRow(i, this.Mat[i][i]); // harusnya ini row cari dulu yg leading one
-
-      // kurangi semua nilai kolom dari baris2 di bawah supaya baris tsb punya leading
-      // 1
-      for (int j = i + 1; j < this.rowSize; j++) {
-        this.subtractRow(j, i, this.Mat[j][i]);
-      }
     }
   }
 }
