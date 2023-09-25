@@ -96,12 +96,12 @@ public class Matrix {
       }
     }
     
-    this.copyMatrix(tempMat);
+    copyMatrix(tempMat);
   }
   
   public void copyMatrix(Matrix Mat){
-    setRow(Mat.getRow());
-    setCol(Mat.getCol());;
+    this.rowSize = Mat.getRow();
+    this.colSize = Mat.getCol();
     int i, j ; 
     for(i = 0; i< this.getRow(); i ++ ){
       for(j = 0 ; j < this.getCol() ; j ++){
@@ -131,7 +131,7 @@ public class Matrix {
   }
 
   
-  public static double getKofaktor(Matrix Mat, int a, int b){    // Mengembalikan Kofaktor, BUKAN MATRIXnya
+  public static double getKofaktor(Matrix Mat, int a, int b){    // Mengembalikan Kofaktor
     // Prekondisi isAugmented
     return detKofaktor((Matrix.getMinorMat(Mat, a, b)));
   }
@@ -207,7 +207,6 @@ public class Matrix {
 
   //-------------------- MENCARI INVERS --------------------//
   public static Matrix adj(Matrix Mat){
-    // isAugmented
     Matrix Madj = new Matrix(Mat.getRow(), Mat.getCol()-1);
     int i, j;
     for(i = 0 ; i < Madj.getRow(); i ++){
@@ -215,8 +214,8 @@ public class Matrix {
         Madj.setELMT(i, j, Matrix.getKofaktor(Mat,i,j));
       }
     }
-
     Madj.transpose();
+
     return Madj;
   }
 }
