@@ -244,10 +244,9 @@ public class Matrix {
   // adjoin udah dibikin Berto
   public Matrix getAdj() {
     // KAMUS LOKAL
-    Matrix adjMatrix = getKofaktorMatrix();
+    Matrix adjMatrix = getKofaktorMatrix().transpose();
 
     // ALGORITMA
-    adjMatrix.transpose();
     return adjMatrix;
   }
 
