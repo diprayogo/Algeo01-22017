@@ -1,7 +1,5 @@
 package operators;
 
-import java.util.Scanner;
-
 public class Matrix {
 
   // Atribut
@@ -299,8 +297,17 @@ public class Matrix {
 
   void divideRow(int row, double divisor) {
     for (int i = 0; i < this.colSize; i++) {
+      double temp = this.Mat[row][i];
       this.Mat[row][i] /= divisor;
-      if()
+      if (this.Mat[row][i] == -0.00) {
+        this.Mat[row][i] = 0;
+      }
+      if (Float.isNaN((float) this.Mat[row][i])) {
+        this.Mat[row][i] = 0;
+      }
+      if (Float.isInfinite((float) this.Mat[row][i])) {
+        this.Mat[row][i] = temp;
+      }
     }
   }
 

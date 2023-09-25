@@ -42,6 +42,7 @@ public class Main {
         case 1:
           Matrix matrix = new Matrix(3, 4);
           matrix.readMatrix(3, 4);
+          matrix.printMatrix(3, 4);
           SPL.metodeGauss(matrix);
           matrix.printMatrix(3, 4);
           break;// REDIRECT KE SPL
