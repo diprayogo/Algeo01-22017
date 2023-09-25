@@ -1,29 +1,58 @@
 
-
 // text-based dan CLI (wajib)
+
+import java.util.Scanner;
+
 public class Main {
-  public static void main(String[] args)() {
-    menu = pilihMenu();
-    switch (menu) {
-      case 1: break;
-      case 2: break;
-      case 3: break;
-      case 4: break;
-      case 5: break;
-      case 6: break;
-      case 7: break;
-      case 8: break; // submenu 1.1
-      case 9: break; // submenu 1.2
-      case 10: break; // submenu 1.3
-      case 11: break; // submenu 1.4
-      case 12: break; // submenu 2.1 determinan reduksi baris
-      case 13: break; // submenu 2.2 determinan ekspansi kofaktor
-      case 14: break; // submenu 3.1 matriks balikan dengan gauss jordan [A|I] ~ OBE ~ [I|A^-1]
-      case 15: break; // submenu 3.2 matriks balikan dengan kofaktor adjoin determinan, cek dulu var det != 0
-    }
+  static int pilihMenu() {
+    Scanner scanner = new Scanner(System.in);
+    int menu = 0;
+    boolean isValidInput = false;
+
+    do {
+      System.out.print("Masukkan sebuah bilangan bulat: ");
+      try {
+        menu = scanner.nextInt();
+        if (menu >= 1 && menu <= 7) {
+          isValidInput = true; // Input valid, keluar dari loop
+        } else {
+          System.out.println("Input yang Anda masukkan di luar range 1-7. Tolong input ulang");
+          scanner.nextLine(); // Hapus baris yang tidak valid
+
+        }
+      } catch (java.util.InputMismatchException e) {
+        System.out.println("Input yang Anda masukkan bukan angka bulat. Coba lagi.");
+        scanner.nextLine(); // Hapus baris yang tidak valid
+      }
+    } while (!isValidInput);
+    scanner.close();
+
+    return menu;
   }
 
-  int pilihMenu() {
-    return 1;
-  } 
+  public static void main(String[] args) {
+
+    boolean isRunning = true;
+    // PRINT SELAMAT DATANG KE MATRIX CALCULATOR//
+    do {
+      // PRINT MENU YANG ADA
+      int menu = pilihMenu();
+      switch (menu) {
+        case 1:
+          break;// REDIRECT KE SPL
+        case 2:
+          break;// REDIRECT KE DETERMINAN
+        case 3:
+          break;// DST
+        case 4:
+          break;
+        case 5:
+          break;
+        case 6:
+          break;
+        case 7:
+          break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
+      }
+    } while (isRunning);
+  }
 }
