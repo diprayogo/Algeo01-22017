@@ -46,11 +46,11 @@ public class Matrix {
 
   // ------------------------------ GETTER ------------------------------//
   public int getRow() { // mendapatkan rowSize
-    return getRow();
+    return this.rowSize;
   }
 
   public int getCol() { // mendapatkan colSize
-    return getCol();
+    return this.colSize;
   }
 
   public double getELMT(int i, int j) { // mendapatkan ELMT pada baris i, kolom j
@@ -332,17 +332,16 @@ public class Matrix {
     int i, j;
     for (i = 0; i < n; i++) {
       for (j = 0; j < m; j++) {
-        this.Mat[i][j] = scan.nextDouble();
+        setELMT(i, j, scan.nextDouble());
       }
     }
-    scan.close();
   }
 
   public void printMatrix(int n, int m) {
     int i, j;
     for (i = 0; i < n; i++) {
       for (j = 0; j < m; j++) {
-        System.out.print(this.Mat[i][j] + " ");
+        System.out.print(getELMT(i, j) + " ");
       }
       System.out.println();
     }
