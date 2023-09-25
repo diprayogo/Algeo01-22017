@@ -1,6 +1,9 @@
 package operators;
 
+import java.util.Scanner;
+
 public class Matrix {
+  Scanner scan = new Scanner(System.in);
 
   // Atribut
   // atribut default ukuran baris dan kolom, amankah sesuai harapan?
@@ -192,12 +195,11 @@ public class Matrix {
 
   // NOTES : code di bawah ini belum terpakai// !!!!!!!!!!!!!!!!!!!!!!!
   // ------------------------------ IO ------------------------------//
-  // read elemennya ntar dulu yaaa
   public void readMatrix(int n, int m) {
     int i, j;
     for (i = 0; i < n; i++) {
       for (j = 0; j < m; j++) {
-        this.Mat[i][j] = i + j;
+        this.Mat[i][j] = scan.nextInt();
       }
     }
   }
