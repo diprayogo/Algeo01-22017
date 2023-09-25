@@ -9,7 +9,7 @@ public class Matrix {
   // atribut default ukuran baris dan kolom, amankah sesuai harapan?
   int rowSize;
   int colSize;
-  double[][] Mat = new double[rowSize][colSize];
+  double[][] Mat;
 
   // atribut isSquare untuk Matrix persegi
   boolean isSquare = (rowSize == colSize) ? true : false;
@@ -34,6 +34,7 @@ public class Matrix {
   Matrix() {
     this.rowSize = 10;
     this.colSize = 10;
+    this.Mat = new double[rowSize][colSize];
 
     int i, j;
     for (i = 0; i < rowSize; i++) {
@@ -199,9 +200,10 @@ public class Matrix {
     int i, j;
     for (i = 0; i < n; i++) {
       for (j = 0; j < m; j++) {
-        this.Mat[i][j] = scan.nextInt();
+        this.Mat[i][j] = scan.nextDouble();
       }
     }
+    scan.close();
   }
 
   public void printMatrix(int n, int m) {

@@ -2,7 +2,7 @@ package operators;
 
 public class SPL {
   // 1. Metode Eleminasi Gauss
-  public static void metodeGauss(Matrix matrix) {
+  public void metodeGauss(Matrix matrix) {
     // String result = new String();
 
     matrix.strictGauss();
@@ -37,7 +37,7 @@ public class SPL {
       if (countZero == matrix.colSize - 1) { // Tidak memiliki solusi
         isNoSolution = matrix.getELMT(i, matrix.colSize - 1) != 0;
       } else {
-        if (matrix.getELMT(i, matrix.colSize - 1) != 0 || matrix.isSquare) { // Memiliki solusi banyak
+        if (matrix.getELMT(i, matrix.colSize - 1) != 0 || matrix.isSquare) { // Memiliki solusi unik / tunggal
           // Subtitusi mundur
           for (int p = rootSolution.length - 1; p >= 0; p--) {
             double sum = 0;
@@ -46,7 +46,7 @@ public class SPL {
             }
             rootSolution[p] = (augMat[p] - sum);
           }
-        } else { // Memiliki solusi unik / tunggal
+        } else { // Memiliki solusi banyak
           isNonUnique = true;
         }
       }
@@ -102,9 +102,7 @@ public class SPL {
       if (countZero == matrix.colSize - 1) { // Tidak memiliki solusi
         isNoSolution = matrix.getELMT(i, matrix.colSize - 1) != 0;
       } else {
-        if (matrix.getELMT(i, matrix.colSize - 1) == 0 || !matrix.isSquare) { // Memiliki solusi banyak
-          isNonUnique = true;
-        } else { // Memiliki solusi unik / tunggal
+        if (matrix.getELMT(i, matrix.colSize - 1) != 0 || matrix.isSquare) { // Memiliki solusi unik / tunggal
           // Subtitusi mundur
           for (int p = rootSolution.length - 1; p >= 0; p--) {
             double sum = 0;
@@ -113,6 +111,8 @@ public class SPL {
             }
             rootSolution[p] = (augMat[p] - sum);
           }
+        } else { // Memiliki solusi banyak
+          isNonUnique = true;
         }
       }
     }

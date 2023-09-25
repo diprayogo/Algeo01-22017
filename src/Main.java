@@ -41,9 +41,10 @@ public class Main {
       switch (menu) {
         case 1:
           Matrix matrix = new Matrix(3, 4);
+          SPL spl = new SPL();
           matrix.readMatrix(3, 4);
           matrix.printMatrix(3, 4);
-          SPL.metodeGauss(matrix);
+          spl.metodeGauss(matrix);
           matrix.printMatrix(3, 4);
           break;// REDIRECT KE SPL
         case 2:
