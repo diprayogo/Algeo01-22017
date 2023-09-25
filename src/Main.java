@@ -2,6 +2,7 @@
 // text-based dan CLI (wajib)
 
 import java.util.Scanner;
+import operators.*;
 
 public class Main {
   static int pilihMenu() {
@@ -39,6 +40,10 @@ public class Main {
       int menu = pilihMenu();
       switch (menu) {
         case 1:
+          Matrix matrix = new Matrix(3, 4);
+          matrix.readMatrix(3, 4);
+          SPL.metodeGauss(matrix);
+          matrix.printMatrix(3, 4);
           break;// REDIRECT KE SPL
         case 2:
           break;// REDIRECT KE DETERMINAN
