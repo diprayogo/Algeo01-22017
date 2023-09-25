@@ -1,5 +1,6 @@
 package operators;
 
+
 public class Matrix {
 
   // Atribut
@@ -51,13 +52,17 @@ public class Matrix {
     return (this.Mat[i][j]);
   }
 
+  public double[] getRowELMT(int i){
+    return (this.Mat[i]);
+  }
+
   public Matrix getMatConst(Matrix Mat){    // Mengembalikan Matrix konstanta
     // Prekondisi : isAugmented
     Matrix MatConst = new Matrix(Mat.getRow(), Mat.getCol() -1);
     int i, j ; 
     for(i = 0 ; i < Mat.getRow() -1 ; i ++){
       for(j = 0 ; j < Mat.getCol() -1 ; j++){
-        setELMT(i, j, this.Mat[i][j]);
+        setELMT(i, j, getELMT(i,j));
       }
     }
     return MatConst;
@@ -75,45 +80,120 @@ public class Matrix {
   public void setELMT(int i, int j, double val){    // Mengisi ELMT(i,j) dengan val
     this.Mat[i][j] = val;
   }
+
+  public void setRowELMT( int row, double[] rowELMT){
+    this.Mat[row] = rowELMT;
+  }
   
   // ------------------------------ OPERATORS ------------------------------//
-  public Matrix getMinorMat(Matrix Mat, int a, int b){    // Mengembalikan Matrix Minor
+  public void copyMatrix(Matrix Mat){
+    this.rowSize = Mat.getRow();
+    this.colSize = Mat.getCol();
+    int i, j ; 
+    for(i = 0; i< this.getRow(); i ++ ){
+      for(j = 0 ; j < this.getCol() ; j ++){
+        setELMT(i, j , Mat.getELMT(i, j));
+      }
+    }
+  }
+
+  public static Matrix getMinorMat(Matrix Mat, int a, int b){    // Mengembalikan Matrix Minor
   // Prekondisi : isAugmented
     Matrix MinorMat = new Matrix(Mat.getRow() -1, Mat.getCol() -2);
     int i, j ;
     for(i = 0 ; i < MinorMat.getRow()  ; i ++){
       for(j = 0 ; j < MinorMat.getCol()  ; j++){
         if(i >= a && j >= b){
-          setELMT(i, j, Mat.getELMT(i+1, j +1));
+          MinorMat.setELMT(i, j, Mat.getELMT(i+1, j +1));
         }
         else if (i >= a ){
-          setELMT(i, j, Mat.getELMT(i+1, j ));
+          MinorMat.setELMT(i, j, Mat.getELMT(i+1, j ));
         }
         else if (j >= b ){
-          setELMT(i, j, Mat.getELMT(i, j +1));
+          MinorMat.setELMT(i, j, Mat.getELMT(i, j +1));
         }
       }
     }
     return MinorMat ;
   }
 
-  public Matrix getKofaktor(Matrix Mat, int a, int b){    // Mengembalikan Kofaktor
-  // Prekondisi isAugmented
-    Matrix kofaktor = (getMinorMat(Mat, a, b));
-    int sign = (a+b) % 2 == 0 ? 1 : -1;
-    kofaktor.scalarMultiply(sign);
-    return kofaktor ;
+  
+  public double getKofaktor(Matrix Mat, int a, int b){    // Mengembalikan Kofaktor
+    // Prekondisi isAugmented
+    return detKofaktor((Matrix.getMinorMat(Mat, a, b)));
   }
 
-  void scalarMultiply(double scale) {                     // Mengalikan Matrix dengan konstanta scale
-    int i, j;
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        this.Mat[i][j] *= scale;
-      }
+  public void swapRow(int row1, int row2) {
+    // swap doang gess
+    double[] temp;
+    temp = getRowELMT(row1);
+    setRowELMT(row1, getRowELMT(row2));
+    setRowELMT(row2, temp);
+  }
+
+  public void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
+    for (int j = 0; j < getCol(); j++) {
+      setELMT(row, j, getELMT(row, j) - (getELMT(subtractorRow, j) * subtractorMagnitude));
     }
   }
+  
+  // ------------------------------ MENCARI DETERMINAN ------------------------------ //
+  public static double detKofaktor(Matrix Mat){
+    // Prekondisi : isSquare, isAugmented
+    if(Mat.getCol() == 1){              // Basis
+        return Mat.getELMT(0,0);
+    }
+    else{                               // Rekursi
+        int j = 0; 
+        double det = 0 ;
+        for(j = 0; j < Mat.getCol(); j ++){
+            int sign = ((j) % 2 == 0) ? 1 : -1;
+            det += sign * Mat.getELMT(0,j) * detKofaktor(Matrix.getMinorMat(Mat, 0, j));
+        }
+        return det;
+    }    
+  }
+  
+  public static double detMatrixSegitiga(Matrix Mat){
+    // Prekondisis isSquare,  isAugmented
+    Matrix matDet = new Matrix();
+    matDet.getMatConst(Mat);
+    double det, subtractorMagnitude ; 
+    int i = 0, j = 0, cntSwap = 0, k ;
 
+    // Membentuk matrix segitiga bawah
+    while( i < matDet.getRow() && j < matDet.getCol()){
+      int pivotRow = i ;
+      // mencari leading 1
+      while (pivotRow < matDet.getRow() && matDet.getELMT(pivotRow, j) == 0){
+        pivotRow ++;
+      }
+
+      if (matDet.getELMT(pivotRow, j) != 0){ // Ada elemen bukan 0 pada row pivotRow
+        if (pivotRow != i){
+          matDet.swapRow(pivotRow, i);
+          cntSwap ++;
+        }
+        for(k = i + 1; k < matDet.getRow(); k++){
+          subtractorMagnitude = matDet.getELMT(k, j) / matDet.getELMT(i, j);
+          matDet.subtractRow(k, pivotRow, subtractorMagnitude);
+        }
+        i ++;
+      }
+      j ++;
+    }
+
+    // Terbentuk matrix segitiga bawah
+    int l ;
+    det = (cntSwap % 2 == 0) ? 1 : -1;
+    for(l = 1; l < matDet.getCol() ; l++){
+      det *= matDet.getELMT(l,l);
+    }
+    return det;
+  }
+
+  
+  
   // NOTES : code di bawah ini belum terpakai// !!!!!!!!!!!!!!!!!!!!!!!
   // ------------------------------ IO ------------------------------//
   // read elemennya ntar dulu yaaa
@@ -144,6 +224,15 @@ public class Matrix {
   //     }
   //   }
   // }
+
+  void scalarMultiply(double scale) {                     // Mengalikan Matrix dengan konstanta scale
+    int i, j;
+    for (i = 0; i < this.rowSize; i++) {
+      for (j = 0; j < this.colSize; j++) {
+        this.Mat[i][j] *= scale;
+      }
+    }
+  }
 
   void transpose() {
     int i, j;
@@ -201,14 +290,15 @@ public class Matrix {
     return MHasil;
   }
   
+  
   // 3 OBE Operations
-  void swapRow(int row1, int row2) {
-    // swap doang gess
-    double[] temp;
-    temp = this.Mat[row1];
-    this.Mat[row1] = this.Mat[row2];
-    this.Mat[row2] = temp;
-  }
+  // void swapRow(int row1, int row2) {
+  //   // swap doang gess
+  //   double[] temp;
+  //   temp = this.Mat[row1];
+  //   this.Mat[row1] = this.Mat[row2];
+  //   this.Mat[row2] = temp;
+  // }
 
   void divideRow(int row, double divisor) {
     for (int i = 0; i < this.colSize; i++) {
@@ -216,11 +306,11 @@ public class Matrix {
     }
   }
 
-  void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
-    for (int i = 0; i < this.colSize; i++) {
-      this.Mat[row][i] -= this.Mat[subtractorRow][i] * subtractorMagnitude;
-    }
-  }
+  // void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
+  //   for (int i = 0; i < this.colSize; i++) {
+  //     this.Mat[row][i] -= this.Mat[subtractorRow][i] * subtractorMagnitude;
+  //   }
+  // }
 
   // strictGauss: leading 1 must be perfectly diagonalized
   void strictGauss() {

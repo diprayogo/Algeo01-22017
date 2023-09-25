@@ -18,7 +18,7 @@ public class Main {
                 isValidInput = true; // Input valid, keluar dari loop
             }
             else{
-              System.out.println("Input yang Anda masukkan bukan di luar range 1-7. Tolong input ulang");
+              System.out.println("Input yang Anda masukkan di luar range 1-7. Tolong input ulang");
               scanner.nextLine(); // Hapus baris yang tidak valid
 
             }
@@ -45,7 +45,7 @@ public class Main {
           case 4: break;
           case 5: break;
           case 6: break;
-          case 7: break; // DEFAULT TIDAK PER
+          case 7: break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
         }
       }while (isRunning) ;
   }
