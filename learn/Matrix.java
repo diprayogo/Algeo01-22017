@@ -65,6 +65,7 @@ public class Matrix {
   //   }
   // }
 
+  /// bikin jadi fungsi
   void transpose() {
     int i, j;
     float[][] tempMat = new float[this.rowSize][this.colSize];
@@ -121,6 +122,7 @@ public class Matrix {
     return MHasil;
   }
 
+  // jadiin fungsi
   void scalarMultiply(float scale) {
     int i, j;
     for (i = 0; i < this.rowSize; i++) {
@@ -129,8 +131,14 @@ public class Matrix {
       }
     }
   }
+
+  // bikin augMatrix 2 x persegi untuk inverseGaussJordan
+  // + splitMat lagi
   
-  // 3 OBE Operations
+  // procedure copyMatrix, & yg ada di praktikum
+
+
+  // 3 OBE Operations, only OBE operations used for procedures
   void swapRow(int row1, int row2) {
     // swap doang gess
     float[] temp;
@@ -139,18 +147,32 @@ public class Matrix {
     this.Mat[row2] = temp;
   }
 
+  // mending bikin standar multRow
   void divideRow(int row, float divisor) {
     for (int i = 0; i < this.colSize; i++) {
       this.Mat[row][i] /= divisor;
     }
   }
 
+  // mending bikin standar addRow, paramnya row1 row2 add scale
+  // row 1 <- row1 + scale*row2
   void subtractRow(int row, int subtractorRow, float subtractorMagnitude) {
     for (int i = 0; i < this.colSize; i++) {
       this.Mat[row][i] -= this.Mat[subtractorRow][i] * subtractorMagnitude;
     }
   }
 
+  // inversed, det helper
+  public boolean isSquare() {
+    return this.rowSize == this.colSize;
+  }
+
+  // bikin class determinant sendiri
+  public boolean isSingular() {
+    return this.determinant() == 0;
+  }
+
+  // eliminasiGauss
   // strictGauss: leading 1 must be perfectly diagonalized
   void strictGauss() {
     // n: row/col, gausa pake param ini, kan udah didefine sebagai atribut
@@ -194,27 +216,32 @@ public class Matrix {
 
   // Beberapa prosedur untuk manipulasi Matrix
   // prosedur mengubah suatu Matrix persegi menjadi Matrix minor
+  // to function
   void minor() {
     // cari minor entri secara rekursif
   }
 
-  void kofaktor() {
+  // to function
+  void cofactor() {
     this.minor();
   }
 
-  void adjoin() {
-    this.kofaktor();
+  // to function
+  protected static Matrix adjoint() {
+    this.cofactor();
     this.transpose();
   }
 
+  // handle -0.0
   float determinant() {
     float det = 1;
     return det;
   }
 
-  void inverseEkspansiKofaktor() {
+  // to function
+  void inverseEkspansiCofactor() {
     float inverseDet = 1/this.determinant();
-    this.adjoin();
+    this.adjoint();
     this.scalarMultiply(inverseDet);
   }
 
