@@ -91,6 +91,20 @@ public class Matrix {
   }
 
   // ------------------------------ OPERATORS ------------------------------//
+  public void transpose() {
+    int i, j;
+    Matrix tempMat = new Matrix(getCol(), getRow());
+
+    for (i = 0; i < getRow(); i++) {
+      for (j = 0; j < getCol(); j++) {
+        tempMat.setELMT(i, j, getELMT(i, j));
+        ;
+      }
+    }
+
+    copyMatrix(tempMat);
+  }
+
   public void copyMatrix(Matrix Mat) {
     this.rowSize = Mat.getRow();
     this.colSize = Mat.getCol();
@@ -120,7 +134,7 @@ public class Matrix {
     return MinorMat;
   }
 
-  public double getKofaktor(Matrix Mat, int a, int b) { // Mengembalikan Kofaktor
+  public static double getKofaktor(Matrix Mat, int a, int b) { // Mengembalikan Kofaktor
     // Prekondisi isAugmented
     return detKofaktor((Matrix.getMinorMat(Mat, a, b)));
   }
@@ -140,7 +154,7 @@ public class Matrix {
   }
 
   // ------------------------------ MENCARI DETERMINAN
-  // ------------------------------ //
+  // -------------------------------- //
   public static double detKofaktor(Matrix Mat) {
     // Prekondisi : isSquare, isAugmented
     if (Mat.getCol() == 1) { // Basis
@@ -194,6 +208,19 @@ public class Matrix {
     return det;
   }
 
+  // -------------------- MENCARI INVERS --------------------//
+  public static Matrix adj(Matrix Mat) {
+    Matrix Madj = new Matrix(Mat.getRow(), Mat.getCol() - 1);
+    int i, j;
+    for (i = 0; i < Madj.getRow(); i++) {
+      for (j = 0; j < Madj.getCol(); j++) {
+        Madj.setELMT(i, j, Matrix.getKofaktor(Mat, i, j));
+      }
+    }
+    Madj.transpose();
+    return Madj;
+  }
+
   // NOTES : code di bawah ini belum terpakai// !!!!!!!!!!!!!!!!!!!!!!!
   // ------------------------------ IO ------------------------------//
   public void readMatrix(int n, int m) {
@@ -234,21 +261,21 @@ public class Matrix {
     }
   }
 
-  void transpose() {
-    int i, j;
-    double[][] tempMat = new double[this.rowSize][this.colSize];
-    int temp;
+  // void transpose() {
+  // int i, j;
+  // double[][] tempMat = new double[this.rowSize][this.colSize];
+  // int temp;
 
-    tempMat = this.Mat;
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        this.Mat[j][i] = tempMat[i][j];
-      }
-    }
-    temp = this.rowSize;
-    this.colSize = this.rowSize;
-    this.rowSize = temp;
-  }
+  // tempMat = this.Mat;
+  // for (i = 0; i < this.rowSize; i++) {
+  // for (j = 0; j < this.colSize; j++) {
+  // this.Mat[j][i] = tempMat[i][j];
+  // }
+  // }
+  // temp = this.rowSize;
+  // this.colSize = this.rowSize;
+  // this.rowSize = temp;
+  // }
 
   // Operasi- operasi Matrix
   Matrix plus(Matrix M2) {
@@ -350,87 +377,4 @@ public class Matrix {
       }
     }
   }
-
-  // strictGaussJordan: leading 1 must be perfectly diagonalized
-  void strictGaussJordan() {
-    this.strictGauss();
-    for (int i = 1; i < this.rowSize; i++) {
-      // seharusnya cari dulu leading one
-      // kurangi baris2 di atas agar lebih tereduksi
-      for (int j = i - 1; j >= 0; j--) {
-        this.subtractRow(j, i, this.Mat[j][i]);
-      }
-    }
-  }
-
-  // Beberapa prosedur untuk manipulasi Matrix
-  // prosedur mengubah suatu Matrix persegi menjadi Matrix minor
-  void minor() {
-    // cari minor entri secara rekursif
-  }
-
-  void kofaktor() {
-    this.minor();
-  }
-
-  void adjoin() {
-    this.kofaktor();
-    this.transpose();
-  }
-
-  double determinant() {
-    double det = 1;
-    return det;
-  }
-
-  void inverseEkspansiKofaktor() {
-    double inverseDet = 1 / this.determinant();
-    this.adjoin();
-    this.scalarMultiply(inverseDet);
-  }
-
-  void inverseGJIdentity() {
-    int i, j;
-    Matrix augmentedMatrix = new Matrix(this.rowSize, 2 * this.colSize);
-    // copy matrix persegi ke bagian kiri
-    for (i = 0; i < augmentedMatrix.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        augmentedMatrix.Mat[i][j] = this.Mat[i][j];
-      }
-    }
-
-    // copy matriks identitas bagian kanan
-    for (i = 0; i < augmentedMatrix.rowSize; i++) {
-      for (j = this.colSize; j < augmentedMatrix.colSize; j++) {
-        if (i == j % this.colSize) {
-          augmentedMatrix.Mat[i][j] = 1;
-        } else {
-          augmentedMatrix.Mat[i][j] = 0;
-        }
-      }
-    }
-
-    // lakukan operasi Gauss Jordan agar diperoleh submatriks identitas kiri
-    augmentedMatrix.strictGaussJordan();
-    boolean hasInverse = true;
-    for (i = 0; i < augmentedMatrix.rowSize; i++) {
-      if (augmentedMatrix.Mat[i][i] == 0) {
-        // Matrix tidak memiliki invers
-        hasInverse = false;
-        break;
-      }
-    }
-
-    // jika matriks memiliki invers, maka ubah this.Mat ke bentuk inversnya
-    if (hasInverse) {
-      for (i = 0; i < augmentedMatrix.rowSize; i++) {
-        for (j = this.colSize; j < augmentedMatrix.colSize; j++) {
-          this.Mat[i][j % this.colSize] = augmentedMatrix.Mat[i][j];
-        }
-      }
-    } else { // jika tidak, do nothing
-      return;
-    }
-  }
-
 }
