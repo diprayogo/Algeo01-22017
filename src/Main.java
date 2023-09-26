@@ -5,8 +5,9 @@ import java.util.Scanner;
 import operators.*;
 
 public class Main {
+  static Scanner scanner = new Scanner(System.in);
+
   static int pilihMenu() {
-    Scanner scanner = new Scanner(System.in);
     int menu = 0;
     boolean isValidInput = false;
 
@@ -26,7 +27,6 @@ public class Main {
         scanner.nextLine(); // Hapus baris yang tidak valid
       }
     } while (!isValidInput);
-    scanner.close();
 
     return menu;
   }
@@ -61,5 +61,6 @@ public class Main {
           break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
       }
     } while (isRunning);
+    scanner.close();
   }
 }

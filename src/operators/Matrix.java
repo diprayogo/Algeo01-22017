@@ -230,7 +230,6 @@ public class Matrix {
         this.Mat[i][j] = scan.nextDouble();
       }
     }
-    scan.close();
   }
 
   public void printMatrix(int n, int m) {
@@ -243,89 +242,7 @@ public class Matrix {
     }
   }
 
-  // void transpose(int n, int m, int Matt[][]) {
-  // int i, j;
-  // for (i = 0; i < n; i++) {
-  // for (j = 0; j < m; j++) {
-  // Matt[j][i] = this.Mat[i][j];
-  // }
-  // }
-  // }
-
-  void scalarMultiply(double scale) { // Mengalikan Matrix dengan konstanta scale
-    int i, j;
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        this.Mat[i][j] *= scale;
-      }
-    }
-  }
-
-  // void transpose() {
-  // int i, j;
-  // double[][] tempMat = new double[this.rowSize][this.colSize];
-  // int temp;
-
-  // tempMat = this.Mat;
-  // for (i = 0; i < this.rowSize; i++) {
-  // for (j = 0; j < this.colSize; j++) {
-  // this.Mat[j][i] = tempMat[i][j];
-  // }
-  // }
-  // temp = this.rowSize;
-  // this.colSize = this.rowSize;
-  // this.rowSize = temp;
-  // }
-
-  // Operasi- operasi Matrix
-  Matrix plus(Matrix M2) {
-    int i, j;
-    Matrix MHasil = new Matrix(this.rowSize, this.colSize);
-    // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        MHasil.Mat[i][j] = this.Mat[i][j] + M2.Mat[i][j];
-      }
-    }
-    return MHasil;
-  }
-
-  Matrix minus(Matrix M2) {
-    int i, j;
-    Matrix MHasil = new Matrix(this.rowSize, this.colSize);
-    // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        MHasil.Mat[i][j] = this.Mat[i][j] - M2.Mat[i][j];
-      }
-    }
-    return MHasil;
-  }
-
-  Matrix mult(Matrix M2) {
-    int i, j, k;
-    Matrix MHasil = new Matrix(this.rowSize, this.colSize);
-    // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
-    for (i = 0; i < this.rowSize; i++) {
-      for (j = 0; j < this.colSize; j++) {
-        MHasil.Mat[i][j] = 0;
-        for (k = 0; k < this.colSize; k++) {
-          MHasil.Mat[i][j] += this.Mat[i][k] * M2.Mat[k][j];
-        }
-      }
-    }
-    return MHasil;
-  }
-
-  // 3 OBE Operations
-  // void swapRow(int row1, int row2) {
-  // // swap doang gess
-  // double[] temp;
-  // temp = this.Mat[row1];
-  // this.Mat[row1] = this.Mat[row2];
-  // this.Mat[row2] = temp;
-  // }
-
+  // 3 OBE Operation
   void divideRow(int row, double divisor) {
     for (int i = 0; i < this.colSize; i++) {
       double temp = this.Mat[row][i];
@@ -341,12 +258,6 @@ public class Matrix {
       }
     }
   }
-
-  // void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
-  // for (int i = 0; i < this.colSize; i++) {
-  // this.Mat[row][i] -= this.Mat[subtractorRow][i] * subtractorMagnitude;
-  // }
-  // }
 
   // strictGauss: leading 1 must be perfectly diagonalized
   void strictGauss() {
@@ -373,6 +284,19 @@ public class Matrix {
       // kurangi semua nilai kolom dari baris2 di bawah supaya baris tsb punya leading
       // 1
       for (int j = i + 1; j < this.rowSize; j++) {
+        this.subtractRow(j, i, this.Mat[j][i]);
+      }
+    }
+
+  }
+
+  // strictGaussJordan: leading 1 must be perfectly diagonalized
+  void strictGaussJordan() {
+    this.strictGauss();
+    for (int i = 1; i < this.rowSize; i++) {
+      // seharusnya cari dulu leading one
+      // kurangi baris2 di atas agar lebih tereduksi
+      for (int j = i - 1; j >= 0; j--) {
         this.subtractRow(j, i, this.Mat[j][i]);
       }
     }
