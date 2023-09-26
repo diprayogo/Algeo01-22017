@@ -1,5 +1,5 @@
 package menu;
 
-public class SPLMenu {
+public class SPLMenu extends Menu {
 
 }

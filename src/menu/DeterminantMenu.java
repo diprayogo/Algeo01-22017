@@ -1,5 +1,5 @@
 package menu;
 
-public class DeterminantMenu {
+public class DeterminantMenu extends Menu {
     
 }
