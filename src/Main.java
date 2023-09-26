@@ -7,6 +7,7 @@ import menu.*;
 
 public class Main {
   public static void main(String[] args) {
+    System.out.println("SELAMAT DATANG DI MATRIX CALCULATOR ");
     boolean isRunning = true;
     
     while (isRunning){
@@ -15,7 +16,16 @@ public class Main {
       boolean isValidInput = false;
 
       do {
-        System.out.print("Masukkan sebuah bilangan bulat: ");
+        System.out.println();
+        System.out.println("                                 ANDA BERADA DI MENU UTAMA");
+        System.out.println("1. Sistem Persamaan Linear");
+        System.out.println("2. Determinan");
+        System.out.println("3. Matriks Balikan");
+        System.out.println("4. Interpolasi Polinom");
+        System.out.println("5. Interpolasi Bicubic");
+        System.out.println("6. Regresi Linear Berganda");
+        System.out.println("7. Keluar");
+        System.out.print("Pilih Menu: ");
         try {
           menu = scanner.nextInt();
           if (menu >= 1 && menu <= 7) {

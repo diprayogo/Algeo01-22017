@@ -6,9 +6,17 @@ import java.util.*;
 public class DeterminantMenu {
     private static Scanner scanner = new Scanner(System.in);
     public static void menu(){
+<<<<<<< HEAD
         System.out.println("Determinan");
         System.out.println("1. Matrix Segitiga");
         System.out.println("2. Determinan Kofaktor");
+=======
+        System.out.println();
+        System.out.println("                          ANDA BERADA DI SUBMENU DETERMINAN");
+        System.out.println("1. Matrix Segitiga");
+        System.out.println("2. Determinan Kofaktor");
+        System.out.print("Pilih Metode penyelesaian :");
+>>>>>>> 8780be3f4eb3654d3277e949207d542c449636ab
 
         boolean inputValid = true;
         double det = 0 ;
