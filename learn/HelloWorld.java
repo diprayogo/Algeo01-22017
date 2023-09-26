@@ -1,6 +1,5 @@
 package learn;
-
-import java.util.*;
+// import java.util.*;
 import javax.swing.*;
 
 public class HelloWorld {
