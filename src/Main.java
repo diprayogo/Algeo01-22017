@@ -44,6 +44,7 @@ public class Main {
         matrix.printMatrix(3, 4);
         break;// REDIRECT KE SPL
         case 2:
+        DeterminantMenu.menu();
         break;// REDIRECT KE DETERMINAN
         case 3:
         break;// DST

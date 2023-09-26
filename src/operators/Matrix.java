@@ -1,9 +1,10 @@
 package operators;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Matrix {
-  Scanner scan = new Scanner(System.in);
+  private static Scanner scan = new Scanner(System.in);
 
   // Atribut
   // atribut default ukuran baris dan kolom, amankah sesuai harapan?
@@ -65,9 +66,9 @@ public class Matrix {
     // Prekondisi : isAugmented
     Matrix MatConst = new Matrix(Mat.getRow(), Mat.getCol() - 1);
     int i, j;
-    for (i = 0; i < Mat.getRow() - 1; i++) {
+    for (i = 0; i < Mat.getRow() ; i++) {
       for (j = 0; j < Mat.getCol() - 1; j++) {
-        setELMT(i, j, getELMT(i, j));
+        setELMT(i, j, Mat.getELMT(i, j));
       }
     }
     return MatConst;
@@ -198,8 +199,8 @@ public class Matrix {
 
   // ------------------------------ MENCARI DETERMINAN  -------------------------------- //
   public static Matrix getMinorMat(Matrix Mat, int a, int b) { // Mengembalikan Matrix Minor
-    // Prekondisi : isAugmented
-    Matrix MinorMat = new Matrix(Mat.getRow() - 1, Mat.getCol() - 2);
+    // Prekondisi : not isAugmented, isSquare
+    Matrix MinorMat = new Matrix(Mat.getRow() - 1, Mat.getCol() - 1);
     int i, j;
     for (i = 0; i < MinorMat.getRow(); i++) {
       for (j = 0; j < MinorMat.getCol(); j++) {
@@ -216,17 +217,18 @@ public class Matrix {
   }
 
   public static double getKofaktor(Matrix Mat, int a, int b) { // Mengembalikan Kofaktor
-    // Prekondisi isAugmented
+    // Prekondisi not isAugmented, isSquare
     return detKofaktor((Matrix.getMinorMat(Mat, a, b)));
   }
+
   public static double detKofaktor(Matrix Mat) {
-    // Prekondisi : isSquare, isAugmented
+    // Prekondisi : isSquare, not isAugmented
     if (Mat.getCol() == 1) { // Basis
       return Mat.getELMT(0, 0);
     } else { // Rekursi
       int j = 0;
       double det = 0;
-      for (j = 0; j < Mat.getCol(); j++) {
+      for (j = 0; j < Mat.getCol() ; j++) {
         int sign = ((j) % 2 == 0) ? 1 : -1;
         det += sign * Mat.getELMT(0, j) * detKofaktor(Matrix.getMinorMat(Mat, 0, j));
       }
@@ -235,28 +237,26 @@ public class Matrix {
   }
 
   public static double detMatrixSegitiga(Matrix Mat) {
-    // Prekondisis isSquare, isAugmented
-    Matrix matDet = new Matrix();
-    matDet.getMatConst(Mat);
+    // Prekondisis isSquare, not isAugmented
     double det, subtractorMagnitude;
     int i = 0, j = 0, cntSwap = 0, k;
 
     // Membentuk matrix segitiga bawah
-    while (i < matDet.getRow() && j < matDet.getCol()) {
+    while (i < Mat.getRow() && j < Mat.getCol() ) {
       int pivotRow = i;
       // mencari leading 1
-      while (pivotRow < matDet.getRow() && matDet.getELMT(pivotRow, j) == 0) {
+      while (pivotRow < Mat.getRow() -1 && Mat.getELMT(pivotRow, j) == 0) {
         pivotRow++;
       }
 
-      if (matDet.getELMT(pivotRow, j) != 0) { // Ada elemen bukan 0 pada row pivotRow
+      if (Mat.getELMT(pivotRow, j) != 0) { // Ada elemen bukan 0 pada row pivotRow
         if (pivotRow != i) {
-          matDet.swapRow(pivotRow, i);
+          Mat.swapRow(pivotRow, i);
           cntSwap++;
         }
-        for (k = i + 1; k < matDet.getRow(); k++) {
-          subtractorMagnitude = matDet.getELMT(k, j) / matDet.getELMT(i, j);
-          matDet.subtractRow(k, pivotRow, subtractorMagnitude);
+        for (k = i + 1; k < Mat.getRow(); k++) {
+          subtractorMagnitude = Mat.getELMT(k, j) / Mat.getELMT(i, j);
+          Mat.subtractRow(k, pivotRow, subtractorMagnitude);
         }
         i++;
       }
@@ -266,8 +266,8 @@ public class Matrix {
     // Terbentuk matrix segitiga bawah
     int l;
     det = (cntSwap % 2 == 0) ? 1 : -1;
-    for (l = 1; l < matDet.getCol(); l++) {
-      det *= matDet.getELMT(l, l);
+    for (l = 0; l < Mat.getRow(); l++) {
+      det *= Mat.getELMT(l, l);
     }
     return det;
   }
@@ -335,6 +335,24 @@ public class Matrix {
         setELMT(i, j, scan.nextDouble());
       }
     }
+  }
+
+  public static Matrix readMatSquare(){
+    int n = 0;
+    System.out.print("Anda akan menginput matriks segi empat dengan ukuran n x n. \nMasukkan n: ");
+    try {
+      n = scan.nextInt();
+    } catch (InputMismatchException e) {
+      e.printStackTrace();
+    }
+    Matrix MatSquare = new Matrix();
+    MatSquare.setRow(n);
+    MatSquare.setCol(n);
+    MatSquare.Mat = new double[MatSquare.getRow()][MatSquare.getCol()];
+    System.out.printf("Masukkan matriks dengan ukuran %d * %d:\n", n, n);
+    MatSquare.readMatrix(n, n);
+
+    return MatSquare;
   }
 
   public void printMatrix(int n, int m) {
