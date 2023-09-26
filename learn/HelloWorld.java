@@ -18,9 +18,9 @@ public class HelloWorld {
 
     // int i;
     // for (i = 1; i <= usiaCons; i++) {
-    //   System.out.println("i = " + i);
+    // System.out.println("i = " + i);
     // }
-    
+
     // deklarasi + inisialisasi by GUI input
     String nama = JOptionPane.showInputDialog("nama: ");
     String usia = JOptionPane.showInputDialog("usia: ");
@@ -30,6 +30,6 @@ public class HelloWorld {
     System.out.println(intro);
     JOptionPane.showMessageDialog(null, intro);
     System.exit(0);
-    
+
   }
 }

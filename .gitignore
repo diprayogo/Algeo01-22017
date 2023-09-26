@@ -1,0 +1,8 @@
+# Ignore compiled Java class files
+*.class
+
+# Ignore log files
+*.log
+
+# Ignore backup files
+*.bak
