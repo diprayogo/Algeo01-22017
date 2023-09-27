@@ -1,20 +1,19 @@
 package operators;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Matrix {
-  Scanner scan = new Scanner(System.in);
+  private static Scanner scan = new Scanner(System.in);
 
   // Atribut
-  // atribut default ukuran baris dan kolom, amankah sesuai harapan?
-  // private (?)
-  int rowSize;
-  int colSize;
-  double[][] Mat;
+  // atribut default ukuran baris dan kolom
+  private int rowSize;
+  private int colSize;
+  private double[][] Mat;
 
   // atribut isSquare untuk Matrix persegi
   boolean isSquare = (rowSize == colSize) ? true : false;
-  boolean isAugmented = false; // default
 
   // Methods
   // ------------------------------ KONSTRUKTOR ------------------------------//
@@ -132,8 +131,8 @@ public class Matrix {
   }
 
   public static Matrix getMinorMat(Matrix Mat, int a, int b) { // Mengembalikan Matrix Minor
-    // Prekondisi : isAugmented
-    Matrix MinorMat = new Matrix(Mat.getRow() - 1, Mat.getCol() - 2);
+    // Prekondisi : not isAugmented, isSquare
+    Matrix MinorMat = new Matrix(Mat.getRow() - 1, Mat.getCol() - 1);
     int i, j;
     for (i = 0; i < MinorMat.getRow(); i++) {
       for (j = 0; j < MinorMat.getCol(); j++) {
@@ -150,20 +149,20 @@ public class Matrix {
   }
 
   public static double getKofaktor(Matrix Mat, int a, int b) { // Mengembalikan Kofaktor
-    // Prekondisi isAugmented
+    // Prekondisi not isAugmented
     return detKofaktor((Matrix.getMinorMat(Mat, a, b)));
   }
 
   // ------------------------------ MENCARI DETERMINAN
   // -------------------------------- //
   public static double detKofaktor(Matrix Mat) {
-    // Prekondisi : isSquare, isAugmented
+    // Prekondisi : isSquare, not isAugmented
     if (Mat.getCol() == 1) { // Basis
       return Mat.getELMT(0, 0);
     } else { // Rekursi
       int j = 0;
       double det = 0;
-      for (j = 0; j < Mat.getCol(); j++) {
+      for (j = 0; j < Mat.getCol() ; j++) {
         int sign = ((j) % 2 == 0) ? 1 : -1;
         det += sign * Mat.getELMT(0, j) * detKofaktor(Matrix.getMinorMat(Mat, 0, j));
       }
@@ -172,20 +171,19 @@ public class Matrix {
   }
 
   public static double detMatrixSegitiga(Matrix Mat) {
-    // Prekondisis isSquare, isAugmented
-    Matrix matDet = new Matrix();
-    matDet.getMatConst(Mat);
+    // Prekondisis isSquare, not isAugmented
     double det, subtractorMagnitude;
     int i = 0, j = 0, cntSwap = 0, k;
 
     // Membentuk matrix segitiga bawah
-    while (i < matDet.getRow() && j < matDet.getCol()) {
+    while (i < Mat.getRow() && j < Mat.getCol() ) {
       int pivotRow = i;
       // mencari leading 1
-      while (pivotRow < matDet.getRow() && matDet.getELMT(pivotRow, j) == 0) {
+      while (pivotRow < Mat.getRow() -1 && Mat.getELMT(pivotRow, j) == 0) {
         pivotRow++;
       }
 
+<<<<<<< HEAD
       if (matDet.getELMT(pivotRow, j) != 0) { // Ada elemen bukan 0 pada row pivotRow
         // Tukar baris agar diagonal tidak 0
         if (pivotRow != i) {
@@ -202,19 +200,40 @@ public class Matrix {
         // Apakah jika ada kasus sisa ada elemen diagonal yang 0 aman divalidasi?
         // Jika tidak bisa keluarkan determinan 0
         return 0;
+=======
+      if (Mat.getELMT(pivotRow, j) != 0) { // Ada elemen bukan 0 pada row pivotRow
+        if (pivotRow != i) {
+          Mat.swapRow(pivotRow, i);
+          cntSwap++;
+        }
+        for (k = i + 1; k < Mat.getRow(); k++) {
+          subtractorMagnitude = Mat.getELMT(k, j) / Mat.getELMT(i, j);
+          Mat.subtractRow(k, pivotRow, subtractorMagnitude);
+        }
+        i++;
+>>>>>>> 8780be3f4eb3654d3277e949207d542c449636ab
       }
       j++;
     }
 
     // Terbentuk matrix segitiga bawah
+<<<<<<< HEAD
     // Apakah elemen -0.0 sudah dihandle?
+=======
+>>>>>>> 8780be3f4eb3654d3277e949207d542c449636ab
     int l;
     det = (cntSwap % 2 == 0) ? 1 : -1;
-    for (l = 1; l < matDet.getCol(); l++) {
-      det *= matDet.getELMT(l, l);
+    for (l = 0; l < Mat.getRow(); l++) {
+      det *= Mat.getELMT(l, l);
     }
+    
+    // special case
+    if (det == -0.0) {
+      det += 0.0;
+    } 
     return det;
   }
+<<<<<<< HEAD
 
   // ------------------------------ MENCARI INVERS/BALIKAN
   // ------------------------------ //
@@ -256,6 +275,10 @@ public class Matrix {
   // return TransMat;
   // }
 
+=======
+  
+  // ------------------------------ MENCARI INVERS/BALIKAN ------------------------------ //
+>>>>>>> 8780be3f4eb3654d3277e949207d542c449636ab
   public Matrix getAdj() {
     Matrix Madj = new Matrix(getRow(), getCol() - 1); // getCol()
     int i, j;
@@ -403,6 +426,24 @@ public class Matrix {
     }
   }
 
+  public static Matrix readMatSquare(){
+    int n = 0;
+    System.out.print("Anda akan menginput matriks segi empat dengan ukuran n x n. \nMasukkan n: ");
+    try {
+      n = scan.nextInt();
+    } catch (InputMismatchException e) {
+      e.printStackTrace();
+    }
+    Matrix MatSquare = new Matrix();
+    MatSquare.setRow(n);
+    MatSquare.setCol(n);
+    MatSquare.Mat = new double[MatSquare.getRow()][MatSquare.getCol()];
+    System.out.printf("Masukkan matriks dengan ukuran %d x %d:\n", n, n);
+    MatSquare.readMatrix(n, n);
+
+    return MatSquare;
+  }
+
   public void printMatrix(int n, int m) {
     int i, j;
     for (i = 0; i < n; i++) {
@@ -412,6 +453,8 @@ public class Matrix {
       System.out.println();
     }
   }
+
+  
 
   // NOTES : code di bawah ini belum terpakai// !!!!!!!!!!!!!!!!!!!!!!!
   // ------------------------------ OPERATORS LAIN
