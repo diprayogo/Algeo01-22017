@@ -162,7 +162,7 @@ public class Matrix {
     } else { // Rekursi
       int j = 0;
       double det = 0;
-      for (j = 0; j < Mat.getCol() ; j++) {
+      for (j = 0; j < Mat.getCol(); j++) {
         int sign = ((j) % 2 == 0) ? 1 : -1;
         det += sign * Mat.getELMT(0, j) * detKofaktor(Matrix.getMinorMat(Mat, 0, j));
       }
@@ -176,31 +176,13 @@ public class Matrix {
     int i = 0, j = 0, cntSwap = 0, k;
 
     // Membentuk matrix segitiga bawah
-    while (i < Mat.getRow() && j < Mat.getCol() ) {
+    while (i < Mat.getRow() && j < Mat.getCol()) {
       int pivotRow = i;
       // mencari leading 1
-      while (pivotRow < Mat.getRow() -1 && Mat.getELMT(pivotRow, j) == 0) {
+      while (pivotRow < Mat.getRow() - 1 && Mat.getELMT(pivotRow, j) == 0) {
         pivotRow++;
       }
 
-<<<<<<< HEAD
-      if (matDet.getELMT(pivotRow, j) != 0) { // Ada elemen bukan 0 pada row pivotRow
-        // Tukar baris agar diagonal tidak 0
-        if (pivotRow != i) {
-          matDet.swapRow(pivotRow, i);
-          cntSwap++;
-        }
-        // Bawah kolom leading num jadi 0 semua pake OBE
-        for (k = i + 1; k < matDet.getRow(); k++) {
-          subtractorMagnitude = matDet.getELMT(k, j) / matDet.getELMT(i, j);
-          matDet.subtractRow(k, pivotRow, subtractorMagnitude);
-        }
-        i++;
-      } else { // Jika pivotRow sampai baris terakhir tidak ada elemen bukan 0
-        // Apakah jika ada kasus sisa ada elemen diagonal yang 0 aman divalidasi?
-        // Jika tidak bisa keluarkan determinan 0
-        return 0;
-=======
       if (Mat.getELMT(pivotRow, j) != 0) { // Ada elemen bukan 0 pada row pivotRow
         if (pivotRow != i) {
           Mat.swapRow(pivotRow, i);
@@ -211,74 +193,26 @@ public class Matrix {
           Mat.subtractRow(k, pivotRow, subtractorMagnitude);
         }
         i++;
->>>>>>> 8780be3f4eb3654d3277e949207d542c449636ab
       }
       j++;
     }
 
     // Terbentuk matrix segitiga bawah
-<<<<<<< HEAD
-    // Apakah elemen -0.0 sudah dihandle?
-=======
->>>>>>> 8780be3f4eb3654d3277e949207d542c449636ab
     int l;
     det = (cntSwap % 2 == 0) ? 1 : -1;
     for (l = 0; l < Mat.getRow(); l++) {
       det *= Mat.getELMT(l, l);
     }
-    
+
     // special case
     if (det == -0.0) {
       det += 0.0;
-    } 
+    }
     return det;
   }
-<<<<<<< HEAD
 
   // ------------------------------ MENCARI INVERS/BALIKAN
   // ------------------------------ //
-  // public Matrix getKofaktorMatrix() {
-  // // KAMUS LOKAL
-  // int i, j;
-  // Matrix KofMat = new Matrix(getRow(), getCol());
-
-  // // ALGORITMA
-  // for (i = 0; i < getRow(); i++) {
-  // for (j = 0; j < getCol(); j++) {
-  // setELMT(i, j, getKofaktor(this, i, j));
-  // }
-  // }
-  // return KofMat;
-  // }
-
-  // adjoin udah dibikin Berto
-  // public Matrix getAdj() {
-  // // KAMUS LOKAL
-  // Matrix adjMatrix = getKofaktorMatrix().transpose();
-
-  // // ALGORITMA
-  // return adjMatrix;
-  // }
-
-  // public Matrix transpose() {
-  // int i, j;
-  // Matrix TransMat = new Matrix(getRow(), getCol());
-
-  // for (i = 0; i < getRow(); i++) {
-  // for (j = 0; j < getCol(); j++) {
-  // // Apakah tidak pakai this. = best practice?
-  // TransMat.setELMT(i, j, getELMT(j, i));
-  // }
-  // }
-  // TransMat.setRow(getCol());
-  // TransMat.setCol(getRow());
-  // return TransMat;
-  // }
-
-=======
-  
-  // ------------------------------ MENCARI INVERS/BALIKAN ------------------------------ //
->>>>>>> 8780be3f4eb3654d3277e949207d542c449636ab
   public Matrix getAdj() {
     Matrix Madj = new Matrix(getRow(), getCol() - 1); // getCol()
     int i, j;
@@ -426,7 +360,7 @@ public class Matrix {
     }
   }
 
-  public static Matrix readMatSquare(){
+  public static Matrix readMatSquare() {
     int n = 0;
     System.out.print("Anda akan menginput matriks segi empat dengan ukuran n x n. \nMasukkan n: ");
     try {
@@ -453,8 +387,6 @@ public class Matrix {
       System.out.println();
     }
   }
-
-  
 
   // NOTES : code di bawah ini belum terpakai// !!!!!!!!!!!!!!!!!!!!!!!
   // ------------------------------ OPERATORS LAIN
