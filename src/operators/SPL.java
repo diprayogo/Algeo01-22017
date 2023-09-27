@@ -1,8 +1,26 @@
 package operators;
 
 public class SPL {
+  double IDX_UNDEF = -999999;
+
+  public void printGauss(double[] root, boolean isNoSolution, boolean isNonUnique) {
+    if (isNoSolution) {
+      System.out.println("SPL tidak memiliki solusi");
+    } else {
+      if (isNonUnique) {
+        System.out.println("SPL memiliki solusi non-unik");
+      } else {
+        System.out.println("Solusi dari persamaan linear tersebut adalah:");
+        for (int k = 0; k < root.length; k++) {
+          System.out.print("x" + (k + 1) + ": ");
+          System.out.printf("%.4f\n", root[k]);
+        }
+      }
+    }
+  }
+
   // 1. Metode Eleminasi Gauss
-  public void metodeGauss(Matrix matrix) {
+  public double[] metodeGauss(Matrix matrix) {
     // String result = new String();
 
     matrix.strictGauss();
@@ -50,24 +68,16 @@ public class SPL {
           isNonUnique = true;
         }
       }
+
     }
 
-    if (isNoSolution) {
-      System.out.println("SPL tidak memiliki solusi");
-    } else {
-      if (isNonUnique) {
-        System.out.println("SPL memiliki solusi non-unik");
-      } else {
-        System.out.println("Solusi dari persamaan linear tersebut adalah:");
-        for (int k = 0; k < rootSolution.length; k++) {
-          System.out.println("x" + (k + 1) + ": " + rootSolution[k]);
-        }
-      }
-    }
+    printGauss(rootSolution, isNoSolution, isNonUnique);
+
+    return rootSolution;
   }
 
   // 2. Metode Gauss-Jordan
-  public static void metodeGaussJordan(Matrix matrix) {
+  public double[] metodeGaussJordan(Matrix matrix) {
     // String result = new String();
 
     matrix.strictGaussJordan();
@@ -115,21 +125,14 @@ public class SPL {
           isNonUnique = true;
         }
       }
+
     }
 
-    if (isNoSolution) {
-      System.out.println("SPL tidak memiliki solusi");
-    } else {
-      if (isNonUnique) {
-        System.out.println("SPL memiliki solusi non-unik");
-      } else {
-        System.out.println("Solusi dari persamaan linear tersebut adalah:");
-        for (int k = 0; k < rootSolution.length; k++) {
-          System.out.println("x" + (k + 1) + ": " + rootSolution[k]);
-        }
-      }
-    }
+    printGauss(rootSolution, isNoSolution, isNonUnique);
+
+    return rootSolution;
   }
 
-  // return rootSolution;
+  // Metode Matriks Balikan
+
 }
