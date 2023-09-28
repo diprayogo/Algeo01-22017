@@ -115,6 +115,17 @@ public class Matrix {
     }
   }
 
+  public static Matrix copyMatrix2(Matrix Mat) { // Prosedur salin matrix Mat ke matrix this
+    Matrix copyMat = new Matrix(Mat.getRow(), Mat.getCol());
+    int i, j;
+    for (i = 0; i < Mat.getRow(); i++) {
+      for (j = 0; j < Mat.getCol(); j++) {
+        copyMat.setELMT(i, j, Mat.getELMT(i, j));
+      }
+    }
+    return copyMat;
+  }
+
   // 2 Operators OBE
   public void swapRow(int row1, int row2) {
     // swap baris
@@ -466,48 +477,13 @@ public class Matrix {
     }
   }
 
-  // strictGauss: leading 1 must be perfectly diagonalized
-  // void strictGauss() {
-  // // n: row/col, gausa pake param ini, kan udah didefine sebagai atribut
+  // jadi, tidak perlu memakai atribut isSquare
+  public boolean isSquare() {
+    return getRow() == getCol();
+  }
 
-  // // bikin tiap generate leading 1 dari baris atas ke bawah
-  // for (int i = 0; i < this.rowSize; i++) {
-  // // biar jadi Matrix eselon, harus bikin calon leading 1 yg mungkin blm 1
-  // if (this.Mat[0][0] == 0) {
-  // for (int j = 1; j < this.rowSize; j++) {
-  // if (this.Mat[j][0] != 0) {
-  // this.swapRow(0, j);
-  // break;
-  // }
-  // }
-  // }
-  // // ga bakal ada kasus 0 semuanya, karena pasti setiap variabel berguna
-
-  // // mari kita buat tiap baris menjadi leading 1
-  // // blum bikin kasus untuk yg variabelnya habis kan bakal i != j
-  // // track col sampe 0 nya habis
-  // this.divideRow(i, this.Mat[i][i]); // harusnya ini row cari dulu yg leading
-  // one
-
-  // // kurangi semua nilai kolom dari baris2 di bawah supaya baris tsb punya
-  // leading
-  // // 1
-  // for (int j = i + 1; j < this.rowSize; j++) {
-  // this.subtractRow(j, i, this.Mat[j][i]);
-  // }
-  // }
-
-  // }
-
-  // // strictGaussJordan: leading 1 must be perfectly diagonalized
-  // void strictGaussJordan() {
-  // this.strictGauss();
-  // for (int i = 1; i < this.rowSize; i++) {
-  // // seharusnya cari dulu leading one
-  // // kurangi baris2 di atas agar lebih tereduksi
-  // for (int j = i - 1; j >= 0; j--) {
-  // this.subtractRow(j, i, this.Mat[j][i]);
-  // }
-  // }
-  // }
+  // calculate determinant, here in class Java
+  public static boolean isSingular(Matrix Mat) {
+    return detMatrixSegitiga(Mat) == 0;
+  }
 }
