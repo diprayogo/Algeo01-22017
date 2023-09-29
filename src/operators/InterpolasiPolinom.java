@@ -51,16 +51,14 @@ public class InterpolasiPolinom {
     System.out.print("Masukkan nilai x: ");
     double x = scanner.nextDouble();
 
-    m.printMatrix(m.getRow(), m.getCol());
+    spl.metodeGaussJordan(m);
 
-    spl.metodeGauss(m);
+    for (int i = 0; i < rootSolution.length; i++) {
+      rootSolution[i] = m.getELMT(i, m.getCol() - 1);
+    }
 
-    for (int p = rootSolution.length - 1; p >= 0; p--) {
-      double sum = 0;
-      for (int q = p + 1; q < rootSolution.length; q++) {
-        sum += m.getELMT(p, q) * rootSolution[q];
-      }
-      rootSolution[p] = (b[p] - sum);
+    for (int i = 0; i < rootSolution.length; i++) {
+      System.out.println(rootSolution[i] + "\n");
     }
     double taksir = taksirNilai(rootSolution, x);
 
