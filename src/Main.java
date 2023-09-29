@@ -63,8 +63,15 @@ public class Main {
         case 5:
           break;
         case 6:
+        Matrix Mat = new Matrix(20, 4);
+        Mat.readMatrix(20, 4);
+        Mat.printMatrix(20, 4);
+        System.out.println("\n");
+        RegresiLinearBerganda.getNormalEst(Mat).printMatrix(4, 5);;
         break;
+
         case 7:
+        System.out.println("TERIMA KASIH SUDAH MENGGUNAKAN KALKULATOR MATRIX");
         isRunning = false ;
         break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
       }

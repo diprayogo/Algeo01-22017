@@ -8,36 +8,36 @@ public class SPL {
     matrix.strictGauss();
 
     // Membuat list untuk augmented atau b
-    double[] augMat = new double[matrix.rowSize];
+    double[] augMat = new double[matrix.getRow()];
     for (int i = 0; i < augMat.length; i++) {
-      augMat[i] = matrix.getELMT(i, matrix.colSize - 1);
+      augMat[i] = matrix.getELMT(i, matrix.getCol() - 1);
     }
 
     // Membuat list untuk akar-akar persamaan dengan x_i
-    double[] rootSolution = new double[matrix.rowSize];
+    double[] rootSolution = new double[matrix.getRow()];
     for (int i = 0; i < rootSolution.length; i++) {
       rootSolution[i] = 1;
     }
 
     // Membuat list untuk parameter jika SPL memiliki solusi non-unik
-    // double[] params = new double[matrix.rowSize];
+    // double[] params = new double[matrix.getRow()];
     // for (int i = 0; i < params.length; i++) {
     // params[i] = i + 1;
     // }
 
     boolean isNoSolution = false;
     boolean isNonUnique = false;
-    for (int i = matrix.rowSize - 1; i >= 0; i--) {
+    for (int i = matrix.getRow() - 1; i >= 0; i--) {
       int countZero = 0;
-      for (int j = 0; j < matrix.colSize - 1; j++) {
+      for (int j = 0; j < matrix.getCol() - 1; j++) {
         if (matrix.getELMT(i, j) == 0) {
           countZero++;
         }
       }
-      if (countZero == matrix.colSize - 1) { // Tidak memiliki solusi
-        isNoSolution = matrix.getELMT(i, matrix.colSize - 1) != 0;
+      if (countZero == matrix.getCol() - 1) { // Tidak memiliki solusi
+        isNoSolution = matrix.getELMT(i, matrix.getCol() - 1) != 0;
       } else {
-        if (matrix.getELMT(i, matrix.colSize - 1) != 0 || matrix.isSquare) { // Memiliki solusi unik / tunggal
+        if (matrix.getELMT(i, matrix.getCol() - 1) != 0 || matrix.isSquare) { // Memiliki solusi unik / tunggal
           // Subtitusi mundur
           for (int p = rootSolution.length - 1; p >= 0; p--) {
             double sum = 0;
@@ -73,36 +73,36 @@ public class SPL {
     matrix.strictGaussJordan();
 
     // Membuat list untuk augmented atau b
-    double[] augMat = new double[matrix.rowSize];
+    double[] augMat = new double[matrix.getRow()];
     for (int i = 0; i < augMat.length; i++) {
-      augMat[i] = matrix.getELMT(i, matrix.colSize - 1);
+      augMat[i] = matrix.getELMT(i, matrix.getCol() - 1);
     }
 
     // Membuat list untuk akar-akar persamaan dengan x_i
-    double[] rootSolution = new double[matrix.rowSize];
+    double[] rootSolution = new double[matrix.getRow()];
     for (int i = 0; i < rootSolution.length; i++) {
       rootSolution[i] = 1;
     }
 
     // Membuat list untuk parameter jika SPL memiliki solusi non-unik
-    // double[] params = new double[matrix.rowSize];
+    // double[] params = new double[matrix.getRow()];
     // for (int i = 0; i < params.length; i++) {
     // params[i] = i + 1;
     // }
 
     boolean isNoSolution = false;
     boolean isNonUnique = false;
-    for (int i = matrix.rowSize - 1; i >= 0; i--) {
+    for (int i = matrix.getRow() - 1; i >= 0; i--) {
       int countZero = 0;
-      for (int j = 0; j < matrix.colSize - 1; j++) {
+      for (int j = 0; j < matrix.getCol() - 1; j++) {
         if (matrix.getELMT(i, j) == 0) {
           countZero++;
         }
       }
-      if (countZero == matrix.colSize - 1) { // Tidak memiliki solusi
-        isNoSolution = matrix.getELMT(i, matrix.colSize - 1) != 0;
+      if (countZero == matrix.getCol() - 1) { // Tidak memiliki solusi
+        isNoSolution = matrix.getELMT(i, matrix.getCol() - 1) != 0;
       } else {
-        if (matrix.getELMT(i, matrix.colSize - 1) != 0 || matrix.isSquare) { // Memiliki solusi unik / tunggal
+        if (matrix.getELMT(i, matrix.getCol() - 1) != 0 || matrix.isSquare) { // Memiliki solusi unik / tunggal
           // Subtitusi mundur
           for (int p = rootSolution.length - 1; p >= 0; p--) {
             double sum = 0;

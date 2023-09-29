@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package operators;
 
 import java.util.InputMismatchException;
@@ -347,7 +345,11 @@ public class Matrix {
   
   // ------------------------------ Mencari SPL ----------------------------//
   // class SPL dibikinin Dabbir
-
+  
+  
+  // ------------------------------ Mencari Regresi Linier Berganda ----------------------------//
+  
+  
   // ------------------------------ IO ------------------------------//
   public void readMatrix(int n, int m) {
     int i, j;
@@ -475,4 +477,3 @@ public class Matrix {
     return detMatrixSegitiga(Mat) == 0;
   }
 }
->>>>>>> 8780be3f4eb3654d3277e949207d542c449636ab

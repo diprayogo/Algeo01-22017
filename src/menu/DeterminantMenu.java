@@ -6,37 +6,34 @@ import java.util.*;
 public class DeterminantMenu {
     private static Scanner scanner = new Scanner(System.in);
     public static void menu(){
-<<<<<<< HEAD
-        System.out.println("Determinan");
-        System.out.println("1. Matrix Segitiga");
-        System.out.println("2. Determinan Kofaktor");
-=======
         System.out.println();
         System.out.println("                          ANDA BERADA DI SUBMENU DETERMINAN");
         System.out.println("1. Matrix Segitiga");
         System.out.println("2. Determinan Kofaktor");
-        System.out.print("Pilih Metode penyelesaian :");
->>>>>>> 8780be3f4eb3654d3277e949207d542c449636ab
-
-        boolean inputValid = true;
+        
+        boolean inputValid = false;
         double det = 0 ;
         int method = 0  ;
-        try {
-            method = scanner.nextInt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        switch (method) {
-            case 1:
-                det = operators.Matrix.detMatrixSegitiga(Matrix.readMatSquare());
-                break;
-                
-            case 2:
-                det = operators.Matrix.detKofaktor(Matrix.readMatSquare());
-                break;
-            default:
-                inputValid = false;
-                System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+        while (!inputValid){
+            System.out.print("Pilih Metode penyelesaian :");
+            try {
+                method = scanner.nextInt();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            switch (method) {
+                case 1:
+                    inputValid = true;
+                    det = operators.Matrix.detMatrixSegitiga(Matrix.readMatSquare());
+                    break;
+                    
+                case 2:
+                    inputValid = true;
+                    det = operators.Matrix.detKofaktor(Matrix.readMatSquare());
+                    break;
+                default:
+                    System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+            }
         }
         if (inputValid){
             System.out.print("Determinan: ");
