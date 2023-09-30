@@ -1,8 +1,12 @@
 package operators;
-import java.lang.Math;
 // import operators.Matrix;
+import java.io.*;
+import java.lang.Math;
+import java.util.*;
+import IO.InputOutput;
 
 public class Bicubic {
+  private static Scanner scanner = new Scanner(System.in);
   public static void main(String[] args){
     printMatrix(getBicubicPolynomialMatrix());
     printMatrix(getInverseBicubicPolynomialMatrix());
@@ -159,18 +163,19 @@ public class Bicubic {
   }
 
   public static Matrix getImageValue(Matrix I) {
-    // generate y = X^1 DI, input from I the value of 16 points (squared) images in size of 16x1
+    // generate a = X^-1 DI, input from I the value of 16 points (squared) images in size of 16x1
     // get image value of y
     Matrix imageValue = new Matrix(16, 1); // return in (also) size of 16x1
     imageValue = getInverseBicubicPolynomialMatrix().mult(getImageMatrix().mult(I));
     return imageValue;
   }
 
-  public static double getBicubicFunctionValue(double x, double y) {
+  public double getBicubicFunctionValue(Matrix fMat, double x, double y) {
     int i, j;
-    // read nilai matrix f fx fy fxy nya dulu
-    Matrix fAsSquareValue = new Matrix(16, 1); // 4 x 4 dibaca 16 x 1 biar bisa langsung dikali
-    Matrix bicubicCoef = getInverseBicubicPolynomialMatrix().mult(fAsSquareValue);
+    // read nilai matrix f fx fy fxy nya dulu, this must be 16 x 1
+    // 4 x 4 dibaca 16 x 1 biar bisa langsung dikali
+    // Matrix fAsSquareValue = new Matrix(16, 1); 
+    Matrix bicubicCoef = getInverseBicubicPolynomialMatrix().mult(fMat);
     double fResult = 0;
     for (j = 0; j < 4; i++) {
       for (i = 0; i < 4; i++) {
@@ -178,5 +183,54 @@ public class Bicubic {
       }
     }
     return fResult;
+  }
+
+  public void menuBicubic() {
+    String input ="""
+      Masukkan jumlah titik konfigurasi nilai fungsi dan turunan berarah di sekitarnya,\n
+      diikuti dengan nilai a dan b untuk mencari taksiran f(a, b): \n
+    """;
+    String bicubicOutput = "";
+    Matrix fMat = new Matrix(16, 1);
+    double a = 0, b = 0;
+    int inputMode = 0;
+
+    System.out.println("                          ANDA BERADA DI SUBMENU INTERPOLASI BICUBIC SPLINE");
+    System.out.println("""
+      1. Keyboard input
+      2. File input
+      Masukkan pilihan mode input: """);
+    try {
+      inputMode = scanner.nextInt();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+
+    if (inputMode == 1) {
+      System.out.println(input);
+      for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+          fMat.setELMT(4*i+j, 0, scanner.nextDouble());
+          bicubicOutput += fMat.getELMT(4*i+j, 0) + " ";
+        }
+        bicubicOutput += "\n";
+      }
+      a = scanner.nextDouble();
+      b = scanner.nextDouble();
+      bicubicOutput += "a = " + a + ", b = " + b + "\n";
+    } else if (inputMode == 2) {
+      InputOutput.readBicubicInputText(bicubicOutput, fMat, a, b);
+    } else {
+      System.out.println("Input tidak valid, hanya bisa memilih mode 1 atau 2.");
+    }
+
+    if (inputMode == 1 || inputMode == 2) {
+      double taksir = getBicubicFunctionValue(fMat, a, b);
+      // bicubicOutput += "Nilai taksirannya adalah ";
+      bicubicOutput += "f(" + a + ", " + b + ") = " + taksir;
+      System.out.println(bicubicOutput);
+      // auto output ke txt juga
+      InputOutput.writeOutputText(bicubicOutput);
+    }
   }
 }

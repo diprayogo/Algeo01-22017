@@ -1,8 +1,10 @@
-package learn;
+package learn.first;
 // import java.util.*;
 import javax.swing.*;
 
 public class HelloWorld {
+  public HelloWorld() {
+  }
 
   public static void main(String[] args) {
     // System.out.println("Hello World");
@@ -31,5 +33,9 @@ public class HelloWorld {
     JOptionPane.showMessageDialog(null, intro);
     System.exit(0);
 
+  }
+
+  public void testFunc(){
+    System.out.println("Halo gaiiisss");
   }
 }

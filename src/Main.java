@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import menu.DeterminantMenu;
+import menu.InverseMenu;
 import operators.*;
 import menu.SPLMenu;
 import myUtils.myUtils;
@@ -51,17 +52,20 @@ public class Main {
       switch (menu) {
         case 1:
           SPLMenu.menu();
-          break;// REDIRECT KE SPL
+          break; // REDIRECT KE SPL
         case 2:
           DeterminantMenu.menu();
-          break;// REDIRECT KE DETERMINAN
+          break; // REDIRECT KE DETERMINAN
         case 3:
-          break;// DST
+          InverseMenu.menu();
+          break; // REDIRECT KE INVERS, DST.
         case 4:
           InterpolasiPolinom interpolasi = new InterpolasiPolinom();
           interpolasi.menuInterpolasi();
           break;
         case 5:
+          Bicubic bicubic = new Bicubic();
+          bicubic.menuBicubic();
           break;
         case 6: 
           Matrix haha = myUtils.readMatrixFromFile();
