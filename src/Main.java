@@ -2,17 +2,22 @@
 // text-based dan CLI (wajib)
 
 import java.util.Scanner;
+
+import menu.DeterminantMenu;
+import menu.InverseMenu;
+import menu.RegresiMenu;
 import operators.*;
-import menu.*;
+import menu.SPLMenu;
 
 public class Main {
+  static Scanner scanner = new Scanner(System.in);
+
   public static void main(String[] args) {
     System.out.println("SELAMAT DATANG DI MATRIX CALCULATOR ");
     boolean isRunning = true;
-    
-    while (isRunning){
-      Scanner scanner = new Scanner(System.in);
-      int menu = 0 ;
+
+    while (isRunning) {
+      int menu = 0;
       boolean isValidInput = false;
 
       do {
@@ -40,41 +45,37 @@ public class Main {
           scanner.nextLine(); // Hapus baris yang tidak valid
         }
       } while (!isValidInput);
-      
-      
-        // PRINT SELAMAT DATANG KE MATRIX CALCULATOR//
-        // PRINT MENU YANG ADA
+
+      // PRINT SELAMAT DATANG KE MATRIX CALCULATOR//
+      // PRINT MENU YANG ADA
       switch (menu) {
         case 1:
-        Matrix matrix = new Matrix(3, 4);
-        SPL spl = new SPL();
-        matrix.readMatrix(3, 4);
-        matrix.printMatrix(3, 4);
-        spl.metodeGauss(matrix);
-        matrix.printMatrix(3, 4);
-        break;// REDIRECT KE SPL
+          SPLMenu.menu();
+          break; // REDIRECT KE SPL
         case 2:
-        DeterminantMenu.menu();
-        break;// REDIRECT KE DETERMINAN
+          DeterminantMenu.menu();
+          break; // REDIRECT KE DETERMINAN
         case 3:
-        break;// DST
+          InverseMenu.menu();
+          break; // REDIRECT KE INVERS, DST.
         case 4:
-        break;
-        case 5:
+          InterpolasiPolinom interpolasi = new InterpolasiPolinom();
+          interpolasi.menuInterpolasi();
           break;
-        case 6:
-        Matrix Mat = new Matrix(20, 4);
-        Mat.readMatrix(20, 4);
-        Mat.printMatrix(20, 4);
-        System.out.println("\n");
-        RegresiLinearBerganda.getNormalEst(Mat).printMatrix(4, 5);;
-        break;
+        case 5:
+          Bicubic bicubic = new Bicubic();
+          bicubic.menuBicubic();
+          break;
+        case 6: 
+
+          RegresiMenu.menu();
+          break;
 
         case 7:
-        System.out.println("TERIMA KASIH SUDAH MENGGUNAKAN KALKULATOR MATRIX");
-        isRunning = false ;
-        break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
+          System.out.println("TERIMA KASIH SUDAH MENGGUNAKAN KALKULATOR MATRIX");
+        isRunning = false;
+          break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
       }
     }
-  } 
+  }
 }
