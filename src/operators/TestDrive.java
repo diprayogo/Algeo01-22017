@@ -1,9 +1,9 @@
 package operators;
-import operators.Bicubic;
+import operators.*;
 
 public class TestDrive {
   public static void main(String[] args){
-    Matrix m = getBicubicPolynomialMatrix();
-    printMatrix(m);
+    Matrix m = operators.Bicubic.getBicubicPolynomialMatrix();
+    operators.Matrix.printMatrix(m);
   }
 }

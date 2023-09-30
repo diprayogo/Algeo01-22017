@@ -1,4 +1,4 @@
-//package operators;
+package operators;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -16,7 +16,7 @@ public class Matrix {
   //   printMatrix(m.inverseGaussJordan());
   // }
 
-  Scanner scan = new Scanner(System.in);
+  static Scanner scan = new Scanner(System.in);
 
   // Atribut
   // atribut default ukuran baris dan kolom, amankah sesuai harapan?
