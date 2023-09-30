@@ -187,7 +187,7 @@ public class Bicubic {
 
   public void menuBicubic() {
     String input ="""
-      Masukkan jumlah titik konfigurasi nilai fungsi dan turunan berarah di sekitarnya,\n
+      Masukkan konfigurasi nilai fungsi dan turunan berarah di sekitarnya,\n
       diikuti dengan nilai a dan b untuk mencari taksiran f(a, b): \n
     """;
     String bicubicOutput = "";
@@ -203,7 +203,7 @@ public class Bicubic {
     try {
       inputMode = scanner.nextInt();
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      e.printStackTrace();
     }
 
     if (inputMode == 1) {
@@ -211,13 +211,10 @@ public class Bicubic {
       for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
           fMat.setELMT(4*i+j, 0, scanner.nextDouble());
-          bicubicOutput += fMat.getELMT(4*i+j, 0) + " ";
         }
-        bicubicOutput += "\n";
       }
       a = scanner.nextDouble();
       b = scanner.nextDouble();
-      bicubicOutput += "a = " + a + ", b = " + b + "\n";
     } else if (inputMode == 2) {
       InputOutput.readBicubicInputText(bicubicOutput, fMat, a, b);
     } else {
@@ -227,9 +224,10 @@ public class Bicubic {
     if (inputMode == 1 || inputMode == 2) {
       double taksir = getBicubicFunctionValue(fMat, a, b);
       // bicubicOutput += "Nilai taksirannya adalah ";
-      bicubicOutput += "f(" + a + ", " + b + ") = " + taksir;
+      bicubicOutput = "f(" + a + ", " + b + ") = " + taksir;
       System.out.println(bicubicOutput);
-      // auto output ke txt juga
+      // auto output ke txt juga, koefisien a tidak dioutputkan
+      bicubicOutput = "Konfigurasi nilai fungsi dan turunan berarah di sekitarnya" + InputOutput.matrixToString(fMat) + "a = " + a + ", b = " + b + "\n" + bicubicOutput;
       InputOutput.writeOutputText(bicubicOutput);
     }
   }

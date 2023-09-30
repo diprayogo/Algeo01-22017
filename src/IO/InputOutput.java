@@ -10,6 +10,21 @@ import operators.Matrix;
 
 public class InputOutput {
   private static Scanner scanner = new Scanner(System.in);
+
+  // MATRIX TO STRING
+  public static String matrixToString(Matrix Mat) {
+    String MatString = "";
+    int i, j, n, m;
+    n = Mat.getCol();
+    m = Mat.getRow();
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < n; j++) {
+        MatString += Mat.getELMT(i, j) + " ";
+      }
+      MatString += "\n";
+    }
+    return MatString;
+  }
   
   // BICUBIC TEXT READER
   public static void readBicubicInputText(String toOutput, Matrix fMat, double a, double b) {
