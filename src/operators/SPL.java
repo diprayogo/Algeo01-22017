@@ -53,7 +53,7 @@ public class SPL {
       }
     }
 
-    matrix.printMatrix(matrix.getRow(), matrix.getCol());
+    // matrix.printMatrix(matrix.getRow(), matrix.getCol());
 
     if (isNoSolution) {
       result = "SPL tidak memiliki solusi";
@@ -181,7 +181,7 @@ public class SPL {
       }
     }
 
-    matrix.printMatrix(matrix.getRow(), matrix.getCol());
+    // matrix.printMatrix(matrix.getRow(), matrix.getCol());
 
     if (isNoSolution) {
       result = "SPL tidak memiliki solusi";

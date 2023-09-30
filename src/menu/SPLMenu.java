@@ -48,9 +48,6 @@ public class SPLMenu {
       case 4:
         result = spl.kaidahCramer(matrixAugmented);
         break;
-      case 5:
-        result = spl.metodeGaussDummy(matrixAugmented);
-        break;
       default:
         inputValid = false;
         System.out.println("Input tidak valid. Mohon hanya masukkan 1 sampai 4.\n");
