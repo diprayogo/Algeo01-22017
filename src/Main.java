@@ -1,12 +1,14 @@
 
 // text-based dan CLI (wajib)
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import menu.DeterminantMenu;
 import menu.InverseMenu;
 import operators.*;
 import menu.SPLMenu;
+import myUtils.myUtils;
 
 public class Main {
   static Scanner scanner = new Scanner(System.in);
@@ -65,7 +67,15 @@ public class Main {
           Bicubic bicubic = new Bicubic();
           bicubic.menuBicubic();
           break;
-        case 6:
+        case 6: 
+          Matrix haha = myUtils.readMatrixFromFile();
+          try {
+          myUtils.matrixToFile(haha);
+          }
+          catch(IOException e) {
+          System.err.println("An IOException occurred: " + e.getMessage());
+          }
+
           break;
         case 7:
           isRunning = false;

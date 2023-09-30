@@ -85,6 +85,10 @@ public class Matrix {
     this.Mat[i][j] = val;
   }
 
+  public void setMat(int row, int col){
+    this.Mat = new double[row][col];
+  }
+
   public void setRowELMT(int row, double[] rowELMT) {
     this.Mat[row] = rowELMT;
   }
@@ -166,11 +170,13 @@ public class Matrix {
   // ------------------------------ MENCARI DETERMINAN
   // -------------------------------- //
   public static double detKofaktor(Matrix Mat) {
-    // NEED TO DEBUG KE GET MINOR MAT UNTUK YG BUKAN SQUARED
-    System.out.println("LEWAT SINII\n");
-    printMatrix(Mat);
-    // harusnya aman, udah diedit berto
-    // Prekondisi : isSquare, not isAugmented
+    // Prekondisi not isAugmented
+    // check isSquare
+    if (!(Mat.isSquare())) {
+      System.out.println("Determinan tidak ada karena bukan matrix persegi");
+      return Double.NaN ;
+    }
+
     if (Mat.getCol() == 1) { // Basis
       return Mat.getELMT(0, 0);
     } else { // Rekursi
@@ -185,7 +191,13 @@ public class Matrix {
   }
 
   public static double detMatrixSegitiga(Matrix Mat) {
-    // Prekondisis isSquare, not isAugmented
+    // prekondisi not isAugmented
+    // check isSquare 
+      if (!(Mat.isSquare())) {
+      System.out.println("Determinan tidak ada karena bukan matrix persegi");
+      return Double.NaN ;
+    }
+    
     double det, subtractorMagnitude;
     int i = 0, j = 0, cntSwap = 0, k;
 
@@ -492,3 +504,4 @@ public class Matrix {
     return detMatrixSegitiga(Mat) == 0;
   }
 }
+
