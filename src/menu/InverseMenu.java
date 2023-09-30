@@ -9,7 +9,7 @@ public class InverseMenu {
         System.out.println();
         System.out.println("                          ANDA BERADA DI SUBMENU MATRIKS BALIKAN");
         System.out.println("1. Ekspansi Kofaktor");
-        System.out.println("2. Gauss-Jordan Matriks Augmented bersama Matriks Identitas");
+        System.out.println("2. Gauss-Jordan"); // Matriks Augmented bersama Matriks Identitas
         System.out.print("Pilih Metode penyelesaian :");
 
         boolean inputValid = true;
@@ -32,9 +32,19 @@ public class InverseMenu {
                 System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
         }
         if (inputValid){
-            System.out.print("Matriks Balikan: ");
-            Matrix.printMatrix(inverseMatrix);
-            System.out.println("\n");
+            // masukkan keterangan input dulu
+            String inverseOutput = "Matriks Balikan dari matriks persegi di atas adalah: ";
+            int i, j, n, m;
+            n = inverseMatrix.getCol();
+            m = inverseMatrix.getRow();
+            for (i = 0; i < m; i++) {
+                for (j = 0; j < n; j++) {
+                    inverseOutput += (inverseMatrix.getELMT(i, j) + " ");
+                }
+                inverseOutput += "\n";
+            }
+            System.out.println(inverseOutput);
+            // output .txt juga
         }
     }  
 }
