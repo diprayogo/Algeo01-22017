@@ -1,5 +1,4 @@
 package operators;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -86,6 +85,10 @@ public class Matrix {
     this.Mat[i][j] = val;
   }
 
+  public void setMat(int row, int col){
+    this.Mat = new double[row][col];
+  }
+
   public void setRowELMT(int row, double[] rowELMT) {
     this.Mat[row] = rowELMT;
   }
@@ -115,7 +118,7 @@ public class Matrix {
     }
   }
 
-  public static Matrix copyMatrix2(Matrix Mat) { // Prosedur salin matrix Mat ke matrix this
+  public static Matrix copyMatrix2(Matrix Mat) { // Fungsi mengembalikan matriks Mat
     Matrix copyMat = new Matrix(Mat.getRow(), Mat.getCol());
     int i, j;
     for (i = 0; i < Mat.getRow(); i++) {
@@ -167,7 +170,13 @@ public class Matrix {
   // ------------------------------ MENCARI DETERMINAN
   // -------------------------------- //
   public static double detKofaktor(Matrix Mat) {
-    // Prekondisi : isSquare, not isAugmented
+    // Prekondisi not isAugmented
+    // check isSquare
+    if (!(Mat.isSquare())) {
+      System.out.println("Determinan tidak ada karena bukan matrix persegi");
+      return Double.NaN ;
+    }
+
     if (Mat.getCol() == 1) { // Basis
       return Mat.getELMT(0, 0);
     } else { // Rekursi
@@ -182,7 +191,13 @@ public class Matrix {
   }
 
   public static double detMatrixSegitiga(Matrix Mat) {
-    // Prekondisis isSquare, not isAugmented
+    // prekondisi not isAugmented
+    // check isSquare 
+      if (!(Mat.isSquare())) {
+      System.out.println("Determinan tidak ada karena bukan matrix persegi");
+      return Double.NaN ;
+    }
+    
     double det, subtractorMagnitude;
     int i = 0, j = 0, cntSwap = 0, k;
 
@@ -348,7 +363,7 @@ public class Matrix {
     if (hasInverse) { // or !this.isSingular()
       for (i = 0; i < AugmentedMatrix.getRow(); i++) {
         for (j = getCol(); j < AugmentedMatrix.getCol(); j++) {
-          InverseMatrix.setELMT(i, j, AugmentedMatrix.getELMT(i, j));
+          InverseMatrix.setELMT(i, j % InverseMatrix.getCol(), AugmentedMatrix.getELMT(i, j));
           // this.Mat[i][j % getCol()] = AugmentedMatrix.Mat[i][j];
         }
       }
@@ -360,7 +375,11 @@ public class Matrix {
 
   // ------------------------------ Mencari SPL ----------------------------//
   // class SPL dibikinin Dabbir
-
+  
+  
+  // ------------------------------ Mencari Regresi Linier Berganda ----------------------------//
+  
+  
   // ------------------------------ IO ------------------------------//
   public void readMatrix(int n, int m) {
     int i, j;
@@ -389,11 +408,13 @@ public class Matrix {
     return MatSquare;
   }
 
-  public void printMatrix(int n, int m) {
-    int i, j;
-    for (i = 0; i < n; i++) {
-      for (j = 0; j < m; j++) {
-        System.out.print(getELMT(i, j) + " ");
+  public static void printMatrix(Matrix Mat) {
+    int i, j, n, m;
+    n = Mat.getCol();
+    m = Mat.getRow();
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < n; j++) {
+        System.out.print(Mat.getELMT(i, j) + " ");
       }
       System.out.println();
     }

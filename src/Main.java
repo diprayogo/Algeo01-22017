@@ -4,6 +4,8 @@
 import java.util.Scanner;
 
 import menu.DeterminantMenu;
+import menu.InverseMenu;
+import menu.RegresiMenu;
 import operators.*;
 import menu.SPLMenu;
 
@@ -49,22 +51,29 @@ public class Main {
       switch (menu) {
         case 1:
           SPLMenu.menu();
-          break;// REDIRECT KE SPL
+          break; // REDIRECT KE SPL
         case 2:
           DeterminantMenu.menu();
-          break;// REDIRECT KE DETERMINAN
+          break; // REDIRECT KE DETERMINAN
         case 3:
-          break;// DST
+          InverseMenu.menu();
+          break; // REDIRECT KE INVERS, DST.
         case 4:
           InterpolasiPolinom interpolasi = new InterpolasiPolinom();
           interpolasi.menuInterpolasi();
           break;
         case 5:
+          Bicubic bicubic = new Bicubic();
+          bicubic.menuBicubic();
           break;
-        case 6:
+        case 6: 
+
+          RegresiMenu.menu();
           break;
+
         case 7:
-          isRunning = false;
+          System.out.println("TERIMA KASIH SUDAH MENGGUNAKAN KALKULATOR MATRIX");
+        isRunning = false;
           break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
       }
     }
