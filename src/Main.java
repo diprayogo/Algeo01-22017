@@ -1,18 +1,23 @@
 
 // text-based dan CLI (wajib)
 
+import java.io.IOException;
 import java.util.Scanner;
+
+import menu.DeterminantMenu;
 import operators.*;
-import menu.*;
+import menu.SPLMenu;
+import myUtils.myUtils;
 
 public class Main {
+  static Scanner scanner = new Scanner(System.in);
+
   public static void main(String[] args) {
     System.out.println("SELAMAT DATANG DI MATRIX CALCULATOR ");
     boolean isRunning = true;
-    
-    while (isRunning){
-      Scanner scanner = new Scanner(System.in);
-      int menu = 0 ;
+
+    while (isRunning) {
+      int menu = 0;
       boolean isValidInput = false;
 
       do {
@@ -40,34 +45,38 @@ public class Main {
           scanner.nextLine(); // Hapus baris yang tidak valid
         }
       } while (!isValidInput);
-      
-      
-        // PRINT SELAMAT DATANG KE MATRIX CALCULATOR//
-        // PRINT MENU YANG ADA
+
+      // PRINT SELAMAT DATANG KE MATRIX CALCULATOR//
+      // PRINT MENU YANG ADA
       switch (menu) {
         case 1:
-        Matrix matrix = new Matrix(3, 4);
-        SPL spl = new SPL();
-        matrix.readMatrix(3, 4);
-        matrix.printMatrix(3, 4);
-        spl.metodeGauss(matrix);
-        matrix.printMatrix(3, 4);
-        break;// REDIRECT KE SPL
+          SPLMenu.menu();
+          break;// REDIRECT KE SPL
         case 2:
-        DeterminantMenu.menu();
-        break;// REDIRECT KE DETERMINAN
+          DeterminantMenu.menu();
+          break;// REDIRECT KE DETERMINAN
         case 3:
-        break;// DST
+          break;// DST
         case 4:
-        break;
+          InterpolasiPolinom interpolasi = new InterpolasiPolinom();
+          interpolasi.menuInterpolasi();
+          break;
         case 5:
           break;
-        case 6:
-        break;
+        case 6: 
+          Matrix haha = myUtils.readMatrixFromFile();
+          try {
+          myUtils.matrixToFile(haha);
+          }
+          catch(IOException e) {
+          System.err.println("An IOException occurred: " + e.getMessage());
+          }
+
+          break;
         case 7:
-        isRunning = false ;
-        break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
+          isRunning = false;
+          break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
       }
     }
-  } 
+  }
 }
