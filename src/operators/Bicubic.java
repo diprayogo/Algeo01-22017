@@ -153,5 +153,17 @@ public class Bicubic {
     return imageValue;
   }
 
-  public static Matrix get
+  public static double getBicubicFunctionValue(double x, double y) {
+    int i, j;
+    // read nilai matrix f fx fy fxy nya dulu
+    Matrix fAsSquareValue = new Matrix(16, 1); // 4 x 4 dibaca 16 x 1 biar bisa langsung dikali
+    Matrix bicubicCoef = getInverseBicubicPolynomialMatrix().mult(fAsSquareValue);
+    double fResult = 0;
+    for (j = 0; i < 4; i++) {
+      for (i = 0; i < 4; i++) {
+        fResult += bicubicCoef.getELMT(i+j, 0) * Math.pow(x, i) + Math.pow(j, y);
+      }
+    }
+    return fResult;
+  }
 }
