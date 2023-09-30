@@ -33,6 +33,7 @@ public class InterpolasiPolinom {
   }
 
   public void menuInterpolasi() {
+    System.out.println("                          ANDA BERADA DI MENU INTERPOLASI POLINOM");
     System.out.print("Masukkan jumlah titik: ");
     int n = scanner.nextInt();
     Matrix m = pointToMatrix(n);
