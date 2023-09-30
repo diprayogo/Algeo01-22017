@@ -9,6 +9,19 @@ public class Bicubic {
     printMatrix(getImageMatrix());
     printMatrix(getInverseBicubicPolynomialMatrix().mult(getImageMatrix()));
   }
+  // public static void main(String[] args){
+  //   // printMatrix(getBicubicPolynomialMatrix());
+  //   // printMatrix(getInverseBicubicPolynomialMatrix());
+  //   // printMatrix(getImageMatrix());
+  //   // printMatrix(getInverseBicubicPolynomialMatrix().mult(getImageMatrix()));
+  //   Matrix m = new Matrix(2, 2);
+  //   m.readMatrix(2, 2);
+  //   printMatrix(m);
+  //   m.inverseGaussJordan();
+  //   // m.getAdj();
+  //   printMatrix(m.inverseGaussJordan());
+  // }
+
 
   public static void printMatrix(Matrix Mat) {
     // RAPIHIN KALO ADA minus diprint

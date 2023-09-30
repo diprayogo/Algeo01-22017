@@ -3,18 +3,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Matrix {
-  // public static void main(String[] args){
-  //   // printMatrix(getBicubicPolynomialMatrix());
-  //   // printMatrix(getInverseBicubicPolynomialMatrix());
-  //   // printMatrix(getImageMatrix());
-  //   // printMatrix(getInverseBicubicPolynomialMatrix().mult(getImageMatrix()));
-  //   Matrix m = new Matrix(2, 2);
-  //   m.readMatrix(2, 2);
-  //   printMatrix(m);
-  //   m.inverseGaussJordan();
-  //   // m.getAdj();
-  //   printMatrix(m.inverseGaussJordan());
-  // }
 
   static Scanner scan = new Scanner(System.in);
 
@@ -180,6 +168,7 @@ public class Matrix {
 
   // ------------------------------ MENCARI DETERMINAN  -------------------------------- //
   public static double detKofaktor(Matrix Mat) {
+    // NEED TO DEBUG KE GET MINOR MAT UNTUK YG BUKAN SQUARED
     System.out.println("LEWAT SINII\n");
     printMatrix(Mat);
     // Prekondisi : isSquare, isAugmented
