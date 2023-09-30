@@ -33,36 +33,48 @@ public class InterpolasiPolinom {
   }
 
   public void menuInterpolasi() {
-    System.out.print("Masukkan jumlah titik: ");
-    int n = scanner.nextInt();
-    Matrix m = pointToMatrix(n);
-    SPL spl = new SPL();
+    boolean isRunning = true;
 
-    double[] rootSolution = new double[m.getRow()];
-    for (int i = 0; i < rootSolution.length; i++) {
-      rootSolution[i] = 1;
+    while (isRunning) {
+      System.out.print("Masukkan jumlah titik: ");
+      int n = scanner.nextInt();
+      Matrix m = pointToMatrix(n);
+      SPL spl = new SPL();
+
+      double[] rootSolution = new double[m.getRow()];
+      for (int i = 0; i < rootSolution.length; i++) {
+        rootSolution[i] = 1;
+      }
+
+      double[] b = new double[m.getRow()];
+      for (int i = 0; i < b.length; i++) {
+        b[i] = m.getELMT(i, m.getCol() - 1);
+      }
+
+      System.out.print("Masukkan nilai x: ");
+      double x = scanner.nextDouble();
+
+      spl.metodeGaussJordan(m);
+
+      for (int i = 0; i < rootSolution.length; i++) {
+        rootSolution[i] = m.getELMT(i, m.getCol() - 1);
+      }
+
+      // for (int i = 0; i < rootSolution.length; i++) {
+      // System.out.println(rootSolution[i] + "\n");
+      // }
+      double taksir = taksirNilai(rootSolution, x);
+
+      System.out.print("f(" + x + ") = ");
+      System.out.printf("%.4f\n", taksir);
+
+      System.out.println("Lanjut masukkan nilai x? : ");
+      System.out.println("1. Ya");
+      System.out.println("2. Tidak");
+      int pil = scanner.nextInt();
+      if (pil == 2) {
+        isRunning = false;
+      }
     }
-
-    double[] b = new double[m.getRow()];
-    for (int i = 0; i < b.length; i++) {
-      b[i] = m.getELMT(i, m.getCol() - 1);
-    }
-
-    System.out.print("Masukkan nilai x: ");
-    double x = scanner.nextDouble();
-
-    spl.metodeGaussJordan(m);
-
-    for (int i = 0; i < rootSolution.length; i++) {
-      rootSolution[i] = m.getELMT(i, m.getCol() - 1);
-    }
-
-    for (int i = 0; i < rootSolution.length; i++) {
-      System.out.println(rootSolution[i] + "\n");
-    }
-    double taksir = taksirNilai(rootSolution, x);
-
-    System.out.print("f(" + x + ") = ");
-    System.out.printf("%.4f\n", taksir);
   }
 }
