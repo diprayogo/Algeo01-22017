@@ -3,19 +3,16 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Matrix {
-
-  static Scanner scan = new Scanner(System.in);
+  private static Scanner scan = new Scanner(System.in);
 
   // Atribut
-  // atribut default ukuran baris dan kolom, amankah sesuai harapan?
-  // private (?)
-  int rowSize;
-  int colSize;
-  double[][] Mat;
+  // atribut default ukuran baris dan kolom
+  private int rowSize;
+  private int colSize;
+  private double[][] Mat;
 
   // atribut isSquare untuk Matrix persegi
   boolean isSquare = (rowSize == colSize) ? true : false;
-  boolean isAugmented = false; // default
 
   // Methods
   // ------------------------------ KONSTRUKTOR ------------------------------//
@@ -96,7 +93,7 @@ public class Matrix {
   public void transpose() {
     int i, j;
     Matrix tempMat = new Matrix(getCol(), getRow());
-    
+
     for (i = 0; i < getRow(); i++) {
       for (j = 0; j < getCol(); j++) {
         tempMat.setELMT(i, j, getELMT(i, j));
@@ -105,13 +102,13 @@ public class Matrix {
 
     copyMatrix(tempMat); // copy tempMat ke this
   }
-  
-  public void copyMatrix(Matrix Mat){   // Prosedur salin matrix Mat ke matrix this
+
+  public void copyMatrix(Matrix Mat) { // Prosedur salin matrix Mat ke matrix this
     this.setRow(Mat.getRow());
     this.setCol(Mat.getCol());
-    int i, j ; 
-    for(i = 0; i < this.getRow(); i ++ ){
-      for(j = 0 ; j < this.getCol(); j ++){
+    int i, j;
+    for (i = 0; i < this.getRow(); i++) {
+      for (j = 0; j < this.getCol(); j++) {
         setELMT(i, j, Mat.getELMT(i, j));
       }
     }
@@ -142,10 +139,10 @@ public class Matrix {
       setELMT(row, j, getELMT(row, j) - (getELMT(subtractorRow, j) * subtractorMagnitude));
     }
   }
-  
+
   public static Matrix getMinorMat(Matrix Mat, int a, int b) { // Mengembalikan Matrix Minor
-    // Prekondisi : isAugmented
-    Matrix MinorMat = new Matrix(Mat.getRow() - 1, Mat.getCol() - 2);
+    // Prekondisi : not isAugmented, isSquare
+    Matrix MinorMat = new Matrix(Mat.getRow() - 1, Mat.getCol() - 1);
     int i, j;
     for (i = 0; i < MinorMat.getRow(); i++) {
       for (j = 0; j < MinorMat.getCol(); j++) {
@@ -162,16 +159,18 @@ public class Matrix {
   }
 
   public static double getKofaktor(Matrix Mat, int a, int b) { // Mengembalikan Kofaktor
-    // Prekondisi isAugmented
+    // Prekondisi not isAugmented
     return detKofaktor((Matrix.getMinorMat(Mat, a, b)));
   }
 
-  // ------------------------------ MENCARI DETERMINAN  -------------------------------- //
+  // ------------------------------ MENCARI DETERMINAN
+  // -------------------------------- //
   public static double detKofaktor(Matrix Mat) {
     // NEED TO DEBUG KE GET MINOR MAT UNTUK YG BUKAN SQUARED
     System.out.println("LEWAT SINII\n");
     printMatrix(Mat);
-    // Prekondisi : isSquare, isAugmented
+    // harusnya aman, udah diedit berto
+    // Prekondisi : isSquare, not isAugmented
     if (Mat.getCol() == 1) { // Basis
       return Mat.getELMT(0, 0);
     } else { // Rekursi
@@ -186,89 +185,48 @@ public class Matrix {
   }
 
   public static double detMatrixSegitiga(Matrix Mat) {
-    // Prekondisis isSquare, isAugmented
-    Matrix matDet = new Matrix();
-    matDet.getMatConst(Mat);
+    // Prekondisis isSquare, not isAugmented
     double det, subtractorMagnitude;
     int i = 0, j = 0, cntSwap = 0, k;
 
     // Membentuk matrix segitiga bawah
-    while (i < matDet.getRow() && j < matDet.getCol()) {
+    while (i < Mat.getRow() && j < Mat.getCol()) {
       int pivotRow = i;
       // mencari leading 1
-      while (pivotRow < matDet.getRow() && matDet.getELMT(pivotRow, j) == 0) {
+      while (pivotRow < Mat.getRow() - 1 && Mat.getELMT(pivotRow, j) == 0) {
         pivotRow++;
       }
 
-      if (matDet.getELMT(pivotRow, j) != 0){ // Ada elemen bukan 0 pada row pivotRow
-        // Tukar baris agar diagonal tidak 0
-        if (pivotRow != i){
-          matDet.swapRow(pivotRow, i);
+      if (Mat.getELMT(pivotRow, j) != 0) { // Ada elemen bukan 0 pada row pivotRow
+        if (pivotRow != i) {
+          Mat.swapRow(pivotRow, i);
           cntSwap++;
         }
-        // Bawah kolom leading num jadi 0 semua pake OBE
-        for(k = i + 1; k < matDet.getRow(); k++){
-          subtractorMagnitude = matDet.getELMT(k, j) / matDet.getELMT(i, j);
-          matDet.subtractRow(k, pivotRow, subtractorMagnitude);
+        for (k = i + 1; k < Mat.getRow(); k++) {
+          subtractorMagnitude = Mat.getELMT(k, j) / Mat.getELMT(i, j);
+          Mat.subtractRow(k, pivotRow, subtractorMagnitude);
         }
-        i ++;
-      } else { // Jika pivotRow sampai baris terakhir tidak ada elemen bukan 0
-        // Apakah jika ada kasus sisa ada elemen diagonal yang 0 aman divalidasi?
-        // Jika tidak bisa keluarkan determinan 0
-        return 0;
+        i++;
       }
       j++;
     }
 
     // Terbentuk matrix segitiga bawah
-    // Apakah elemen -0.0 sudah dihandle?
-    int l ;
+    int l;
     det = (cntSwap % 2 == 0) ? 1 : -1;
-    for (l = 1; l < matDet.getCol(); l++) {
-      det *= matDet.getELMT(l, l);
+    for (l = 0; l < Mat.getRow(); l++) {
+      det *= Mat.getELMT(l, l);
+    }
+
+    // special case
+    if (det == -0.0) {
+      det += 0.0;
     }
     return det;
   }
-  
-  // ------------------------------ MENCARI INVERS/BALIKAN ------------------------------ //
-  // public Matrix getKofaktorMatrix() {
-  //   // KAMUS LOKAL
-  //   int i, j;
-  //   Matrix KofMat = new Matrix(getRow(), getCol());
 
-  //   // ALGORITMA
-  //   for (i = 0; i < getRow(); i++) {
-  //     for (j = 0; j < getCol(); j++) {
-  //       setELMT(i, j, getKofaktor(this, i, j));
-  //     }
-  //   }
-  //   return KofMat;
-  // }
-
-  // adjoin udah dibikin Berto
-  // public Matrix getAdj() {
-  //   // KAMUS LOKAL
-  //   Matrix adjMatrix = getKofaktorMatrix().transpose();
-
-  //   // ALGORITMA
-  //   return adjMatrix;
-  // }
-
-  // public Matrix transpose() {
-  //   int i, j;
-  //   Matrix TransMat = new Matrix(getRow(), getCol());
-
-  //   for (i = 0; i < getRow(); i++) {
-  //     for (j = 0; j < getCol(); j++) {
-  //       // Apakah tidak pakai this. = best practice?
-  //       TransMat.setELMT(i, j, getELMT(j, i));
-  //     }
-  //   }
-  //   TransMat.setRow(getCol());
-  //   TransMat.setCol(getRow());
-  //   return TransMat;
-  // }
-  
+  // ------------------------------ MENCARI INVERS/BALIKAN
+  // ------------------------------ //
   public Matrix getAdj() {
     Matrix Madj = new Matrix(getRow(), getCol() - 1); // getCol()
     int i, j;
@@ -295,11 +253,12 @@ public class Matrix {
     Matrix invMat = this.getAdj();
 
     // ALGORITMA
-    invMat.scalarMultiply(1/detMatrixSegitiga(this));
+    invMat.scalarMultiply(1 / detMatrixSegitiga(this));
     return invMat;
   }
 
-  // Prosedur eliminasi Gauss untuk operasi augmented matrix [I A] ke tujuan invers [A^-1 I]
+  // Prosedur eliminasi Gauss untuk operasi augmented matrix [I A] ke tujuan
+  // invers [A^-1 I]
   public void pMultRow(int row, double scale) {
     for (int i = 0; i < this.getCol(); i++) {
       // by default, ini udah ada this.
@@ -332,8 +291,8 @@ public class Matrix {
 
       // harusnya ini row cari dulu yg leading one agar bisa dioperasikan
       if (getELMT(i, i) != 0) { // handle kasus tidak sesuai prekondisi
-        this.pMultRow(i, 1/getELMT(i, i));
-        
+        this.pMultRow(i, 1 / getELMT(i, i));
+
         // terbentuk leading 1 pada baris tsb.
         for (int j = i + 1; j < getRow(); j++) {
           this.subtractRow(j, i, getELMT(j, i));
@@ -352,10 +311,10 @@ public class Matrix {
       }
     }
   }
-  
+
   public Matrix inverseGaussJordan() {
-    int i, j; //iterator
-    Matrix AugmentedMatrix = new Matrix(getRow(), 2*getCol());
+    int i, j; // iterator
+    Matrix AugmentedMatrix = new Matrix(getRow(), 2 * getCol());
     Matrix InverseMatrix = new Matrix(getRow(), getCol());
 
     // copy matrix persegi ke bagian kiri AugmentedMatrix
@@ -387,7 +346,8 @@ public class Matrix {
       }
     }
 
-    // jika matriks memiliki invers, return inversnya: matriks persegi kanan AugmentedMatrix
+    // jika matriks memiliki invers, return inversnya: matriks persegi kanan
+    // AugmentedMatrix
     if (hasInverse) { // or !this.isSingular()
       for (i = 0; i < AugmentedMatrix.getRow(); i++) {
         for (j = getCol(); j < AugmentedMatrix.getCol(); j++) {
@@ -400,7 +360,7 @@ public class Matrix {
       return null;
     }
   }
-  
+
   // ------------------------------ Mencari SPL ----------------------------//
   // class SPL dibikinin Dabbir
 
@@ -445,24 +405,25 @@ public class Matrix {
   }
 
   // NOTES : code di bawah ini belum terpakai// !!!!!!!!!!!!!!!!!!!!!!!
-  // ------------------------------ OPERATORS LAIN ------------------------------//
+  // ------------------------------ OPERATORS LAIN
+  // ------------------------------//
 
   // Operasi- operasi Matrix lain
-    // + 2 OBE Procedures, buat bandingkan
+  // + 2 OBE Procedures, buat bandingkan
   public void addRow(int row, int row2, double scale) {
     for (int i = 0; i < this.getCol(); i++) {
-      setELMT(row, i, getELMT(row, i) + getELMT(row2, i)*scale);
+      setELMT(row, i, getELMT(row, i) + getELMT(row2, i) * scale);
     } // Langsung pakai multipliedRowELMT
   }
 
   // Ambil suatu baris dikali konstanta
   // public double[] multipliedRowELMT(int row, double scale) {
-  //   double[] multipliedRow = new double[this.getCol()];
-  //   // aku pakai declare iterator dalam blok for
-  //   for (int i = 0; i < this.getCol(); i++) {
-  //     multipliedRow[i] = scale*getELMT(row, i);
-  //   }
-  //   return multipliedRow;
+  // double[] multipliedRow = new double[this.getCol()];
+  // // aku pakai declare iterator dalam blok for
+  // for (int i = 0; i < this.getCol(); i++) {
+  // multipliedRow[i] = scale*getELMT(row, i);
+  // }
+  // return multipliedRow;
   // }
 
   // Operasi- operasi Matrix
@@ -472,7 +433,7 @@ public class Matrix {
     // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
     for (i = 0; i < getRow(); i++) {
       for (j = 0; j < getCol(); j++) {
-        MHasil.setELMT(i, j, this.getELMT(i, j) + M2.getELMT(i,j));
+        MHasil.setELMT(i, j, this.getELMT(i, j) + M2.getELMT(i, j));
       }
     }
     return MHasil;
@@ -484,7 +445,7 @@ public class Matrix {
     // cek dulu apakah ukuran this.Mat = M2.Mat, asumsikan dulu sesuai
     for (i = 0; i < getRow(); i++) {
       for (j = 0; j < getCol(); j++) {
-        MHasil.setELMT(i, j, this.getELMT(i, j) - M2.getELMT(i,j));
+        MHasil.setELMT(i, j, this.getELMT(i, j) - M2.getELMT(i, j));
       }
     }
     return MHasil;
@@ -498,7 +459,7 @@ public class Matrix {
       for (j = 0; j < getCol(); j++) {
         MHasil.setELMT(i, j, 0);
         for (k = 0; k < getCol(); k++) {
-          MHasil.setELMT(i, j, MHasil.getELMT(i, j)+this.getELMT(i, j) - M2.getELMT(i,j));
+          MHasil.setELMT(i, j, MHasil.getELMT(i, j) + this.getELMT(i, j) - M2.getELMT(i, j));
         }
       }
     }
@@ -508,7 +469,7 @@ public class Matrix {
   void divideRow(int row, double divisor) {
     for (int j = 0; j < getCol(); j++) {
       double temp = this.getELMT(row, j);
-      setELMT(row, j, getELMT(row, j) /2 );
+      setELMT(row, j, getELMT(row, j) / 2);
       if (getELMT(row, j) == -0.00) {
         setELMT(row, j, 0);
       }
@@ -530,5 +491,4 @@ public class Matrix {
   public static boolean isSingular(Matrix Mat) {
     return detMatrixSegitiga(Mat) == 0;
   }
-  
 }
