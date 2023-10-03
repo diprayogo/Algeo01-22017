@@ -28,7 +28,7 @@ public class myUtils {
         Matrix res = new Matrix(0, 0); 
         res.setCol(1000); res.setRow(1000); res.setMat(1000, 1000);
         try {
-            File file = new File("D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\\" + fileName);
+            File file = new File("..\\test\\input\\" + fileName);
             System.out.println(file);
             Scanner fScanner = new Scanner(file);
             int i = 0;
@@ -36,14 +36,16 @@ public class myUtils {
             while (fScanner.hasNextLine()) {
                 String s = fScanner.nextLine();
                 String[] temp = s.split("\\s+");
-                if (i == 0) realCol = temp.length; //
+                if (i == 0) realCol = temp.length;
                 for (int j = 0; j < temp.length; j++) {
                     res.setELMT(i, j, myUtils.strToDouble(temp[j]));
                 }
                 i++;
             }
-             res.setRow(i); res.setCol(realCol);
+            res.setRow(i);
+            res.setCol(realCol);
             fScanner.close();
+            // System.out.printf("%d %d\n", res.getRow(), res.getCol());
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -62,7 +64,7 @@ public class myUtils {
                 case "Y":
                     String fileName = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    fileName = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\" + scanner.nextLine() + ".txt";
+                    fileName = "C:\\Projects\\term-3\\Algeo01-22017\\test\\output\\" + scanner.nextLine() + ".txt";
                     File file = new File(fileName);
                     try {
                         FileWriter fWriter = new FileWriter(file);
@@ -106,7 +108,7 @@ public class myUtils {
                 case "Y":
                     String fileName = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    fileName = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\" + scanner.nextLine() + ".txt";
+                    fileName = "C:\\Projects\\term-3\\Algeo01-22017\\test\\output\\" + scanner.nextLine() + ".txt";
                     File file = new File(fileName);
                     // try {
                     //     file.createNewFile();

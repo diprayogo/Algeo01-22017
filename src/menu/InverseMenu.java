@@ -1,88 +1,89 @@
 package menu;
-import operators.*;
 import java.util.*;
-import IO.InputOutput;
+import java.io.IOException;
+import operators.*;
+import myUtils.myUtils;
 
 public class InverseMenu {
     private static Scanner scanner = new Scanner(System.in);
-    
-    public static void menu(){
-        Matrix inverseMatrix = new Matrix(1, 1); // will be re-initialized
-        boolean inputValid = true;
-        int method = 0;
-        int inputMode = 0;
 
+    public static void menu(){
         System.out.println();
         System.out.println("                          ANDA BERADA DI SUBMENU MATRIKS BALIKAN");
-        System.out.println("1. Ekspansi Kofaktor");
-        System.out.println("2. Gauss-Jordan"); // Matriks Augmented bersama Matriks Identitas
-        System.out.print("Pilih Metode penyelesaian: ");
+        
+        // KAMUS LOKAL
+        Matrix inverseMatrix = new Matrix(0, 0);
+        boolean inputValid = false, fromfile = true;
+        int inputSrc = 0 , method = 0  ;
 
-        try {
-            method = scanner.nextInt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("                          PILIH MODE MASUKAN");
-        System.out.println("""
-          1. Keyboard input
-          2. File input
-          Masukkan pilihan mode input: """);
-        try {
-          inputMode = scanner.nextInt();
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-    
-        if (inputMode == 1) {
-          System.out.println(input);
-          for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-              fMat.setELMT(4*i+j, 0, scanner.nextDouble());
-            }
-          }
-          a = scanner.nextDouble();
-          b = scanner.nextDouble();
-        } else if (inputMode == 2) {
-          InputOutput.readBicubicInputText(bicubicOutput, fMat, a, b);
-        } else {
-          inputValid = false;
-          System.out.println("Input tidak valid, hanya bisa memilih mode 1 atau 2.");
-        }
-
-        switch (method) {
-            case 1:
-                inverseMatrix = Matrix.readMatSquare().inverseEkspansiCofactor();
-                break;
-            case 2:
-                inverseMatrix = Matrix.readMatSquare().inverseGaussJordan();
-                break;
-            default:
-                inputValid = false;
-                System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
-        }
-        if (inputValid){
-            String inverseOutput = "";
+        // ALGORITMA
+        // Valdasi input
+        System.out.println("1. Masukan dari file");
+        System.out.println("2. Masukan dari keyboard ");
+        while (!inputValid){
+            System.out.print("Pilih sumber input : ");
             try {
-                // masukkan keterangan input dulu, yaitu berupa matrix
-                int i, j, n, m;
-                n = inverseMatrix.getCol();
-                m = inverseMatrix.getRow();
-                for (i = 0; i < m; i++) {
-                    for (j = 0; j < n; j++) {
-                        inverseOutput += (inverseMatrix.getELMT(i, j) + " ");
-                    }
-                    inverseOutput += "\n";
+                inputSrc = scanner.nextInt();
+                switch (inputSrc) {
+                    case 1:
+                        inputValid = true;
+                        break;            
+                    case 2:
+                        inputValid = true;
+                        fromfile = false;
+                        break;
+                    default:
+                        System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
                 }
-                System.out.println(inverseOutput);
-                // output .txt juga
-                inverseOutput = InputOutput.matrixToString(inverseMatrix) + "Matriks Balikan dari matriks persegi di atas adalah: " + inverseOutput;
-            } catch (NullPointerException e) {
-                inverseOutput = "Matriks persegi di atas tidak memiliki invers";
-                System.out.println(inverseOutput);
+            } catch (Exception e) {
+                scanner.nextLine(); 
+                System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
             }
-            InputOutput.writeOutputText(inverseOutput);
         }
-    }  
+        inputValid = false ; 
+
+        System.out.println("\n1. Ekspansi Kofaktor");
+        System.out.println("2. Gauss-Jordan");
+        while (!inputValid){
+            System.out.print("Pilih Metode penyelesaian: ");
+            try {
+                method = scanner.nextInt();
+                switch (method) {
+                    case 1:
+                        if (fromfile) inverseMatrix = myUtils.readMatrixFromFile().inverseEkspansiCofactor();
+                        else inverseMatrix = Matrix.readMatSquare().inverseEkspansiCofactor();
+                        inputValid = true;
+                        break;
+                    case 2:
+                        if (fromfile) inverseMatrix = myUtils.readMatrixFromFile().inverseGaussJordan();
+                        else inverseMatrix = Matrix.readMatSquare().inverseGaussJordan();
+                        inputValid = true;
+                        break;
+                    default:
+                        System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+                }
+            }
+            catch (java.util.InputMismatchException e) {
+                scanner.nextLine(); 
+                System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+            }
+        }
+
+        if (inputValid){
+            try {
+                if (inverseMatrix == null) {
+                    System.out.println("Matriks persegi di atas tidak memiliki invers");
+                } else if (inverseMatrix.getRow() == 0) {
+                    System.out.println("Matriks tersebut bukan matriks persegi ataupun matriks augmented yang berbentuk persegi");
+                } else {
+                    System.out.println("Matriks balikan: ");
+                    Matrix.printMatrix(inverseMatrix);
+                    myUtils.matrixToFile(inverseMatrix);
+                    System.out.println("\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
