@@ -156,6 +156,8 @@ public class Matrix {
           MinorMat.setELMT(i, j, Mat.getELMT(i + 1, j));
         } else if (j >= b) {
           MinorMat.setELMT(i, j, Mat.getELMT(i, j + 1));
+        } else { // i < a && j < b
+          MinorMat.setELMT(i, j, Mat.getELMT(i, j));
         }
       }
     }
