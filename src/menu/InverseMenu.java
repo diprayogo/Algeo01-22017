@@ -5,6 +5,7 @@ import myUtils.*;
 
 public class InverseMenu {
     private static Scanner scanner = new Scanner(System.in);
+
     public static void menu(){
         System.out.println();
         System.out.println("                          ANDA BERADA DI SUBMENU MATRIKS BALIKAN");

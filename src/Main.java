@@ -1,4 +1,3 @@
-
 // text-based dan CLI (wajib)
 
 import java.util.Scanner;
@@ -13,6 +12,7 @@ import menu.SPLMenu;
 public class Main {
   static Scanner scanner = new Scanner(System.in);
 
+
   public static void main(String[] args) {
     System.out.println("SELAMAT DATANG DI MATRIX CALCULATOR ");
     boolean isRunning = true;
@@ -20,7 +20,6 @@ public class Main {
     while (isRunning) {
       int menu = 0;
       boolean isValidInput = false;
-
       do {
         System.out.println();
         System.out.println("                                 ANDA BERADA DI MENU UTAMA");

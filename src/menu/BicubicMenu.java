@@ -2,9 +2,7 @@ package menu;
 import operators.*;
 import java.util.Scanner;
 
-import IO.InputOutput;
-import myUtils.myUtils;
-import operators.Matrix;
+import myUtils.*;
 
 public class BicubicMenu {
     private static Scanner scanner = new Scanner(System.in);
@@ -31,15 +29,18 @@ public class BicubicMenu {
             b = scanner.nextDouble();
             bicubicOutput += "a = " + a + ", b = " + b + "\n";
         } else if (!fromFile ) {
-            InputOutput.readBicubicInputText(bicubicOutput, fMat, a, b);
+            fMat = myUtils.readMatrixFromFile();
+            a = fMat.getELMT(fMat.getRow() - 1, 0);
+            b = fMat.getELMT(fMat.getRow() - 1, 1);
+            fMat.setRow(fMat.getRow() - 1);
         }
-        
+
 
         double taksir = Bicubic.getBicubicFunctionValue(fMat, a, b);
         // bicubicOutput += "Nilai taksirannya adalah ";
         bicubicOutput += "f(" + a + ", " + b + ") = " + taksir;
         System.out.println(bicubicOutput);
         // auto output ke txt juga
-        InputOutput.writeOutputText(bicubicOutput);
+        myUtils.strToFile(bicubicOutput);
     }
 }

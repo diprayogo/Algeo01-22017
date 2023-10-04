@@ -1,7 +1,6 @@
 package menu;
-import operators.*;
 import java.util.*;
-
+import operators.*;
 import myUtils.myUtils;
 
 
@@ -11,7 +10,11 @@ public class DeterminantMenu {
         System.out.println();
         System.out.println("                          ANDA BERADA DI SUBMENU DETERMINAN");
 
+<<<<<<< HEAD
 
+=======
+        boolean inputValid = false, fromfile = true;
+>>>>>>> d39ac29d29d73cb72986734671a20996e4e241e5
         double det = 0 ;
         int method = 0  ;
         boolean inputValid = false, fromFile;
