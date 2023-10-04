@@ -12,7 +12,8 @@ public class myUtils {
         try {
             return Double.parseDouble(str);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Nilai double invalid: " + str, e);
+            System.out.println(("Masukan tidak valid. Tidak bisa di-parse ke double"));
+            return Double.NaN;
         }
     }
 
@@ -21,31 +22,43 @@ public class myUtils {
     // Jadi, perlu dilakukan split terlebih dahulu pada baris terakhir sebelum dipakai.
     public static Matrix readMatrixFromFile() {
         String fileName = new String();
-        System.out.print("Masukkan nama file: ");
-        fileName = scanner.nextLine();
+        boolean pathValid = false ;
 
         // buat matrix res dengan colom 1000 dan row 1000 dan elemennya belum diisi
         Matrix res = new Matrix(0, 0); 
         res.setCol(1000); res.setRow(1000); res.setMat(1000, 1000);
-        try {
-            File file = new File("D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\\" + fileName);
-            System.out.println(file);
-            Scanner fScanner = new Scanner(file);
-            int i = 0;
-            int realCol = 0 ;
-            while (fScanner.hasNextLine()) {
-                String s = fScanner.nextLine();
-                String[] temp = s.split("\\s+");
-                if (i == 0) realCol = temp.length; //
-                for (int j = 0; j < temp.length; j++) {
-                    res.setELMT(i, j, myUtils.strToDouble(temp[j]));
+        while (!pathValid){
+            System.out.print("Masukkan nama file: ");
+            fileName = scanner.nextLine();
+            try {
+                File file = new File("D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\\" + fileName);
+                Scanner fScanner = new Scanner(file);
+                int i = 0, realCol = 0 ; // realcol adalah banyak kolom baris pertama matrix. 
+                double val = 0 ;
+                boolean fileContentValid = true ;
+                while (fScanner.hasNextLine() & fileContentValid) {
+                    String s = fScanner.nextLine();
+                    String[] temp = s.split("\\s+");
+                    if (i == 0) realCol = temp.length; //
+                    for (int j = 0; j < temp.length; j++) {
+                        val = myUtils.strToDouble(temp[j]); 
+                        if (Double.isNaN(val)) {
+                            System.out.println("Tolong input ulang file yang berisi nilai double yang valid.");
+                            fileContentValid = false ;
+                            break;
+                        }
+                        else res.setELMT(i, j,  val);
+                    }
+                    i++;
                 }
-                i++;
+                if (fileContentValid){
+                    res.setRow(i); res.setCol(realCol);
+                    fScanner.close();
+                    pathValid = true;}
+                
+            } catch (FileNotFoundException e) {
+                System.out.println("File tidak ditemukan. Harap pastikan nama file benar dan file berada di dalam folder ..\\test\\input");
             }
-             res.setRow(i); res.setCol(realCol);
-            fScanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
         }
         return res;
     }
@@ -53,17 +66,16 @@ public class myUtils {
     // Menyimpan Matrix m ke dalam sebuah file jika pengguna ingin menyimpan file.
     public static void matrixToFile(Matrix mSimpan) throws IOException {
         boolean isValid = false ; 
-        System.out.println();
         String validation ;
         while (!isValid){
             System.out.print("Apakah Anda ingin menyimpan hasil ke dalam sebuah file (Y/N)? ");
             validation = (scanner.nextLine()).toUpperCase();
             switch (validation) {
                 case "Y":
-                    String fileName = new String();
+                    String path = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    fileName = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\" + scanner.nextLine() + ".txt";
-                    File file = new File(fileName);
+                    path = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\" + scanner.nextLine() + ".txt";
+                    File file = new File(path);
                     try {
                         FileWriter fWriter = new FileWriter(file);
                         for (int i = 0; i < mSimpan.getRow(); i++) {
@@ -80,7 +92,7 @@ public class myUtils {
                     } catch (IOException e) {
                         System.out.print(e.getMessage());
                     }
-                    System.out.println("Anda telah menyimpan matrix ke file");
+                    System.out.printf("Anda telah menyimpan matrix ke %s",path);
                     isValid = true ;
                     break;
                 case "N":
@@ -94,8 +106,7 @@ public class myUtils {
     }
 
     // I.S. : String s terdefinisi
-    // F.S. : String s disimpan dalam sebuah file jika pengguna ingin menyimpan
-    // file.
+    // F.S. : String s disimpan dalam sebuah file jika pengguna ingin menyimpan file.
     public static void strToFile(String s) {
         System.out.println();
         boolean isValid = false;
@@ -104,10 +115,10 @@ public class myUtils {
         while (!isValid){
             switch (validation) {
                 case "Y":
-                    String fileName = new String();
+                    String path = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    fileName = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\" + scanner.nextLine() + ".txt";
-                    File file = new File(fileName);
+                    path = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\" + scanner.nextLine() + ".txt";
+                    File file = new File(path);
                     try {
                         FileWriter fWriter = new FileWriter(file);
                         fWriter.write(s);
@@ -115,7 +126,7 @@ public class myUtils {
                     } catch (IOException e) {
                         System.out.print(e.getMessage());
                     }
-                    System.out.println("Anda telah menyimpan string ke file");
+                    System.out.printf("Anda telah menyimpan string ke %s\n",path);
                     isValid = true;
                     break;
                 case "N":
@@ -127,5 +138,6 @@ public class myUtils {
                     break;
             }
         }
+        System.out.println();
     }
 }

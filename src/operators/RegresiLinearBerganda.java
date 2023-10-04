@@ -43,7 +43,6 @@ public class RegresiLinearBerganda {
                 }
             }
         }
-        Mnorm.strictGaussJordan();
         return Mnorm ; 
     }
 
