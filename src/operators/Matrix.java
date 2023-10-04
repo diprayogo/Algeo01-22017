@@ -509,6 +509,23 @@ public class Matrix {
     return MHasil;
   }
 
+  Matrix multiplyMatrix(Matrix M2) {
+    Matrix MHasil = new Matrix(this.getRow(), M2.getCol());
+    if (this.getCol() == M2.getRow()) {
+      int i, j, k;
+      for (i = 0; i < MHasil.getRow(); i++) {
+        for (j = 0; j < MHasil.getCol(); j++) {
+          int sum = 0;
+          for (k = 0; k < this.getCol(); k++) {
+            sum += this.getELMT(i, k) * M2.getELMT(k, j);
+          }
+          MHasil.setELMT(i, j, sum);
+        }
+      }
+    }
+    return MHasil;
+  }
+
   void divideRow(int row, double divisor) {
     for (int j = 0; j < getCol(); j++) {
       double temp = this.getELMT(row, j);

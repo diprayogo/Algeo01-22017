@@ -163,11 +163,15 @@ public class SPL {
       // Matrix.printMatrix(matSquare);
 
       Matrix inversMat = matSquare.inverseGaussJordan();
-      Matrix rootSolution = inversMat.mult(b);
-
-      result = "Solusi dari persamaan linear tersebut adalah:";
-      for (int k = 0; k < rootSolution.getRow(); k++) {
-        result += "\nx" + (k + 1) + ": " + rootSolution.getELMT(k, 0);
+      if (inversMat == null) {
+        result = "Matriks yang dimasukkan tidak bisa menggunakan metode ini";
+      } else {
+        Matrix.printMatrix(inversMat);
+        Matrix rootSolution = inversMat.multiplyMatrix(b);
+        result = "Solusi dari persamaan linear tersebut adalah:";
+        for (int k = 0; k < rootSolution.getRow(); k++) {
+          result += "\nx" + (k + 1) + ": " + rootSolution.getELMT(k, 0);
+        }
       }
     } else {
       result = "Matriks yang dimasukkan tidak bisa menggunakan metode ini";
