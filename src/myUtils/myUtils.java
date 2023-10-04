@@ -2,10 +2,20 @@ package myUtils;
 
 import operators.*;
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class myUtils {
     private static Scanner scanner = new Scanner(System.in);
+
+
+    // Membuat presisi sebuah double sesuai dengan decPlaces
+    public static double setPrec(double num, int decPlaces) {
+        BigDecimal bd = new BigDecimal(num).setScale(decPlaces, RoundingMode.HALF_UP);
+        double res = bd.doubleValue();
+        return res;
+    }
 
     // return convert dari string ke double
     public static double strToDouble(String str) {

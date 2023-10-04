@@ -1,4 +1,4 @@
-package IO;
+package learn.IO;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,6 +10,21 @@ import operators.Matrix;
 
 public class InputOutput {
   private static Scanner scanner = new Scanner(System.in);
+
+  // MATRIX TO STRING
+  public static String matrixToString(Matrix Mat) {
+    String MatString = "";
+    int i, j, n, m;
+    n = Mat.getCol();
+    m = Mat.getRow();
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < n; j++) {
+        MatString += Mat.getELMT(i, j) + " ";
+      }
+      MatString += "\n";
+    }
+    return MatString;
+  }
   
   // BICUBIC TEXT READER
   public static void readBicubicInputText(String toOutput, Matrix fMat, double a, double b) {
@@ -38,9 +53,10 @@ public class InputOutput {
   // WRITE STRING TO TEXT AND SAVE TO DIR "test/output/<filename>.txt"
   public static void writeOutputText(String output) {
     System.out.print("Untuk menyimpan hasil, masukkan nama output file (dalam format \".txt\"): ");
-    String fileName = scanner.nextLine();
+    String FileName = scanner.nextLine();
     try {
-      FileWriter writer = new FileWriter("../test/output/" + fileName);
+      File file = new File("../test/output/" + FileName); // jangan lupa bikin file dulu di path ini
+      FileWriter writer = new FileWriter(file); // ini konstruktornya param file bukan path
       writer.write(output);
       writer.close();
     } catch (IOException e) {
