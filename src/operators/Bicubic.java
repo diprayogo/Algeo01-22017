@@ -1,12 +1,8 @@
 package operators;
 // import operators.Matrix;
-import java.io.*;
 import java.lang.Math;
-import java.util.*;
-import IO.InputOutput;
 
 public class Bicubic {
-  private static Scanner scanner = new Scanner(System.in);
   public static void main(String[] args){
     printMatrix(getBicubicPolynomialMatrix());
     printMatrix(getInverseBicubicPolynomialMatrix());
@@ -170,7 +166,7 @@ public class Bicubic {
     return imageValue;
   }
 
-  public double getBicubicFunctionValue(Matrix fMat, double x, double y) {
+  public static double getBicubicFunctionValue(Matrix fMat, double x, double y) {
     int i, j;
     // read nilai matrix f fx fy fxy nya dulu, this must be 16 x 1
     // 4 x 4 dibaca 16 x 1 biar bisa langsung dikali
@@ -183,54 +179,5 @@ public class Bicubic {
       }
     }
     return fResult;
-  }
-
-  public void menuBicubic() {
-    String input ="""
-      Masukkan jumlah titik konfigurasi nilai fungsi dan turunan berarah di sekitarnya,\n
-      diikuti dengan nilai a dan b untuk mencari taksiran f(a, b): \n
-    """;
-    String bicubicOutput = "";
-    Matrix fMat = new Matrix(16, 1);
-    double a = 0, b = 0;
-    int inputMode = 0;
-
-    System.out.println("                          ANDA BERADA DI SUBMENU INTERPOLASI BICUBIC SPLINE");
-    System.out.println("""
-      1. Keyboard input
-      2. File input
-      Masukkan pilihan mode input: """);
-    try {
-      inputMode = scanner.nextInt();
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-
-    if (inputMode == 1) {
-      System.out.println(input);
-      for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-          fMat.setELMT(4*i+j, 0, scanner.nextDouble());
-          bicubicOutput += fMat.getELMT(4*i+j, 0) + " ";
-        }
-        bicubicOutput += "\n";
-      }
-      a = scanner.nextDouble();
-      b = scanner.nextDouble();
-      bicubicOutput += "a = " + a + ", b = " + b + "\n";
-    } else if (inputMode == 2) {
-      InputOutput.readBicubicInputText(bicubicOutput, fMat, a, b);
-    } else {
-      System.out.println("Input tidak valid, hanya bisa memilih mode 1 atau 2.");
-    }
-
-    if (inputMode == 1 || inputMode == 2) {
-      double taksir = getBicubicFunctionValue(fMat, a, b);
-      // bicubicOutput += "Nilai taksirannya adalah ";
-      bicubicOutput += "f(" + a + ", " + b + ") = " + taksir;
-      System.out.println(bicubicOutput);
-      // auto output ke txt juga
-      InputOutput.writeOutputText(bicubicOutput);
-    }
   }
 }

@@ -7,7 +7,7 @@ import myUtils.myUtils;
 public class RegresiLinearBerganda {
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void readKey(Matrix ret, Matrix peubah) {
+    public static void readRegresiFromKeyboard(Matrix ret, Matrix peubah) {
         int n, m;
         System.out.print("Masukkan jumlah peubah (n): ");
         n = scanner.nextInt();
@@ -56,7 +56,7 @@ public class RegresiLinearBerganda {
         return res ;
     }
 
-    public static String inputFromFile(boolean fromFile){
+    public static String isRegresiFromFile(boolean fromFile){
         Matrix ret = new Matrix(0, 0) ;
         Matrix peubah = new Matrix(0, 0) ;
         
@@ -79,7 +79,7 @@ public class RegresiLinearBerganda {
         }
         else{
             // masukan dari keyboard akan langsung menghasilkan matrix ret dan matrix peubah
-            RegresiLinearBerganda.readKey(ret, peubah);
+            RegresiLinearBerganda.readRegresiFromKeyboard(ret, peubah);
         }
         
         // Matrix ret dan matrix peubah dari masukan file ataupun keyboard akan sama

@@ -193,9 +193,12 @@ public class Matrix {
     }
   }
 
-  public static double detMatrixSegitiga(Matrix Mat) {
+  public static double detMatrixSegitiga(Matrix MatTemp) {
     // prekondisi not isAugmented
     // check isSquare
+    Matrix Mat = new Matrix(MatTemp.getRow(), MatTemp.getCol());
+    Mat.copyMatrix(MatTemp);
+
     if (!(Mat.isSquare())) {
       System.out.println("Determinan tidak ada karena bukan matrix persegi");
       return Double.NaN;
@@ -247,7 +250,8 @@ public class Matrix {
     int i, j;
     for (i = 0; i < Madj.getRow(); i++) {
       for (j = 0; j < Madj.getCol(); j++) {
-        Madj.setELMT(i, j, getKofaktor(this, i, j));
+        int sign = ((i+j)%2 == 0) ? 1 : -1; 
+        Madj.setELMT(i, j, sign*getKofaktor(this, i, j));
       }
     }
     Madj.transpose();

@@ -31,7 +31,7 @@ public class InterpolasiPolinom {
     return sum;
   }
 
-  public static String inputFromFile(boolean fromFile) {
+  public static String isInterpolasiFromFile(boolean fromFile) {
     String result = new String();
     Matrix matrixPoint = new Matrix(0, 0);
     double titik = 0;

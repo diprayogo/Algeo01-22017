@@ -3,11 +3,11 @@
 
 import java.util.Scanner;
 
+import menu.BicubicMenu;
 import menu.DeterminantMenu;
 import menu.InterpolasiMenu;
 import menu.InverseMenu;
 import menu.RegresiMenu;
-import operators.*;
 import menu.SPLMenu;
 
 public class Main {
@@ -51,24 +51,22 @@ public class Main {
       // PRINT MENU YANG ADA
       switch (menu) {
         case 1:
-          SPLMenu.menu();
-          break; // REDIRECT KE SPL
+          SPLMenu.menu(); // REDIRECT KE SPL
+          break; 
         case 2:
-          DeterminantMenu.menu();
-          break; // REDIRECT KE DETERMINAN
+          DeterminantMenu.menu(); // REDIRECT KE DETERMINAN
+          break; 
         case 3:
-          InverseMenu.menu();
-          break; // REDIRECT KE INVERS, DST.
+          InverseMenu.menu(); // REDIRECT KE INVERS
+          break; 
         case 4:
-          InterpolasiMenu.menu();
+          InterpolasiMenu.menu(); // REDIRECT KE INTERPOLASI
           break;
         case 5:
-          Bicubic bicubic = new Bicubic();
-          bicubic.menuBicubic();
+          BicubicMenu.menu(); // REDIRECT KE BICUBIC
           break;
         case 6:
-
-          RegresiMenu.menu();
+          RegresiMenu.menu(); // REDIRECT KE REGRESI
           break;
 
         case 7:
