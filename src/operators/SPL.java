@@ -1,8 +1,8 @@
 package operators;
 
 public class SPL {
-  // 1. Metode Eleminasi Gauss
-  public String metodeGauss(Matrix matrix) {
+  // 1. Gauss Method
+  public static String metodeGauss(Matrix matrix) {
     String result = new String();
 
     matrix.strictGauss();
@@ -19,26 +19,16 @@ public class SPL {
       rootSolution[i] = 1;
     }
 
-    boolean isNoSolution = false; // Jika solusi tidak ada
-    boolean isNonUnique = false; // Jika solusi berupa parametrik
-    if (matrix.getCol() != matrix.getRow() + 1) {
-      isNonUnique = true;
-    }
-    for (int i = matrix.getRow() - 1; i >= 0; i--) {
-      int countZero = 0;
-      for (int j = 0; j < matrix.getCol() - 1; j++) { // Menghitung kemunculan angka 0
-        if (matrix.getELMT(i, j) == 0) {
-          countZero++;
-        }
-      }
-      if (countZero == matrix.getCol() - 1) {
-        if (matrix.getELMT(i, matrix.getCol() - 1) != 0) {
-          isNoSolution = true; // Tidak memiliki solusi
-        } else {
-          isNonUnique = true; // Solusi parametrik
-        }
+    Matrix.printMatrix(matrix);
+
+    if (isNoSolution(matrix)) {
+      result = "SPL tidak memiliki solusi";
+    } else {
+      if (isNonUnique(matrix) && matrix.getRow() < matrix.getCol()) {
+        result = parametric(matrix);
+        // SPL2.SolveManySolution(matrix);
       } else {
-        if (matrix.getELMT(i, matrix.getCol() - 1) != 0 || matrix.isSquare) { // Memiliki solusi unik / tunggal
+        if (matrix.getRow() > matrix.getCol()) {
           // Subtitusi mundur
           for (int p = rootSolution.length - 1; p >= 0; p--) {
             double sum = 0;
@@ -47,93 +37,41 @@ public class SPL {
             }
             rootSolution[p] = (augMat[p] - sum);
           }
-        } else { // Memiliki solusi banyak
-          isNonUnique = true; // Masuk ke kasus solusi parametrik
-        }
-      }
-    }
-
-    // matrix.printMatrix(matrix.getRow(), matrix.getCol());
-
-    if (isNoSolution) {
-      result = "SPL tidak memiliki solusi";
-    } else {
-      if (isNonUnique) {
-        result = "SPL memiliki solusi non-unik\n";
-        for (int i = 0; i < matrix.getRow(); i++) {
-          boolean isRowZero = true; // Boolean jika satu baris bernilai 0 semua
-          for (int j = 0; j < matrix.getCol(); j++) {
-            if (matrix.getELMT(i, j) != 0 && j != i) {
-              isRowZero = false;
-              break;
-            }
-          }
-          if (!isRowZero) {
-            boolean zero = false;
-            if (matrix.getELMT(i, matrix.getCol() - 1) != 0) {
-              result += "x" + (i + 1) + " = " + matrix.getELMT(i, matrix.getCol() - 1);
-            } else {
-              result += "x" + (i + 1) + " = ";
-              zero = true;
-            }
-            if (!zero && i > 1) {
-              if (matrix.getELMT(i, i) < 0) {
-                if (matrix.getELMT(i, i) == -1.0) {
-                  result += " + " + "x" + (i + 1);
-                } else {
-                  result += " - " + (matrix.getELMT(i, i) * -1) + "x" + (i + 1);
-                }
-              } else {
-                if (matrix.getELMT(i, i) == 1.0) {
-                  result += " - " + "x" + (i + 1);
-                } else {
-                  result += " + " + matrix.getELMT(i, i) + "x" + (i + 1);
-                }
-              }
-            }
-            for (int j = 0; j < matrix.getCol() - 1; j++) {
+          result = "Solusi dari SPL tersebut adalah: \n";
+          for (int i = 0; i < matrix.getRow(); i++) {
+            boolean isRowZero = false; // Boolean jika satu baris bernilai 0 semua
+            for (int j = 0; j < matrix.getCol(); j++) {
               if (matrix.getELMT(i, j) != 0 && j != i) {
-                if (matrix.getELMT(i, j) < 0) {
-                  if (zero) {
-                    result += (matrix.getELMT(i, j) * -1) + "x" + (j + 1);
-                  } else if (matrix.getELMT(i, j) == -1.0) {
-                    result += " + " + "x" + (j + 1);
-                  } else {
-                    result += " + " + (matrix.getELMT(i, j) * -1) + "x" + (j + 1);
-                  }
-                } else {
-                  if (zero) {
-                    result += matrix.getELMT(i, j) + "x" + (j + 1);
-                  } else if (matrix.getELMT(i, j) == 1.0) {
-                    result += " - " + "x" + (j + 1);
-                  } else {
-                    result += " - " + matrix.getELMT(i, j) + "x" + (j + 1);
-                  }
-                }
+                isRowZero = true;
+                break;
               }
             }
-            result += "\n";
-          } else {
-            result += "x" + (i + 1) + " = t" + (i + 1) + " dengan " + "t" + (i + 1) + " adalah bilangan Real\n";
+            if (i < rootSolution.length && isRowZero) {
+              result += "x" + (i + 1) + " = " + rootSolution[i] + "\n";
+            }
           }
-        }
-        if (matrix.getCol() != matrix.getRow() + 1) {
-          for (int k = matrix.getRow(); k < matrix.getCol() - 1; k++) {
-            result += "x" + (k + 1) + " = t" + (k + 1) + " dengan " + "t" + (k + 1) + " adalah bilangan Real\n";
+        } else {
+          // Subtitusi mundur
+          for (int p = rootSolution.length - 1; p >= 0; p--) {
+            double sum = 0;
+            for (int q = p + 1; q < rootSolution.length; q++) {
+              sum += matrix.getELMT(p, q) * rootSolution[q];
+            }
+            rootSolution[p] = (augMat[p] - sum);
           }
-        }
-      } else {
-        result = "Solusi dari SPL tersebut adalah: \n";
-        for (int i = 0; i < rootSolution.length; i++) {
-          result += "x" + (i + 1) + " = " + rootSolution[i] + "\n";
+          result = "Solusi dari SPL tersebut adalah: \n";
+          for (int i = 0; i < rootSolution.length; i++) {
+            result += "x" + (i + 1) + " = " + rootSolution[i] + "\n";
+          }
         }
       }
+
     }
     return result;
   }
 
-  // 2. Metode Gauss-Jordan
-  public String metodeGaussJordan(Matrix matrix) {
+  // 2. Gauss Jordan Method
+  public static String metodeGaussJordan(Matrix matrix) {
     String result = new String();
 
     matrix.strictGaussJordan();
@@ -150,23 +88,16 @@ public class SPL {
       rootSolution[i] = 1;
     }
 
-    boolean isNoSolution = false; // Jika solusi tidak ada
-    boolean isNonUnique = false; // Jika solusi berupa parametrik
-    for (int i = matrix.getRow() - 1; i >= 0; i--) {
-      int countZero = 0;
-      for (int j = 0; j < matrix.getCol() - 1; j++) { // Menghitung kemunculan angka 0
-        if (matrix.getELMT(i, j) == 0) {
-          countZero++;
-        }
-      }
-      if (countZero == matrix.getCol() - 1) {
-        if (matrix.getELMT(i, matrix.getCol() - 1) != 0) {
-          isNoSolution = true; // Tidak memiliki solusi
-        } else {
-          isNonUnique = true; // Solusi parametrik
-        }
+    Matrix.printMatrix(matrix);
+
+    if (isNoSolution(matrix)) {
+      result = "SPL tidak memiliki solusi";
+    } else {
+      if (isNonUnique(matrix) && matrix.getRow() < matrix.getCol()) {
+        result = parametric(matrix);
+        // SPL2.SolveManySolution(matrix);
       } else {
-        if (matrix.getELMT(i, matrix.getCol() - 1) != 0 || matrix.isSquare) { // Memiliki solusi unik / tunggal
+        if (matrix.getRow() > matrix.getCol()) {
           // Subtitusi mundur
           for (int p = rootSolution.length - 1; p >= 0; p--) {
             double sum = 0;
@@ -175,89 +106,41 @@ public class SPL {
             }
             rootSolution[p] = (augMat[p] - sum);
           }
-        } else { // Memiliki solusi banyak
-          isNonUnique = true; // Masuk ke kasus solusi parametrik
-        }
-      }
-    }
-
-    // matrix.printMatrix(matrix.getRow(), matrix.getCol());
-
-    if (isNoSolution) {
-      result = "SPL tidak memiliki solusi";
-    } else {
-      if (isNonUnique) {
-        result = "SPL memiliki solusi non-unik\n";
-        for (int i = 0; i < matrix.getRow(); i++) {
-          boolean isRowZero = true; // Boolean jika satu baris bernilai 0 semua
-          for (int j = 0; j < matrix.getCol(); j++) {
-            if (matrix.getELMT(i, j) != 0 && j != i) {
-              isRowZero = false;
-              break;
-            }
-          }
-          if (!isRowZero) {
-            boolean zero = false;
-            if (matrix.getELMT(i, matrix.getCol() - 1) != 0) {
-              result += "x" + (i + 1) + " = " + matrix.getELMT(i, matrix.getCol() - 1);
-            } else {
-              result += "x" + (i + 1) + " = ";
-              zero = true;
-            }
-            if (!zero && i > 1) {
-              if (matrix.getELMT(i, i) < 0) {
-                if (matrix.getELMT(i, i) == -1.0) {
-                  result += " + " + "x" + (i + 1);
-                } else {
-                  result += " - " + (matrix.getELMT(i, i) * -1) + "x" + (i + 1);
-                }
-              } else {
-                if (matrix.getELMT(i, i) == 1.0) {
-                  result += " - " + "x" + (i + 1);
-                } else {
-                  result += " + " + matrix.getELMT(i, i) + "x" + (i + 1);
-                }
-              }
-            }
-            for (int j = 0; j < matrix.getCol() - 1; j++) {
+          result = "Solusi dari SPL tersebut adalah: \n";
+          for (int i = 0; i < matrix.getRow(); i++) {
+            boolean isRowZero = false; // Boolean jika satu baris bernilai 0 semua
+            for (int j = 0; j < matrix.getCol(); j++) {
               if (matrix.getELMT(i, j) != 0 && j != i) {
-                if (matrix.getELMT(i, j) < 0) {
-                  if (zero) {
-                    result += (matrix.getELMT(i, j) * -1) + "x" + (j + 1);
-                  } else if (matrix.getELMT(i, j) == -1.0) {
-                    result += " + " + "x" + (j + 1);
-                  } else {
-                    result += " + " + (matrix.getELMT(i, j) * -1) + "x" + (j + 1);
-                  }
-                } else {
-                  if (zero) {
-                    result += matrix.getELMT(i, j) + "x" + (j + 1);
-                  } else if (matrix.getELMT(i, j) == 1.0) {
-                    result += " - " + "x" + (j + 1);
-                  } else {
-                    result += " - " + matrix.getELMT(i, j) + "x" + (j + 1);
-                  }
-                }
+                isRowZero = true;
+                break;
               }
             }
-            result += "\n";
-          } else {
-            result += "x" + (i + 1) + " = t" + (i + 1) + " dengan " + "t" + (i + 1) + " adalah bilangan Real";
-            result += "\n";
+            if (i < rootSolution.length && isRowZero) {
+              result += "x" + (i + 1) + " = " + rootSolution[i] + "\n";
+            }
+          }
+        } else {
+          // Subtitusi mundur
+          for (int p = rootSolution.length - 1; p >= 0; p--) {
+            double sum = 0;
+            for (int q = p + 1; q < rootSolution.length; q++) {
+              sum += matrix.getELMT(p, q) * rootSolution[q];
+            }
+            rootSolution[p] = (augMat[p] - sum);
+          }
+          result = "Solusi dari SPL tersebut adalah: \n";
+          for (int i = 0; i < rootSolution.length; i++) {
+            result += "x" + (i + 1) + " = " + rootSolution[i] + "\n";
           }
         }
-      } else {
-        result = "Solusi dari SPL tersebut adalah: \n";
-        for (int i = 0; i < rootSolution.length; i++) {
-          result += "x" + (i + 1) + " = " + rootSolution[i] + "\n";
-        }
       }
+
     }
     return result;
   }
 
-  // 3. Metode Matriks Balikan
-  public String metodeMatriksBalikan(Matrix matrix) {
+  // 3. Inverse Method
+  public static String metodeInverse(Matrix matrix) {
     String result = new String();
 
     Matrix matSquare = new Matrix(matrix.getRow(), matrix.getCol() - 1);
@@ -276,20 +159,23 @@ public class SPL {
       b.setELMT(i, 0, matrix.getELMT(i, col));
     }
 
-    // Mencari invers dari matriks dan mengalikan dengan b
-    Matrix inversMat = matSquare.inverseGaussJordan();
-    Matrix rootSolution = inversMat.mult(b);
+    if (matSquare.isSquare) {// Mencari invers dari matriks dan mengalikan dengan b
+      Matrix inversMat = matSquare.inverseGaussJordan();
+      Matrix rootSolution = inversMat.mult(b);
 
-    result = "Solusi dari persamaan linear tersebut adalah:";
-    for (int k = 0; k < rootSolution.getRow(); k++) {
-      result += "\nx" + (k + 1) + ": " + rootSolution.getELMT(k, 0);
+      result = "Solusi dari persamaan linear tersebut adalah:";
+      for (int k = 0; k < rootSolution.getRow(); k++) {
+        result += "\nx" + (k + 1) + ": " + rootSolution.getELMT(k, 0);
+      }
+    } else {
+      result = "Matriks yang dimasukkan tidak bisa menggunakan metode ini";
     }
 
     return result;
   }
 
   // 4. Kaidah Cramer
-  public String kaidahCramer(Matrix matrix) {
+  public static String kaidahCramer(Matrix matrix) {
     String result = new String();
 
     Matrix matSquare = new Matrix(matrix.getRow(), matrix.getCol() - 1);
@@ -311,27 +197,199 @@ public class SPL {
       b.setELMT(i, 0, matrix.getELMT(i, col));
     }
 
-    // Mencari determinan matriks square A
-    double detA = Matrix.detMatrixSegitiga(tempMatrix2);
-    double tempDet;
-    Matrix rootSolution = new Matrix(matSquare.getRow(), 1);
+    // boolean isNoSolution = false;
+    // boolean isNonUnique = false;
+    // for (int i = matrix.getRow() - 1; i >= 0; i--) {
+    // int countZero = 0;
+    // for (int j = 0; j < matrix.getCol() - 1; j++) { // Menghitung kemunculan
+    // angka 0
+    // if (matrix.getELMT(i, j) == 0) {
+    // countZero++;
+    // }
+    // }
+    // if (countZero == matrix.getCol() - 1) {
+    // if (matrix.getELMT(i, matrix.getCol() - 1) != 0) {
+    // isNoSolution = true; // Tidak memiliki solusi
+    // } else {
+    // isNonUnique = true; // Solusi parametrik
+    // }
+    // }
+    // }
 
-    for (int i = 0; i < matSquare.getCol(); i++) {
-      for (int j = 0; j < matSquare.getRow(); j++) {
-        tempMatrix.setELMT(j, i, b.getELMT(j, 0));
+    if (matSquare.isSquare || matrix.getRow() != matrix.getCol() - 1) {
+      // Mencari determinan matriks square A
+      double detA = Matrix.detMatrixSegitiga(tempMatrix2);
+      double tempDet;
+      Matrix rootSolution = new Matrix(matSquare.getRow(), 1);
+
+      for (int i = 0; i < matSquare.getCol(); i++) {
+        for (int j = 0; j < matSquare.getRow(); j++) {
+          tempMatrix.setELMT(j, i, b.getELMT(j, 0));
+        }
+
+        tempDet = Matrix.detMatrixSegitiga(tempMatrix);
+        tempDet /= detA;
+        if (tempDet == -0.0) {
+          tempDet = 0.0;
+        }
+        rootSolution.setELMT(i, 0, tempDet);
+
+        tempMatrix.copyMatrix(matSquare);
       }
-
-      tempDet = Matrix.detMatrixSegitiga(tempMatrix);
-      tempDet /= detA;
-      rootSolution.setELMT(i, 0, tempDet);
-
-      tempMatrix.copyMatrix(matSquare);
+      result = "Determinan: " + detA;
+      result = "\nSolusi dari persamaan linear tersebut adalah:";
+      for (int k = 0; k < rootSolution.getRow(); k++) {
+        result += "\nx" + (k + 1) + ": " + rootSolution.getELMT(k, 0);
+      }
+    } else {
+      result = "Matriks yang dimasukkan tidak bisa menggunakan metode ini";
     }
 
-    result = "Determinan: " + detA;
-    result = "\nSolusi dari persamaan linear tersebut adalah:";
-    for (int k = 0; k < rootSolution.getRow(); k++) {
-      result += "\nx" + (k + 1) + ": " + rootSolution.getELMT(k, 0);
+    return result;
+  }
+
+  public static boolean isNoSolution(Matrix matrix) {
+    // Matriks inputan berupa matriks yang sudah terlebih dahulu dilakukan OBE
+    boolean isNoSolution = false; // Jika solusi tidak ada
+    for (int i = matrix.getRow() - 1; i >= 0; i--) {
+      int countZero = 0;
+      for (int j = 0; j < matrix.getCol() - 1; j++) { // Menghitung kemunculan angka 0
+        if (matrix.getELMT(i, j) == 0) {
+          countZero++;
+        }
+      }
+      if (countZero == matrix.getCol() - 1) {
+        if (matrix.getELMT(i, matrix.getCol() - 1) != 0) {
+          isNoSolution = true; // Tidak memiliki solusi
+        }
+      }
+    }
+
+    return isNoSolution;
+  }
+
+  public static boolean isNonUnique(Matrix matrix) {
+    boolean isNonUnique = false;
+    if (matrix.getCol() > matrix.getRow() + 1) {
+      isNonUnique = true;
+    } else {
+      for (int i = matrix.getRow() - 1; i >= 0; i--) {
+        int countZero = 0;
+        for (int j = 0; j < matrix.getCol() - 1; j++) { // Menghitung kemunculan angka 0
+          if (matrix.getELMT(i, j) == 0) {
+            countZero++;
+          }
+        }
+        if (countZero == matrix.getCol() - 1) {
+          if (matrix.getELMT(i, matrix.getCol() - 1) == 0) {
+            isNonUnique = true; // Solusi parametrik
+          }
+        }
+      }
+    }
+
+    return isNonUnique;
+  }
+
+  public static String parametric(Matrix matrix) {
+    String result = new String();
+    int row = matrix.getRow();
+    int col = matrix.getCol() - 1;
+    int[] idxLeadingOne = new int[row];
+    for (int i = 0; i < idxLeadingOne.length; i++) {
+      idxLeadingOne[i] = -1;
+    }
+
+    int[] idxSolution = new int[col];
+    for (int i = 0; i < idxSolution.length; i++) {
+      idxSolution[i] = i + 1;
+    }
+
+    int r = 0;
+    int c = 0;
+    boolean isLeadOne = false;
+    while (r < row) {
+      while (c < col && !isLeadOne) {
+        if (matrix.getELMT(r, c) != 0) {
+          idxLeadingOne[r] = c;
+          isLeadOne = true;
+        } else {
+          c++;
+        }
+      }
+      isLeadOne = false;
+      r++;
+    }
+
+    int[] idxParams = new int[col];
+    // Menyimpan solusi yang mengandung parametrik
+    for (int i = 0; i < col; i++) {
+      if (i < row) {
+        if (idxSolution[i] < 0) {
+          idxParams[i] = i;
+        } else {
+          idxParams[i] = -1;
+        }
+      } else {
+        idxParams[i] = i;
+      }
+    }
+
+    // Mencetak solusi parametrik
+    result = "SPL memiliki solusi banyak\n";
+    for (int i = 0; i < row; i++) {
+      if (idxSolution[i] >= 0 && matrix.getELMT(i, i) != 0) {
+        boolean zero = false;
+        if (matrix.getELMT(i, matrix.getCol() - 1) != 0) {
+          result += "x" + idxSolution[i] + " = " + matrix.getELMT(i, matrix.getCol() - 1);
+        } else {
+          result += "x" + idxSolution[i] + " = ";
+          zero = true;
+        }
+        for (int j = idxLeadingOne[i] + 1; j < col; j++) {
+          if (idxParams[j] == -1) {
+            if (matrix.getELMT(i, j) != 0 && i != j) {
+              if (zero) {
+                result += matrix.getELMT(i, j) + "x" + (j + 1);
+              } else if (matrix.getELMT(i, j) < 0) {
+                if (matrix.getELMT(i, j) == -1.0) {
+                  result += " + " + "x" + (j + 1);
+                } else {
+                  result += " + " + (matrix.getELMT(i, j) * -1) + "x" + (j + 1);
+                }
+              } else if (matrix.getELMT(i, j) == 1.0) {
+                result += " - " + "x" + (j + 1);
+              } else {
+                result += " - " + matrix.getELMT(i, j) + "x" + (j + 1);
+              }
+            }
+          } else {
+            if (matrix.getELMT(i, j) != 0 && i != j) {
+              if (zero) {
+                result += matrix.getELMT(i, j) + "t" + (j + 1);
+              } else if (matrix.getELMT(i, j) < 0) {
+                if (matrix.getELMT(i, j) == -1.0) {
+                  result += " + " + "t" + (j + 1);
+                } else {
+                  result += " + " + (matrix.getELMT(i, j) * -1) + "t" + (j + 1);
+                }
+              } else if (matrix.getELMT(i, j) == 1.0) {
+                result += " - " + "t" + (j + 1);
+              } else {
+                result += " - " + matrix.getELMT(i, j) + "t" + (j + 1);
+              }
+            }
+          }
+        }
+        result += "\n";
+      } else {
+        result += "x" + idxSolution[i] + " = " + "t" + (i + 1) + " dengan t" + (i + 1) + " adalah bilangan Real\n";
+      }
+    }
+    if (row != col) {
+      for (int i = row; i < col; i++) {
+        result += "x" + idxSolution[i] + " = " + "t" + (i + 1) + " dengan t" + (i + 1) + " adalah bilangan Real\n";
+      }
     }
 
     return result;
