@@ -1,14 +1,13 @@
 // text-based dan CLI (wajib)
 
-import java.io.IOException;
 import java.util.Scanner;
 
 import menu.DeterminantMenu;
+import menu.InterpolasiMenu;
 import menu.InverseMenu;
+import menu.RegresiMenu;
 import operators.*;
 import menu.SPLMenu;
-import myUtils.myUtils;
-import operators.Bicubic;
 
 public class Main {
   static Scanner scanner = new Scanner(System.in);
@@ -161,24 +160,19 @@ public class Main {
           InverseMenu.menu();
           break; // REDIRECT KE INVERS, DST.
         case 4:
-          InterpolasiPolinom interpolasi = new InterpolasiPolinom();
-          interpolasi.menuInterpolasi();
+          InterpolasiMenu.menu();
           break;
         case 5:
           Bicubic bicubic = new Bicubic();
           bicubic.menuBicubic();
           break;
-        case 6: 
-          Matrix haha = myUtils.readMatrixFromFile();
-          try {
-          myUtils.matrixToFile(haha);
-          }
-          catch(IOException e) {
-          System.err.println("An IOException occurred: " + e.getMessage());
-          }
+        case 6:
 
+          RegresiMenu.menu();
           break;
+
         case 7:
+          System.out.println("TERIMA KASIH SUDAH MENGGUNAKAN KALKULATOR MATRIX");
           isRunning = false;
           break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
       }

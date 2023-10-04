@@ -2,21 +2,20 @@ package operators;
 
 import java.util.Scanner;
 
+import myUtils.myUtils;
+
 public class InterpolasiPolinom {
   private static Scanner scanner = new Scanner(System.in);
 
-  public static Matrix pointToMatrix(int n) {
-    Matrix matInput = new Matrix(n, 2);
+  public static Matrix pointToMatrix(Matrix matPoint, int n) {
     Matrix matPolinom = new Matrix(n, n + 1);
-
-    matInput.readMatrix(n, 2);
 
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n + 1; j++) {
         if (j == n) {
-          matPolinom.setELMT(i, j, matInput.getELMT(i, 1));
+          matPolinom.setELMT(i, j, matPoint.getELMT(i, 1));
         } else {
-          matPolinom.setELMT(i, j, Math.pow(matInput.getELMT(i, 0), j));
+          matPolinom.setELMT(i, j, Math.pow(matPoint.getELMT(i, 0), j));
         }
       }
     }
@@ -32,12 +31,31 @@ public class InterpolasiPolinom {
     return sum;
   }
 
-  public void menuInterpolasi() {
-    System.out.println("                          ANDA BERADA DI MENU INTERPOLASI POLINOM");
-    System.out.print("Masukkan jumlah titik: ");
-    int n = scanner.nextInt();
-    Matrix m = pointToMatrix(n);
-    SPL spl = new SPL();
+  public static String inputFromFile(boolean fromFile) {
+    String result = new String();
+    Matrix matrixPoint = new Matrix(0, 0);
+    double titik = 0;
+
+    if (fromFile) {
+      // isi matrix matrixPoint dengan nilai dari file. Matrix matrixPoint akan berisi
+      // matrix yang
+      // ingin dicari
+      matrixPoint = myUtils.readMatrixFromFile();
+
+      titik = matrixPoint.getELMT(matrixPoint.getRow() - 1, 0);
+
+      // hilangkan baris terakhir matrixPoint
+      matrixPoint.setRow(matrixPoint.getRow() - 1);
+
+    } else {
+      // masukan dari keyboard akan langsung menghasilkan matrix matrixPoint
+      matrixPoint = InterpolasiPolinom.readFromKeyboard();
+      System.out.print("Masukkan nilai x: ");
+      titik = scanner.nextDouble();
+
+    }
+
+    Matrix m = pointToMatrix(matrixPoint, matrixPoint.getRow());
 
     double[] rootSolution = new double[m.getRow()];
     for (int i = 0; i < rootSolution.length; i++) {
@@ -49,21 +67,54 @@ public class InterpolasiPolinom {
       b[i] = m.getELMT(i, m.getCol() - 1);
     }
 
-    System.out.print("Masukkan nilai x: ");
-    double x = scanner.nextDouble();
-
-    spl.metodeGaussJordan(m);
+    SPL.metodeGaussJordan(m);
 
     for (int i = 0; i < rootSolution.length; i++) {
       rootSolution[i] = m.getELMT(i, m.getCol() - 1);
     }
 
-    for (int i = 0; i < rootSolution.length; i++) {
-      System.out.println(rootSolution[i] + "\n");
-    }
-    double taksir = taksirNilai(rootSolution, x);
+    double taksir = taksirNilai(rootSolution, titik);
 
-    System.out.print("f(" + x + ") = ");
-    System.out.printf("%.4f\n", taksir);
+    result = String.format("Polinom interpolasi yang melalui ke-%d buah titik tersebut adalah p_%d(x) = ",
+        matrixPoint.getRow(), matrixPoint.getRow() - 1);
+    for (int i = 0; i < rootSolution.length; i++) {
+      if (i == 0) {
+        result += String.format("%.4f", rootSolution[i]);
+      } else if (rootSolution[i] < 0) {
+        result += " - " + String.format("%.4f", rootSolution[i] * -1);
+      } else {
+        result += " + " + String.format("%.4f", rootSolution[i]);
+      }
+      if (i != 0 && i == 1) {
+        result += "x";
+      } else if (i > 1) {
+        result += "x^" + i;
+      }
+    }
+
+    result += "\nf(" + titik + ") = ";
+    result += String.format("%.4f", taksir);
+
+    // System.out.println("Lanjut masukkan nilai x? : ");
+    // System.out.println("1. Ya");
+    // System.out.println("2. Tidak");
+    // int pil = scanner.nextInt();
+    // if (pil == 2) {
+    // isRunning = false;
+    // }
+
+    return result;
+
+  }
+
+  public static Matrix readFromKeyboard() {
+
+    System.out.print("Masukkan jumlah titik: ");
+    int n = scanner.nextInt();
+    Matrix matInput = new Matrix(n, 2);
+    matInput.readMatrix(n, 2);
+
+    return matInput;
+
   }
 }

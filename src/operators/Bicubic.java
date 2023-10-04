@@ -150,7 +150,7 @@ public class Bicubic {
     return imageValue;
   }
 
-  public double getBicubicFunctionValue(Matrix fMat, double x, double y) {
+  public static double getBicubicFunctionValue(Matrix fMat, double x, double y) {
     int i, j;
     // read nilai matrix f fx fy fxy nya dulu, this must be 16 x 1
     // 4 x 4 dibaca 16 x 1 biar bisa langsung dikali
@@ -165,7 +165,7 @@ public class Bicubic {
     double fResult = 0;
     for (j = 0; j < 4; j++) {
       for (i = 0; i < 4; i++) {
-        System.out.printf("DISINIIIIIII %d \n", 4*i+j);
+        // System.out.printf("DISINIIIIIII %d \n", 4*i+j);
         fResult += bicubicCoef.getELMT(4*i + j, 0) * Math.pow(x, i) + Math.pow(j, y);
       }
     }
@@ -221,7 +221,7 @@ public class Bicubic {
 
     if (inputValid){
         try {
-          System.out.println("APAKAH ADA SI DINI");
+          // System.out.println("APAKAH ADA SI DINI");
           double result = getBicubicFunctionValue(fMat, a, b);
           String resultString = String.format("f(%f, %f) = %f", a, b, result);
           System.out.println(resultString);

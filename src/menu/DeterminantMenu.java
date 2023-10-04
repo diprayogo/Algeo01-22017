@@ -6,6 +6,7 @@ import myUtils.myUtils;
 
 public class DeterminantMenu {
     private static Scanner scanner = new Scanner(System.in);
+    
     public static void menu(){
         System.out.println();
         System.out.println("                          ANDA BERADA DI SUBMENU DETERMINAN");
