@@ -162,7 +162,7 @@ public class Matrix {
           MinorMat.setELMT(i, j, Mat.getELMT(i + 1, j));
         } else if (j >= col) {
           MinorMat.setELMT(i, j, Mat.getELMT(i, j + 1));
-        } else { // i < row && j < col
+        } else { // i < a && j < b
           MinorMat.setELMT(i, j, Mat.getELMT(i, j));
         }
       }
@@ -524,6 +524,9 @@ public class Matrix {
       for (j = 0; j < n; j++) {
         if (Mat.getELMT(i, j) == -0.0) {
           Mat.setELMT(i, j, 0.0);
+          double element = this.getELMT(i, j);
+          System.out.printf(String.format("%.4f", (myUtils.setPrec(element, 5))));
+          System.out.print(" ");
         }
         //double element = this.getELMT(i, j);
         //System.out.printf(String.format("%.4f", (myUtils.setPrec(element, 8))));
