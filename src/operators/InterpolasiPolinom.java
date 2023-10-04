@@ -75,35 +75,39 @@ public class InterpolasiPolinom {
 
     double taksir = taksirNilai(rootSolution, titik);
 
+    // Mencetak polinomial interpolasi
     result = String.format("Polinom interpolasi yang melalui ke-%d buah titik tersebut adalah p_%d(x) = ",
         matrixPoint.getRow(), matrixPoint.getRow() - 1);
+
+    boolean isFirstTerm = true;
+
     for (int i = 0; i < rootSolution.length; i++) {
-      if (rootSolution[i] > 0.000000001 || rootSolution[i] < -0.000000001) {
-        if (i == 0) {
-          result += String.format("%.4f", rootSolution[i]);
-        } else if (rootSolution[i] < 0) {
-          result += " - " + String.format("%.4f", rootSolution[i] * -1);
+      if (rootSolution[i] != 0) {
+        if (!isFirstTerm) {
+          if (rootSolution[i] > 0) {
+            result += " + ";
+          } else {
+            result += " - ";
+          }
         } else {
-          result += " + " + String.format("%.4f", rootSolution[i]);
+          isFirstTerm = false;
         }
-        if (i != 0 && i == 1) {
+
+        double coef = Math.abs(rootSolution[i]);
+        if (i == 0) {
+          result += String.format("%.4f", coef);
+        } else {
+          result += String.format("%.4f", coef);
           result += "x";
-        } else if (i > 1) {
-          result += "x^" + i;
+          if (i > 1) {
+            result += "^" + (i);
+          }
         }
       }
     }
 
     result += "\nf(" + titik + ") = ";
     result += String.format("%.4f", taksir);
-
-    // System.out.println("Lanjut masukkan nilai x? : ");
-    // System.out.println("1. Ya");
-    // System.out.println("2. Tidak");
-    // int pil = scanner.nextInt();
-    // if (pil == 2) {
-    // isRunning = false;
-    // }
 
     return result;
 
