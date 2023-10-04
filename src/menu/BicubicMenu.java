@@ -8,6 +8,7 @@ public class BicubicMenu {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void menu() {
+        System.out.println();
         System.out.println("                          ANDA BERADA DI SUBMENU INTERPOLASI BICUBIC SPLINE");
         String bicubicOutput = "";
         Matrix fMat = new Matrix(16, 1);
@@ -15,9 +16,8 @@ public class BicubicMenu {
         boolean fromFile ;
         fromFile = myUtils.inputSrcValidation();
         
-        
-        if (fromFile) {
-            System.out.print("Masukkan jumlah titik konfigurasi nilai fungsi dan turunan berarah di sekitarnya,\n diikuti dengan nilai a dan b untuk mencari taksiran f(a, b): \n");
+        if (!fromFile) {
+            System.out.print("Masukkan jumlah titik konfigurasi nilai fungsi dan turunan berarah di sekitarnya,\ndiikuti dengan nilai a dan b untuk mencari taksiran f(a, b): \n");
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
                     fMat.setELMT(4*i+j, 0, scanner.nextDouble());
@@ -28,13 +28,21 @@ public class BicubicMenu {
             a = scanner.nextDouble();
             b = scanner.nextDouble();
             bicubicOutput += "a = " + a + ", b = " + b + "\n";
-        } else if (!fromFile ) {
-            fMat = myUtils.readMatrixFromFile();
-            a = fMat.getELMT(fMat.getRow() - 1, 0);
-            b = fMat.getELMT(fMat.getRow() - 1, 1);
-            fMat.setRow(fMat.getRow() - 1);
-        }
+        } else if (fromFile ) {
+            Matrix matInput = new Matrix(0, 0);
+            matInput = myUtils.readMatrixFromFile();
+            a = matInput.getELMT(matInput.getRow() - 1, 0);
+            b = matInput.getELMT(matInput.getRow() - 1, 1);
+            matInput.setRow(matInput.getRow() - 1);
 
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    fMat.setELMT(4*i+j, 0, scanner.nextDouble());
+                    bicubicOutput += fMat.getELMT(4*i+j, 0) + " ";
+                }
+                bicubicOutput += "\n";
+            }
+        }
 
         double taksir = Bicubic.getBicubicFunctionValue(fMat, a, b);
         // bicubicOutput += "Nilai taksirannya adalah ";

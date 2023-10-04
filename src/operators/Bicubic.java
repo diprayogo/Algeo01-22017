@@ -1,20 +1,11 @@
 package operators;
-<<<<<<< HEAD
 // import operators.Matrix;
 import java.lang.Math;
 
-public class Bicubic {
-=======
 
-import java.io.*;
-import java.lang.Math;
-import java.util.*;
-import myUtils.myUtils;
 
 public class Bicubic {
-  private static Scanner scanner = new Scanner(System.in);
 
->>>>>>> d39ac29d29d73cb72986734671a20996e4e241e5
   public static void main(String[] args){
     Matrix.printMatrix(getBicubicPolynomialMatrix());
     Matrix.printMatrix(getInverseBicubicPolynomialMatrix());
@@ -178,68 +169,4 @@ public class Bicubic {
     }
     return fResult;
   }
-<<<<<<< HEAD
-=======
-
-  public void menuBicubic() {
-    System.out.println();
-    System.out.println("                          ANDA BERADA DI SUBMENU INTERPOLASI BICUBIC SPLINE");
-
-    Matrix fMat = new Matrix(4, 4);
-    boolean inputValid = false, fromfile = true;
-    int inputSrc = 0;
-    double a = 1, b = 1;
-    System.out.println("1. Masukan dari file");
-    System.out.println("2. Masukan dari keyboard ");
-    while (!inputValid){
-        System.out.print("Pilih Sumber input : ");
-        try {
-            inputSrc = scanner.nextInt();
-            switch (inputSrc) {
-                case 1: // fromfile = true;
-                    inputValid = true;
-                    break; 
-                case 2:
-                    inputValid = true;
-                    fromfile = false;
-                    break;
-                default:
-                    System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
-            }
-        }
-        catch (Exception e) {
-            scanner.nextLine(); 
-            System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
-        }
-    }
-
-    if (fromfile) {
-      fMat = myUtils.readMatrixFromFile();
-      a = fMat.getELMT(4, 0);
-      b = fMat.getELMT(4, 1);
-      fMat.setRow(4);
-      fMat.inverseGaussJordan();
-      Matrix.printMatrix(fMat);
-      // System.out.println("HALLO");
-    } else {
-      fMat.readMatrix(4, 4);
-      a = scanner.nextInt();
-      b = scanner.nextInt();
-      fMat = fMat.inverseGaussJordan();
-    }
-
-    if (inputValid){
-        try {
-          System.out.println("APAKAH ADA SI DINI");
-          double result = getBicubicFunctionValue(fMat, a, b);
-          String resultString = String.format("f(%f, %f) = %f", a, b, result);
-          System.out.println(resultString);
-          myUtils.strToFile(resultString);
-          System.out.println("\n");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-  }
->>>>>>> d39ac29d29d73cb72986734671a20996e4e241e5
 }

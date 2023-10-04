@@ -7,5 +7,5 @@
 # Ignore backup files
 *.bak
 
-# Ignore custom testcases
+#Ignore custom testing-file
 *.txt

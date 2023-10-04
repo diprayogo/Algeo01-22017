@@ -75,7 +75,6 @@ public class RegresiLinearBerganda {
             // hilangkan baris terakhir ret
             ret.setRow(ret.getRow() - 1);
             
-            
         }
         else{
             // masukan dari keyboard akan langsung menghasilkan matrix ret dan matrix peubah

@@ -265,10 +265,7 @@ public class Matrix {
     int i, j;
     for (i = 0; i < Madj.getRow(); i++) {
       for (j = 0; j < Madj.getCol(); j++) {
-<<<<<<< HEAD
-=======
         // LUPA SIGN ISTIGHFAR TT
->>>>>>> d39ac29d29d73cb72986734671a20996e4e241e5
         int sign = ((i+j)%2 == 0) ? 1 : -1; 
         Madj.setELMT(i, j, sign*getKofaktor(this, i, j));
       }
@@ -531,9 +528,9 @@ public class Matrix {
       for (j = 0; j < n; j++) {
         if (Mat.getELMT(i, j) == -0.0) {
           Mat.setELMT(i, j, 0.0);
-        double element = this.getELMT(i, j);
-        System.out.printf(String.format("%.4f", (myUtils.setPrec(element, 5))));
-        System.out.print(" ");
+          double element = Mat.getELMT(i, j);
+          System.out.printf(String.format("%.4f", (myUtils.setPrec(element, 5))));
+          System.out.print(" ");
         }
         System.out.print(Mat.getELMT(i, j) + " ");
       }
@@ -601,6 +598,7 @@ public class Matrix {
       multipliedRow[j] = scale*getELMT(row, j);
     }
     return multipliedRow;
+  }
 
   Matrix multiplyMatrix(Matrix M2) {
     Matrix MHasil = new Matrix(this.getRow(), M2.getCol());

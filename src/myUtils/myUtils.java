@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class myUtils {
     private static Scanner scanner = new Scanner(System.in);
 
-<<<<<<< HEAD
     // Mengembalikan nilai true jika ingin melakukan input dari file dan false jika tidak.
     // Input akan diulangi hingga masukan dari user valid.
     public static boolean inputSrcValidation(){
@@ -38,14 +37,12 @@ public class myUtils {
             }
         }
         return fromFile ;
-=======
-
+    }
     // Membuat presisi sebuah double sesuai dengan decPlaces
     public static double setPrec(double num, int decPlaces) {
         BigDecimal bd = new BigDecimal(num).setScale(decPlaces, RoundingMode.HALF_UP);
         double res = bd.doubleValue();
         return res;
->>>>>>> d39ac29d29d73cb72986734671a20996e4e241e5
     }
 
     // return convert dari string ke double
@@ -68,20 +65,12 @@ public class myUtils {
         boolean pathValid = false;
 
         // buat matrix res dengan colom 1000 dan row 1000 dan elemennya belum diisi
-<<<<<<< HEAD
         Matrix res = new Matrix(0, 0); 
         res.setCol(1000); res.setRow(1000); res.setMat(1000, 1000);
 
         // validasi file masukan user
         fileName = scanner.nextLine();
         while (!pathValid){
-=======
-        Matrix res = new Matrix(0, 0);
-        res.setCol(1000);
-        res.setRow(1000);
-        res.setMat(1000, 1000);
-        while (!pathValid) {
->>>>>>> d39ac29d29d73cb72986734671a20996e4e241e5
             System.out.print("Masukkan nama file: ");
             fileName = scanner.nextLine();
             try {
@@ -98,13 +87,8 @@ public class myUtils {
                     for (int j = 0; j < temp.length; j++) {
                         val = myUtils.strToDouble(temp[j]);
                         if (Double.isNaN(val)) {
-<<<<<<< HEAD
                             System.out.println("Tolong input ulang file yang berisi nilai double yang valid.\n");
                             fileContentValid = false ;
-=======
-                            System.out.println("Tolong input ulang file yang berisi nilai double yang valid.");
-                            fileContentValid = false;
->>>>>>> d39ac29d29d73cb72986734671a20996e4e241e5
                             break;
                         } else
                             res.setELMT(i, j, val);
@@ -119,12 +103,7 @@ public class myUtils {
                 }
 
             } catch (FileNotFoundException e) {
-<<<<<<< HEAD
                 System.out.println("File tidak ditemukan. Harap pastikan nama file benar dan file berada di dalam folder D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\n");
-=======
-                System.out.println(
-                        "File tidak ditemukan. Harap pastikan nama file benar dan file berada di dalam folder ..\\test\\input");
->>>>>>> d39ac29d29d73cb72986734671a20996e4e241e5
             }
         }
         return res;
