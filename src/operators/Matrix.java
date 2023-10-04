@@ -2,6 +2,10 @@ package operators;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+//import org.jcp.xml.dsig.internal.dom.Utils;
+
+import myUtils.myUtils;
+
 public class Matrix {
   private static Scanner scan = new Scanner(System.in);
 
@@ -134,13 +138,14 @@ public class Matrix {
     setRowELMT(row1, getRowELMT(row2));
     setRowELMT(row2, temp);
   }
-
+  
+  // TUGAS SET PRESISI
   public void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
     for (int j = 0; j < getCol(); j++) {
-      System.out.printf("%f - %f = %f\n", getELMT(row, j), (getELMT(subtractorRow, j) * subtractorMagnitude), getELMT(row, j) - (getELMT(subtractorRow, j) * subtractorMagnitude));
       setELMT(row, j, getELMT(row, j) - (getELMT(subtractorRow, j) * subtractorMagnitude));
+      // handle negative zero values
+      if (getELMT(row, j) == -0.0) setELMT(row, j, 0.0);
     }
-    printMatrix(this);
   }
 
   // jadi, tidak perlu memakai atribut isSquare
@@ -160,7 +165,7 @@ public class Matrix {
           MinorMat.setELMT(i, j, Mat.getELMT(i + 1, j));
         } else if (j >= col) {
           MinorMat.setELMT(i, j, Mat.getELMT(i, j + 1));
-        } else if (i < row && j < col) {
+        } else { // i < row && j < col
           MinorMat.setELMT(i, j, Mat.getELMT(i, j));
         }
       }
@@ -191,7 +196,7 @@ public class Matrix {
       int j = 0;
       double det = 0;
       for (j = 0; j < Mat.getCol(); j++) {
-        int sign = ((j) % 2 == 0) ? 1 : -1;
+        int sign = ((j%2) == 0)? 1 : -1;
         det += sign * Mat.getELMT(0, j) * detKofaktor(Matrix.getMinorMat(Mat, 0, j)); // getKofaktor(Matrix.getMinorMat)
       }
 
@@ -200,10 +205,13 @@ public class Matrix {
     }
   }
 
-  public static double detMatrixSegitiga(Matrix Mat) {
+  public static double detMatrixSegitiga(Matrix MatTemp) {
     // prekondisi not isAugmented
-    // check isSquare 
-      if (!(Mat.isSquare())) {
+    // check isSquare
+    Matrix Mat = new Matrix(MatTemp.getRow(), MatTemp.getCol());
+    Mat.copyMatrix(MatTemp);
+
+    if (!(Mat.isSquare())) {
       System.out.println("Determinan tidak ada karena bukan matrix persegi");
       return Double.NaN ;
     }
@@ -236,8 +244,10 @@ public class Matrix {
     // Terbentuk matrix segitiga bawah
     int l;
     det = (cntSwap % 2 == 0) ? 1 : -1;
+    printMatrix(Mat);
     for (l = 0; l < Mat.getRow(); l++) {
       det *= Mat.getELMT(l, l);
+      System.out.printf("%f ", det);
     }
 
     // special case
@@ -254,19 +264,24 @@ public class Matrix {
     int i, j;
     for (i = 0; i < Madj.getRow(); i++) {
       for (j = 0; j < Madj.getCol(); j++) {
-        Madj.setELMT(i, j, getKofaktor(this, i, j));
+        // LUPA SIGN ISTIGHFAR TT
+        int sign = ((i+j)%2 == 0) ? 1 : -1; 
+        Madj.setELMT(i, j, sign*getKofaktor(this, i, j));
       }
     }
     Madj.transpose();
     return Madj;
   }
-
+  
+  // TUGASSSS SET PRESISI DI SINI
   public void scalarMultiply(double scale) { // Mengalikan Matrix dengan konstanta scale
     int i, j;
     for (i = 0; i < getRow(); i++) {
       for (j = 0; j < getCol(); j++) {
         setELMT(i, j, getELMT(i, j) * scale);
-        //SET PRESIIIIIIIIISIIIIIII
+        // handle negative zero values
+        if (getELMT(j, i) == -0.0) setELMT(j, i, 0.0);
+        //SET PRESIIIIIIIIISIIIIIII INI AKHIRAN INVERSEKSKOF
       }
     }
   }
@@ -276,9 +291,16 @@ public class Matrix {
     // Check isSquare || isSquare whenever this isAugmented
     if (getCol() == getRow() || getCol() == getRow()+1) {
       // KAMUS LOKAL
-      double det = detMatrixSegitiga(this);
+      // NJIR CUMA GARA2 DET INI JADI FUNGSI TAPI PROSEDUR JUGA, TERNYATA POINTER DI C BERGUNA :")"
+      if (getCol() == getRow()+1) setCol(getRow());
+      // double det = detMatrixSegitiga(this);
+      double det = detKofaktor(this);
+      
+      // printMatrix(this);
       if (det != 0) {
         Matrix invMat = this.getAdj();
+        System.out.printf("adjoinnya (sblm dibagi det %f): \n", det);
+        printMatrix(invMat);
     
         // ALGORITMA
         invMat.scalarMultiply(1 / det);
@@ -292,7 +314,7 @@ public class Matrix {
   }
 
   // Prosedur eliminasi Gauss untuk operasi augmented matrix [I A] ke tujuan
-  // invers [A^-1 I]
+  // invers [A^-1 I] SET PRESISI DI SINI JUGA
   public void pMultRow(int row, double scale) {
     for (int j = 0; j < this.getCol(); j++) {
       // by default, ini udah ada this.
@@ -333,10 +355,12 @@ public class Matrix {
         // terbentuk leading 1 pada baris tsb.
         for (int j = i + 1; j < getRow(); j++) {
           this.subtractRow(j, i, getELMT(j, i));
-          // handle negative zero values
-          if (getELMT(j, i) == -0.0) setELMT(j, i, 0.0);
         }
       }
+      // } else { // ELSE KASUS PRARAMETRIK SESUAI KETERANGAN SEBELUM BLOK IF INI
+      //   System.out.println("Ini di dalam metode strict Gauss:\nMatriks tidak memiliki solusi unik/merupakan matriks singular alias tidak memiliki invers/determinannya 0, ");
+      //   System.out.println("Sehingga matriks tidak dapat menggunakan metode strict berikut yang menghasilkan matriks leading 1 yang terdiagonalisasi sempurna.");
+      // }
     }
   }
 
@@ -378,7 +402,10 @@ public class Matrix {
     boolean hasInverse = true;
     Matrix AugmentedMatrix = new Matrix(getRow(), 2*getRow());
     Matrix InverseMatrix = new Matrix(getRow(), getRow());
-
+    
+    if (getCol() == getRow()+1) setCol(getRow());
+    // System.out.printf("%d %d", getRow(), getCol());
+    // printMatrix(this);
     // System.out.printf("%d %d\n", getRow(), getCol());
     // toSquareMatrix();
     // Check isSquare || isSquare whenever this isAugmented
@@ -473,7 +500,9 @@ public class Matrix {
     n = Mat.getCol();
     for (i = 0; i < m; i++) {
       for (j = 0; j < n; j++) {
-        System.out.print(Mat.getELMT(i, j) + " ");
+        double element = this.getELMT(i, j);
+        System.out.printf(String.format("%.4f", (myUtils.setPrec(element, 8))));
+        System.out.print(" ");
       }
       System.out.println();
     }

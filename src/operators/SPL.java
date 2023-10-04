@@ -37,7 +37,7 @@ public class SPL {
       if (countZero == matrix.getCol() - 1) { // Tidak memiliki solusi
         isNoSolution = matrix.getELMT(i, matrix.getCol() - 1) != 0;
       } else {
-        if (matrix.getELMT(i, matrix.getCol() - 1) != 0 || matrix.isSquare) { // Memiliki solusi unik / tunggal
+        if (matrix.getELMT(i, matrix.getCol() - 1) != 0 || matrix.isSquare()) { // Memiliki solusi unik / tunggal
           // Subtitusi mundur
           for (int p = rootSolution.length - 1; p >= 0; p--) {
             double sum = 0;
@@ -103,7 +103,7 @@ public class SPL {
       if (countZero == matrix.getCol() - 1) { // Tidak memiliki solusi
         isNoSolution = matrix.getELMT(i, matrix.getCol() - 1) != 0;
       } else {
-        if (matrix.getELMT(i, matrix.getCol() - 1) != 0 || matrix.isSquare) { // Memiliki solusi unik / tunggal
+        if (matrix.getELMT(i, matrix.getCol() - 1) != 0 || matrix.isSquare()) { // Memiliki solusi unik / tunggal
           // Subtitusi mundur
           for (int p = rootSolution.length - 1; p >= 0; p--) {
             double sum = 0;

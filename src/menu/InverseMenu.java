@@ -72,10 +72,10 @@ public class InverseMenu {
         if (inputValid){
             try {
                 if (inverseMatrix == null) {
-                    System.out.println("Matriks persegi di atas tidak memiliki invers");
-                } else if (inverseMatrix.getRow() == 0) {
                     System.out.println("Matriks tersebut bukan matriks persegi ataupun matriks augmented yang berbentuk persegi");
-                } else {
+                } else if (inverseMatrix.getRow() == 0) {
+                    System.out.println("Matriks persegi di atas tidak memiliki invers");
+                } else { // HANYA MINTA INPUT KE FILE KALAU ADA SOLUSI
                     System.out.println("Matriks balikan: ");
                     Matrix.printMatrix(inverseMatrix);
                     myUtils.matrixToFile(inverseMatrix);

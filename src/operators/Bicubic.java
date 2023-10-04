@@ -1,5 +1,5 @@
 package operators;
-// import operators.Matrix;
+
 import java.io.*;
 import java.lang.Math;
 import java.util.*;
@@ -7,37 +7,17 @@ import myUtils.myUtils;
 
 public class Bicubic {
   private static Scanner scanner = new Scanner(System.in);
-  // public static void main(String[] args){
-  //   printMatrix(getBicubicPolynomialMatrix());
-  //   printMatrix(getInverseBicubicPolynomialMatrix());
-  //   printMatrix(getImageMatrix());
-  //   printMatrix(getInverseBicubicPolynomialMatrix().mult(getImageMatrix()));
-  // }
-  // public static void main(String[] args){
-  //   // printMatrix(getBicubicPolynomialMatrix());
-  //   // printMatrix(getInverseBicubicPolynomialMatrix());
-  //   // printMatrix(getImageMatrix());
-  //   // printMatrix(getInverseBicubicPolynomialMatrix().mult(getImageMatrix()));
-  //   Matrix m = new Matrix(2, 2);
-  //   m.readMatrix(2, 2);
-  //   printMatrix(m);
-  //   m.inverseGaussJordan();
-  //   // m.getAdj();
-  //   printMatrix(m.inverseGaussJordan());
-  // }
 
-
-  public static void printMatrix(Matrix Mat) {
-    // RAPIHIN KALO ADA minus diprint
-    int i, j, n, m;
-    n = Mat.getCol();
-    m = Mat.getRow();
-    for (i = 0; i < n; i++) {
-      for (j = 0; j < m; j++) {
-        System.out.print(Mat.getELMT(i, j) + " ");
-      }
-      System.out.println();
-    }
+  public static void main(String[] args){
+    Matrix.printMatrix(getBicubicPolynomialMatrix());
+    Matrix.printMatrix(getInverseBicubicPolynomialMatrix());
+    Matrix.printMatrix(getImageMatrix());
+    Matrix.printMatrix(getInverseBicubicPolynomialMatrix().mult(getImageMatrix()));
+    Matrix m = new Matrix(2, 2);
+    m.readMatrix(2, 2);
+    Matrix.printMatrix(m);
+    m.inverseGaussJordan();
+    Matrix.printMatrix(m.inverseGaussJordan());
   }
   
   public static Matrix getBicubicPolynomialMatrix() {
@@ -230,7 +210,7 @@ public class Bicubic {
       b = fMat.getELMT(4, 1);
       fMat.setRow(4);
       fMat.inverseGaussJordan();
-      printMatrix(fMat);
+      Matrix.printMatrix(fMat);
       // System.out.println("HALLO");
     } else {
       fMat.readMatrix(4, 4);
@@ -252,51 +232,4 @@ public class Bicubic {
         }
     }
   }
-
-//   public void menu() {
-//     // String input ="""
-//     //   Masukkan konfigurasi nilai fungsi dan turunan berarah di sekitarnya,\n
-//     //   diikuti dengan nilai a dan b untuk mencari taksiran f(a, b): \n
-//     // """;
-//     String bicubicOutput = "";
-//     Matrix fMat = new Matrix(16, 1);
-//     double a = 0, b = 0;
-//     int inputMode = 0;
-
-//     System.out.println("                          ANDA BERADA DI SUBMENU INTERPOLASI BICUBIC SPLINE");
-//     System.out.println("""
-//       1. Keyboard input
-//       2. File input
-//       Masukkan pilihan mode input: """);
-//     try {
-//       inputMode = scanner.nextInt();
-//     } catch (Exception e) {
-//       e.printStackTrace();
-//     }
-
-//     if (inputMode == 1) {
-//       System.out.println(input);
-//       for (int i = 0; i < 4; i++) {
-//         for (int j = 0; j < 4; j++) {
-//           fMat.setELMT(4*i+j, 0, scanner.nextDouble());
-//         }
-//       }
-//       a = scanner.nextDouble();
-//       b = scanner.nextDouble();
-//     } else if (inputMode == 2) {
-//       InputOutput.readBicubicInputText(bicubicOutput, fMat, a, b);
-//     } else {
-//       System.out.println("Input tidak valid, hanya bisa memilih mode 1 atau 2.");
-//     }
-
-//     if (inputMode == 1 || inputMode == 2) {
-//       double taksir = getBicubicFunctionValue(fMat, a, b);
-//       // bicubicOutput += "Nilai taksirannya adalah ";
-//       bicubicOutput = "f(" + a + ", " + b + ") = " + taksir;
-//       System.out.println(bicubicOutput);
-//       // auto output ke txt juga, koefisien a tidak dioutputkan
-//       bicubicOutput = "Konfigurasi nilai fungsi dan turunan berarah di sekitarnya" + InputOutput.matrixToString(fMat) + "a = " + a + ", b = " + b + "\n" + bicubicOutput;
-//       InputOutput.writeOutputText(bicubicOutput);
-//     }
-//   }
 }

@@ -2,11 +2,21 @@ package myUtils;
 
 import operators.*;
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 
 
 public class myUtils {
     private static Scanner scanner = new Scanner(System.in);
+
+    // Membuat presisi sebuah double sesuai dengan decPlaces
+    public static double setPrec(double num, int decPlaces) {
+        BigDecimal bd = new BigDecimal(num).setScale(decPlaces, RoundingMode.HALF_UP);
+        double res = bd.doubleValue();
+        return res;
+    }
+
     // return convert dari string ke double
     public static double strToDouble(String str) {
         try {
@@ -25,8 +35,8 @@ public class myUtils {
         fileName = scanner.nextLine();
 
         // buat matrix res dengan colom 1000 dan row 1000 dan elemennya belum diisi
-        Matrix res = new Matrix(0, 0); 
-        res.setCol(1000); res.setRow(1000); res.setMat(1000, 1000);
+        Matrix res = new Matrix(1000, 1000); 
+        // res.setCol(1000); res.setRow(1000); res.setMat(1000, 1000);
         try {
             File file = new File("..\\test\\input\\" + fileName);
             System.out.println(file);
@@ -47,6 +57,7 @@ public class myUtils {
             fScanner.close();
             // System.out.printf("%d %d\n", res.getRow(), res.getCol());
         } catch (FileNotFoundException e) {
+            res = new Matrix(0, 0);
             System.out.println(e.getMessage());
         }
         return res;
