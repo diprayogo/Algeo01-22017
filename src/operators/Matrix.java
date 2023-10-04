@@ -3,10 +3,6 @@ package operators;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-//import org.jcp.xml.dsig.internal.dom.Utils;
-
-import myUtils.myUtils;
-
 public class Matrix {
   private static Scanner scan = new Scanner(System.in);
 
@@ -579,24 +575,6 @@ public class Matrix {
       }
     }
     return MHasil;
-  }
-
-  // Operasi- operasi Matrix lain
-  // + 2 OBE Procedures, buat bandingkan
-  public void addRow(int row, int row2, double scale) {
-    for (int j = 0; j < this.getCol(); j++) {
-      setELMT(row, j, getELMT(row, j) + scale*getELMT(row2, j));
-    } // Langsung pakai multipliedRowELMT
-  }
-
-  // Ambil suatu baris dikali konstanta
-  public double[] multipliedRowELMT(int row, double scale) {
-    double[] multipliedRow = new double[this.getCol()];
-    // aku pakai declare iterator dalam blok for
-    for (int j = 0; j < this.getCol(); j++) {
-      multipliedRow[j] = scale*getELMT(row, j);
-    }
-    return multipliedRow;
   }
 
   void divideRow(int row, double divisor) {

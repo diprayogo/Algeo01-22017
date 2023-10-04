@@ -78,17 +78,19 @@ public class InterpolasiPolinom {
     result = String.format("Polinom interpolasi yang melalui ke-%d buah titik tersebut adalah p_%d(x) = ",
         matrixPoint.getRow(), matrixPoint.getRow() - 1);
     for (int i = 0; i < rootSolution.length; i++) {
-      if (i == 0) {
-        result += String.format("%.4f", rootSolution[i]);
-      } else if (rootSolution[i] < 0) {
-        result += " - " + String.format("%.4f", rootSolution[i] * -1);
-      } else {
-        result += " + " + String.format("%.4f", rootSolution[i]);
-      }
-      if (i != 0 && i == 1) {
-        result += "x";
-      } else if (i > 1) {
-        result += "x^" + i;
+      if (rootSolution[i] > 0.000000001 || rootSolution[i] < -0.000000001) {
+        if (i == 0) {
+          result += String.format("%.4f", rootSolution[i]);
+        } else if (rootSolution[i] < 0) {
+          result += " - " + String.format("%.4f", rootSolution[i] * -1);
+        } else {
+          result += " + " + String.format("%.4f", rootSolution[i]);
+        }
+        if (i != 0 && i == 1) {
+          result += "x";
+        } else if (i > 1) {
+          result += "x^" + i;
+        }
       }
     }
 
