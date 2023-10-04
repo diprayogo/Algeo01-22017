@@ -4,6 +4,7 @@
 import java.util.Scanner;
 
 import menu.DeterminantMenu;
+import menu.InterpolasiMenu;
 import menu.InverseMenu;
 import menu.RegresiMenu;
 import operators.*;
@@ -59,21 +60,20 @@ public class Main {
           InverseMenu.menu();
           break; // REDIRECT KE INVERS, DST.
         case 4:
-          InterpolasiPolinom interpolasi = new InterpolasiPolinom();
-          interpolasi.menuInterpolasi();
+          InterpolasiMenu.menu();
           break;
         case 5:
           Bicubic bicubic = new Bicubic();
           bicubic.menuBicubic();
           break;
-        case 6: 
+        case 6:
 
           RegresiMenu.menu();
           break;
 
         case 7:
           System.out.println("TERIMA KASIH SUDAH MENGGUNAKAN KALKULATOR MATRIX");
-        isRunning = false;
+          isRunning = false;
           break; // DEFAULT TIDAK PERLU, sudah dicheck di pilih Menu
       }
     }
