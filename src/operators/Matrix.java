@@ -1,4 +1,5 @@
 package operators;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -86,7 +87,7 @@ public class Matrix {
     this.Mat[i][j] = val;
   }
 
-  public void setMat(int row, int col){
+  public void setMat(int row, int col) {
     this.Mat = new double[row][col];
   }
 
@@ -165,7 +166,7 @@ public class Matrix {
           MinorMat.setELMT(i, j, Mat.getELMT(i + 1, j));
         } else if (j >= col) {
           MinorMat.setELMT(i, j, Mat.getELMT(i, j + 1));
-        } else { // i < row && j < col
+        } else { // i < a && j < b
           MinorMat.setELMT(i, j, Mat.getELMT(i, j));
         }
       }
@@ -187,7 +188,7 @@ public class Matrix {
     // check isSquare
     if (!(Mat.isSquare())) {
       System.out.println("Determinan tidak ada karena bukan matrix persegi");
-      return Double.NaN ;
+      return Double.NaN;
     }
 
     if (Mat.getCol() == 1) { // Basis
@@ -213,9 +214,9 @@ public class Matrix {
 
     if (!(Mat.isSquare())) {
       System.out.println("Determinan tidak ada karena bukan matrix persegi");
-      return Double.NaN ;
+      return Double.NaN;
     }
-    
+
     double det, subtractorMagnitude;
     int i = 0, j = 0, cntSwap = 0, k;
 
@@ -464,6 +465,9 @@ public class Matrix {
   // ------------------------------ Mencari SPL ----------------------------//
   // class SPL dibikinin Dabbir
 
+  // ------------------------------ Mencari Regresi Linier Berganda
+  // ----------------------------//
+
   // ------------------------------ IO ------------------------------//
   public void readMatrix(int row, int col) {
     int i, j;
@@ -474,6 +478,28 @@ public class Matrix {
         setELMT(i, j, scan.nextDouble());
       }
     }
+  }
+
+  public static Matrix readMatNXM() {
+    System.out.printf("\nAnda akan menginput matriks augmented dengan ukuran n x m.\n");
+    System.out.print("Masukkan jumlah n: ");
+    int nRow = 0;
+    try {
+      nRow = scan.nextInt();
+    } catch (InputMismatchException e) {
+      e.printStackTrace();
+    }
+    System.out.print("Masukkan jumlah m: ");
+    int nCol = 0;
+    try {
+      nCol = scan.nextInt();
+    } catch (InputMismatchException e) {
+      e.printStackTrace();
+    }
+    Matrix matrixAugmented = new Matrix(nRow, nCol);
+    matrixAugmented.readMatrix(nRow, nCol);
+
+    return matrixAugmented;
   }
 
   public static Matrix readMatSquare() {
@@ -500,9 +526,13 @@ public class Matrix {
     n = Mat.getCol();
     for (i = 0; i < m; i++) {
       for (j = 0; j < n; j++) {
+        if (Mat.getELMT(i, j) == -0.0) {
+          Mat.setELMT(i, j, 0.0);
         double element = this.getELMT(i, j);
-        System.out.printf(String.format("%.4f", (myUtils.setPrec(element, 8))));
+        System.out.printf(String.format("%.4f", (myUtils.setPrec(element, 5))));
         System.out.print(" ");
+        }
+        System.out.print(Mat.getELMT(i, j) + " ");
       }
       System.out.println();
     }
@@ -590,4 +620,3 @@ public class Matrix {
     return detMatrixSegitiga(Mat) == 0;
   }
 }
-
