@@ -19,7 +19,7 @@ public class SPL {
       rootSolution[i] = 1;
     }
 
-    Matrix.printMatrix(matrix);
+    // Matrix.printMatrix(matrix);
 
     if (isNoSolution(matrix)) {
       result = "SPL tidak memiliki solusi";
@@ -88,7 +88,7 @@ public class SPL {
       rootSolution[i] = 1;
     }
 
-    Matrix.printMatrix(matrix);
+    // Matrix.printMatrix(matrix);
 
     if (isNoSolution(matrix)) {
       result = "SPL tidak memiliki solusi";
@@ -142,24 +142,26 @@ public class SPL {
   // 3. Inverse Method
   public static String metodeInverse(Matrix matrix) {
     String result = new String();
+    if (matrix.getRow() == matrix.getCol() - 1) {
 
-    Matrix matSquare = new Matrix(matrix.getRow(), matrix.getCol() - 1);
-    Matrix b = new Matrix(matrix.getRow(), 1);
-    int col = matrix.getCol() - 1;
+      Matrix matSquare = new Matrix(matrix.getRow(), matrix.getCol() - 1);
+      Matrix b = new Matrix(matrix.getRow(), 1);
+      int col = matrix.getCol() - 1;
 
-    // Mengambil matriks square
-    for (int i = 0; i < matSquare.getRow(); i++) {
-      for (int j = 0; j < matSquare.getCol(); j++) {
-        matSquare.setELMT(i, j, matrix.getELMT(i, j));
+      // Mengambil matriks square
+      for (int i = 0; i < matSquare.getRow(); i++) {
+        for (int j = 0; j < matSquare.getCol(); j++) {
+          matSquare.setELMT(i, j, matrix.getELMT(i, j));
+        }
       }
-    }
 
-    // Mengambil b dari matriks augmented
-    for (int i = 0; i < b.getRow(); i++) {
-      b.setELMT(i, 0, matrix.getELMT(i, col));
-    }
+      // Mengambil b dari matriks augmented
+      for (int i = 0; i < b.getRow(); i++) {
+        b.setELMT(i, 0, matrix.getELMT(i, col));
+      }
 
-    if (matSquare.isSquare) {// Mencari invers dari matriks dan mengalikan dengan b
+      // Matrix.printMatrix(matSquare);
+
       Matrix inversMat = matSquare.inverseGaussJordan();
       Matrix rootSolution = inversMat.mult(b);
 
@@ -177,46 +179,27 @@ public class SPL {
   // 4. Kaidah Cramer
   public static String kaidahCramer(Matrix matrix) {
     String result = new String();
+    if (matrix.getRow() == matrix.getCol() - 1) {
 
-    Matrix matSquare = new Matrix(matrix.getRow(), matrix.getCol() - 1);
-    Matrix b = new Matrix(matrix.getRow(), 1);
-    int col = matrix.getCol() - 1;
+      Matrix matSquare = new Matrix(matrix.getRow(), matrix.getCol() - 1);
+      Matrix b = new Matrix(matrix.getRow(), 1);
+      int col = matrix.getCol() - 1;
 
-    // Mengambil matriks square
-    for (int i = 0; i < matSquare.getRow(); i++) {
-      for (int j = 0; j < matSquare.getCol(); j++) {
-        matSquare.setELMT(i, j, matrix.getELMT(i, j));
+      // Mengambil matriks square
+      for (int i = 0; i < matSquare.getRow(); i++) {
+        for (int j = 0; j < matSquare.getCol(); j++) {
+          matSquare.setELMT(i, j, matrix.getELMT(i, j));
+        }
       }
-    }
-    // Menyimpan matriks square ke temporary
-    Matrix tempMatrix = Matrix.copyMatrix2(matSquare);
-    Matrix tempMatrix2 = Matrix.copyMatrix2(matSquare);
+      // Menyimpan matriks square ke temporary
+      Matrix tempMatrix = Matrix.copyMatrix2(matSquare);
+      Matrix tempMatrix2 = Matrix.copyMatrix2(matSquare);
 
-    // Mengambil b dari matriks augmented
-    for (int i = 0; i < b.getRow(); i++) {
-      b.setELMT(i, 0, matrix.getELMT(i, col));
-    }
+      // Mengambil b dari matriks augmented
+      for (int i = 0; i < b.getRow(); i++) {
+        b.setELMT(i, 0, matrix.getELMT(i, col));
+      }
 
-    // boolean isNoSolution = false;
-    // boolean isNonUnique = false;
-    // for (int i = matrix.getRow() - 1; i >= 0; i--) {
-    // int countZero = 0;
-    // for (int j = 0; j < matrix.getCol() - 1; j++) { // Menghitung kemunculan
-    // angka 0
-    // if (matrix.getELMT(i, j) == 0) {
-    // countZero++;
-    // }
-    // }
-    // if (countZero == matrix.getCol() - 1) {
-    // if (matrix.getELMT(i, matrix.getCol() - 1) != 0) {
-    // isNoSolution = true; // Tidak memiliki solusi
-    // } else {
-    // isNonUnique = true; // Solusi parametrik
-    // }
-    // }
-    // }
-
-    if (matSquare.isSquare || matrix.getRow() != matrix.getCol() - 1) {
       // Mencari determinan matriks square A
       double detA = Matrix.detMatrixSegitiga(tempMatrix2);
       double tempDet;
