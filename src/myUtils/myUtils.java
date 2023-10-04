@@ -8,36 +8,6 @@ import java.util.Scanner;
 
 public class myUtils {
     private static Scanner scanner = new Scanner(System.in);
-
-    // Mengembalikan nilai true jika ingin melakukan input dari file dan false jika tidak.
-    // Input akan diulangi hingga masukan dari user valid.
-    public static boolean inputSrcValidation(){
-        boolean inputValid = false, fromFile = true;
-        int inputSrc = 0;
-        System.out.println("1. Masukan dari file");
-        System.out.println("2. Masukan dari keyboard ");
-        while (!inputValid) {
-            System.out.print("Pilih Sumber input : ");
-            try {
-                inputSrc = scanner.nextInt();
-                switch (inputSrc) {
-                case 1: // fromFile = true;
-                    inputValid = true;
-                    break;
-                case 2:
-                    inputValid = true;
-                    fromFile = false;
-                    break;
-                default:
-                    System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
-                }
-            } catch (Exception e) {
-                scanner.nextLine();
-                System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
-            }
-        }
-        return fromFile ;
-    }
     // Membuat presisi sebuah double sesuai dengan decPlaces
     public static double setPrec(double num, int decPlaces) {
         BigDecimal bd = new BigDecimal(num).setScale(decPlaces, RoundingMode.HALF_UP);
@@ -69,13 +39,12 @@ public class myUtils {
         res.setCol(1000); res.setRow(1000); res.setMat(1000, 1000);
 
         // validasi file masukan user
-        fileName = scanner.nextLine();
         while (!pathValid){
             System.out.print("Masukkan nama file: ");
             fileName = scanner.nextLine();
             try {
                 File file = new File(
-                        "D:\\⭐⭐Kuliah Informatika⭐⭐\\Algeo\\Tubes\\Algeo01-22017\\test\\input\\" + fileName);
+                        "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\\" + fileName);
                 Scanner fScanner = new Scanner(file);
                 int i = 0, realCol = 0; // realcol adalah banyak kolom baris pertama matrix.
                 double val = 0;
@@ -121,7 +90,7 @@ public class myUtils {
                 case "Y":
                     String path = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    path = "D:\\⭐⭐Kuliah Informatika⭐⭐\\Algeo\\Tubes\\Algeo01-22017\\test\\output\\"
+                    path = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\"
                             + scanner.nextLine()
                             + ".txt";
                     File file = new File(path);
@@ -141,7 +110,7 @@ public class myUtils {
                     } catch (IOException e) {
                         System.out.print(e.getMessage());
                     }
-                    System.out.printf("Anda telah menyimpan matrix ke %s", path);
+                    System.out.printf("Anda telah menyimpan matrix hasil ke %s", path);
                     isValid = true;
                     break;
                 case "N":
@@ -149,9 +118,12 @@ public class myUtils {
                     isValid = true;
                     break;
                 default:
-                    System.out.println("Masukan tidak valid. Mohon hanya masukkan (Y/N)\n");
+                    System.out.print("Masukan tidak valid. Mohon hanya masukkan (Y/N)\n");
             }
         }
+        // Tunggu input pengguna sebelum kembali ke menu utama
+        System.out.println("\nTekan Enter untuk kembali ke menu utama...");
+        scanner.nextLine();
     }
 
     // I.S. : String s terdefinisi
@@ -161,13 +133,14 @@ public class myUtils {
         System.out.println();
         boolean isValid = false;
         System.out.print("Apakah Anda ingin menyimpan hasil ke dalam sebuah file (Y/N)? ");
-        String validation = (scanner.nextLine()).toUpperCase();
+        String validation ;
         while (!isValid) {
+            validation = (scanner.nextLine()).toUpperCase();
             switch (validation) {
                 case "Y":
                     String path = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    path = "D:\\⭐⭐Kuliah Informatika⭐⭐\\Algeo\\Tubes\\Algeo01-22017\\test\\output\\"
+                    path = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\"
                             + scanner.nextLine()
                             + ".txt";
                     File file = new File(path);
@@ -178,7 +151,7 @@ public class myUtils {
                     } catch (IOException e) {
                         System.out.print(e.getMessage());
                     }
-                    System.out.printf("Anda telah menyimpan string ke %s\n", path);
+                    System.out.printf("Anda telah menyimpan string hasil ke %s", path);
                     isValid = true;
                     break;
                 case "N":
@@ -186,10 +159,12 @@ public class myUtils {
                     isValid = true;
                     break;
                 default:
-                    System.out.println("Input tidak dikenali. Mohon hanya masukkan (Y/N)");
+                    System.out.print("\nInput tidak dikenali. Mohon hanya masukkan (Y/N)");
                     break;
             }
         }
-        System.out.println();
+        // Tunggu input pengguna sebelum kembali ke menu utama
+        System.out.println("\nTekan Enter untuk kembali ke menu utama...");
+        scanner.nextLine();
     }
 }

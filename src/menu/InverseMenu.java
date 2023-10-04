@@ -10,12 +10,34 @@ public class InverseMenu {
         System.out.println();
         System.out.println("                          ANDA BERADA DI SUBMENU MATRIKS BALIKAN");
         
-        boolean inputValid = false, fromFile;
-        fromFile = myUtils.inputSrcValidation();
+        boolean inputValid = false, fromFile = true;
+        int inputSrc = 0;
+        System.out.println("1. Masukan dari file");
+        System.out.println("2. Masukan dari keyboard ");
+        while (!inputValid) {
+            System.out.print("Pilih Sumber input : ");
+            try {
+                inputSrc = scanner.nextInt();
+                switch (inputSrc) {
+                case 1: // fromFile = true;
+                    inputValid = true;
+                    break;
+                case 2:
+                    inputValid = true;
+                    fromFile = false;
+                    break;
+                default:
+                    System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+                }
+            } catch (Exception e) {
+                scanner.nextLine();
+                System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+            }
+        }
 
         Matrix inverseMatrix = new Matrix(1, 1); // will be re-initialized
         int method = 0;
-
+        inputValid = false ; //  re-assign untuk validasi metode
         System.out.println("\n1. Ekspansi Kofaktor");
         System.out.println("2. Gauss-Jordan"); // Matriks Augmented bersama Matriks Identitas
         while (!inputValid){
@@ -56,7 +78,5 @@ public class InverseMenu {
         }
         System.out.println(inverseOutput);
         myUtils.strToFile(inverseOutput);
-        System.out.println("\n"); // output .txt juga
-        
     }  
 }
