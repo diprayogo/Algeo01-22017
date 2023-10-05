@@ -31,7 +31,7 @@ public class InterpolasiPolinom {
     return sum;
   }
 
-  public static String inputFromFile(boolean fromFile) {
+  public static String isInterpolasiFromFile(boolean fromFile) {
     String result = new String();
     Matrix matrixPoint = new Matrix(0, 0);
     double titik = 0;
@@ -75,35 +75,41 @@ public class InterpolasiPolinom {
 
     double taksir = taksirNilai(rootSolution, titik);
 
-    result = String.format("Polinom interpolasi yang melalui ke-%d buah titik tersebut adalah p_%d(x) = ",
+    // Mencetak polinomial interpolasi
+    result = String.format("Polinom interpolasi yang melalui ke-%d buah titik tersebut adalah\np_%d(x) = ",
         matrixPoint.getRow(), matrixPoint.getRow() - 1);
-    for (int i = 0; i < rootSolution.length; i++) {
-      if (rootSolution[i] > 0.000000001 || rootSolution[i] < -0.000000001) {
-        if (i == 0) {
-          result += String.format("%.4f", rootSolution[i]);
-        } else if (rootSolution[i] < 0) {
-          result += " - " + String.format("%.4f", rootSolution[i] * -1);
+
+    boolean isFirstTerm = true;
+
+    for (int i = rootSolution.length - 1; i >= 0; i--) {
+      if (rootSolution[i] != 0) {
+        if (!isFirstTerm) {
+          if (rootSolution[i] > 0) {
+            result += " + ";
+          } else {
+            result += " - ";
+          }
         } else {
-          result += " + " + String.format("%.4f", rootSolution[i]);
+          isFirstTerm = false;
+          if (rootSolution[i] < 0) {
+            result += "-";
+          }
         }
-        if (i != 0 && i == 1) {
+
+        double coef = Math.abs(rootSolution[i]);
+        if (i == 0) {
+          result += String.format("%.4f", coef);
+        } else {
+          result += String.format("%.4f", coef);
           result += "x";
-        } else if (i > 1) {
-          result += "x^" + i;
+          if (i > 1) {
+            result += "^" + (i);
+          }
         }
       }
     }
 
-    result += "\nf(" + titik + ") = ";
-    result += String.format("%.4f", taksir);
-
-    // System.out.println("Lanjut masukkan nilai x? : ");
-    // System.out.println("1. Ya");
-    // System.out.println("2. Tidak");
-    // int pil = scanner.nextInt();
-    // if (pil == 2) {
-    // isRunning = false;
-    // }
+    result += String.format("\np_%d(%.4f) = %.4f", matrixPoint.getRow() - 1, titik, taksir);
 
     return result;
 

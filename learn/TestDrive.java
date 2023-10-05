@@ -1,9 +1,8 @@
-package learn;
-import operators.*;
+// package operators;
 
-public class TestDrive {
-  public static void main(String[] args){
-    Matrix m = operators.Bicubic.getBicubicPolynomialMatrix();
-    operators.Matrix.printMatrix(m);
-  }
-}
+// public class TestDrive {
+//   public static void main(String[] args){
+//     Matrix m = operators.Bicubic.getBicubicPolynomialMatrix();
+//     operators.Matrix.printMatrix(m);
+//   }
+// }

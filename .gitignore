@@ -6,3 +6,6 @@
 
 # Ignore backup files
 *.bak
+
+#Ignore custom testing-file
+*.txt
