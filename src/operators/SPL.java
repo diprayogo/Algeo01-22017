@@ -3,9 +3,12 @@ package operators;
 public class SPL {
   // 1. Gauss Method
   // Prekondisi : Matrix augmented terdefinisi
-  // Mengembalikan string solusi dari persamaan linear yang diperoleh melalui metode eleminasi Gauss dan substitusi mundur/balik. 
-  // String xi = k + t1 + t2 + .. + ti dengan k adalah konstanta dan ti adalah parameter untuk i solusi, 
-  // jika SPL tidak memiliki solusi akan mengembalikan string “SPL tidak memiliki solusi“.
+  // Mengembalikan string solusi dari persamaan linear yang diperoleh melalui
+  // metode eleminasi Gauss dan substitusi mundur/balik.
+  // String xi = k + t1 + t2 + .. + ti dengan k adalah konstanta dan ti adalah
+  // parameter untuk i solusi,
+  // jika SPL tidak memiliki solusi akan mengembalikan string “SPL tidak memiliki
+  // solusi“.
   public static String metodeGauss(Matrix matrix) {
     String result = new String();
 
@@ -74,9 +77,12 @@ public class SPL {
   }
 
   // 2. Gauss Jordan Method
-  // Mengembalikan string solusi dari persamaan linear yang diperoleh melalui metode eleminasi Gauss-Jordan dan substitusi mundur/balik. 
-  // String xi = k + t1 + t2 + .. + ti  dengan k adalah konstanta dan ti adalah parameter untuk i solusi, 
-  // jika SPL tidak memiliki solusi akan mengembalikan string “SPL tidak memiliki solusi“.
+  // Mengembalikan string solusi dari persamaan linear yang diperoleh melalui
+  // metode eleminasi Gauss-Jordan dan substitusi mundur/balik.
+  // String xi = k + t1 + t2 + .. + ti dengan k adalah konstanta dan ti adalah
+  // parameter untuk i solusi,
+  // jika SPL tidak memiliki solusi akan mengembalikan string “SPL tidak memiliki
+  // solusi“.
   public static String metodeGaussJordan(Matrix matrix) {
     String result = new String();
 
@@ -100,6 +106,7 @@ public class SPL {
       result = "SPL tidak memiliki solusi";
     } else {
       if (isNonUnique(matrix) && matrix.getRow() < matrix.getCol()) {
+        matrix.strictGaussJordan();
         result = parametric(matrix);
       } else {
         if (matrix.getRow() > matrix.getCol()) {
@@ -145,9 +152,13 @@ public class SPL {
   }
 
   // 3. Inverse Method
-  // Prekondisi : Matrix augmented terdefinisi dan berukuran n x n+1 (Matrix A adalah persegi dan b)
-  // Mengembalikan string solusi dari persamaan linear yang diperoleh melalui metode matriks balikan atau inverse dengan x = A-1b, string xi = k dengan k adalah konstan. 
-  // Jika matriks A terdefinisi tidak persegi maka mengembalikan string “Matriks yang dimasukkan tidak bisa menggunakan metode Inverse”.
+  // Prekondisi : Matrix augmented terdefinisi dan berukuran n x n+1 (Matrix A
+  // adalah persegi dan b)
+  // Mengembalikan string solusi dari persamaan linear yang diperoleh melalui
+  // metode matriks balikan atau inverse dengan x = A-1b, string xi = k dengan k
+  // adalah konstan.
+  // Jika matriks A terdefinisi tidak persegi maka mengembalikan string Matriks
+  // yang dimasukkan tidak bisa menggunakan metode Inverse.
   public static String metodeInverse(Matrix matrix) {
     String result = new String();
     if (matrix.getRow() == matrix.getCol() - 1) {
@@ -189,12 +200,17 @@ public class SPL {
   }
 
   // 4. Kaidah Cramer
-  // Prekondisi : Matrix augmented terdefinisi dan berukuran n x n+1 (Matrix A adalah persegi dan b)
-  // Mengembalikan string solusi dari persamaan linear yang diperoleh melalui metode kaidah cramer 
-  // dengan xi = det(Aj) / det(A), det(A) ≠ 0 dalam hal ini Aj adalah matriks yang diperoleh dengan mengganti 
-  // entri pada kolom ke-j dengan entri dari matriks b , string xi = k dengan k adalah konstan. Jika matriks A 
-  // terdefinisi tidak persegi maka mengembalikan string “Matriks yang dimasukkan tidak bisa menggunakan metode Inverse”.
-  
+  // Prekondisi : Matrix augmented terdefinisi dan berukuran n x n+1 (Matrix A
+  // adalah persegi dan b)
+  // Mengembalikan string solusi dari persamaan linear yang diperoleh melalui
+  // metode kaidah cramer
+  // dengan xi = det(Aj) / det(A), det(A) ≠ 0 dalam hal ini Aj adalah matriks yang
+  // diperoleh dengan mengganti
+  // entri pada kolom ke-j dengan entri dari matriks b , string xi = k dengan k
+  // adalah konstan. Jika matriks A
+  // terdefinisi tidak persegi maka mengembalikan string Matriks yang dimasukkan
+  // tidak bisa menggunakan metode Inverse.
+
   public static String kaidahCramer(Matrix matrix) {
     String result = new String();
     if (matrix.getRow() == matrix.getCol() - 1) {

@@ -9,7 +9,38 @@ import java.util.Scanner;
 
 public class myUtils {
     private static Scanner scanner = new Scanner(System.in);
-    
+
+    // Mengembalikan nilai true jika ingin melakukan input dari file dan false jika
+    // tidak.
+    // Input akan diulangi hingga masukan dari user valid.
+    public static boolean inputSrcValidation() {
+        boolean inputValid = false, fromFile = true;
+        int inputSrc = 0;
+        System.out.println("1. Masukan dari file");
+        System.out.println("2. Masukan dari keyboard ");
+        while (!inputValid) {
+            System.out.print("Pilih Sumber input : ");
+            try {
+                inputSrc = scanner.nextInt();
+                switch (inputSrc) {
+                    case 1: // fromFile = true;
+                        inputValid = true;
+                        break;
+                    case 2:
+                        inputValid = true;
+                        fromFile = false;
+                        break;
+                    default:
+                        System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+                }
+            } catch (Exception e) {
+                scanner.nextLine();
+                System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+            }
+        }
+        return fromFile;
+    }
+
     // Membuat presisi sebuah double sesuai dengan decPlaces
     public static double setPrec(double num, int decPlaces) {
         BigDecimal bd = new BigDecimal(num).setScale(decPlaces, RoundingMode.HALF_UP);
@@ -17,7 +48,7 @@ public class myUtils {
         return res;
     }
 
-    // return convert dari string ke double yang divalidasi 
+    // return convert dari string ke double
     public static double strToDouble(String str) {
         try {
             return Double.parseDouble(str);
@@ -48,7 +79,7 @@ public class myUtils {
             fileName = scanner.nextLine();
             try {
                 File file = new File(
-                    "..\\test\\input\\" + fileName);
+                        "..\\test\\input\\" + fileName);
                 Scanner fScanner = new Scanner(file);
                 int i = 0, realCol = 0; // realcol adalah banyak kolom baris pertama matrix.
                 double val = 0;
