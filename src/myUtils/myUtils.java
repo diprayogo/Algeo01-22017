@@ -4,6 +4,7 @@ import operators.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class myUtils {
@@ -78,6 +79,80 @@ public class myUtils {
         }
         return res;
     }
+
+    // untuk memeriksa apakah 2 list itu sa
+    public static boolean matrixContainsArray(Matrix matrix, double[] array, int rowCheck) {
+        int i;
+        for (i = 0 ; i < rowCheck; i ++) {
+            if (Arrays.equals(matrix.getRowELMT(i), array)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Mengembalikan Matrix dengan elemen-elemen yang dibaca dari sebuah file.
+    // Perlu diingat bahwa input untuk beberapa menu bukanlah hanya matrix, tetapi
+    // ada parameter tambahan pada file
+    // Jadi, perlu dilakukan split terlebih dahulu pada baris terakhir sebelum
+    // dipakai.
+    public static Matrix uniqueMatrixFromFile() {
+        String fileName = new String();
+        boolean pathValid = false;
+        int cntNonUnique = 0 ;
+        // buat matrix res dengan row 1000 dan elemennya belum diisi
+        Matrix res = new Matrix(0, 0);
+        res.setRow(1000); 
+
+        // validasi file masukan user
+        while (!pathValid){
+            System.out.print("Masukkan nama file: ");
+            fileName = scanner.nextLine();
+            try {
+                File file = new File(
+                        "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\\" + fileName);
+                Scanner fScanner = new Scanner(file);
+                boolean fileContentValid = true;
+                int i = 0, realCol = 0; // realcol adalah banyak kolom baris pertama matrix.
+                while (fScanner.hasNextLine() & fileContentValid) {
+                    String s = fScanner.nextLine();
+                    String[] temp = s.split("\\s+");
+                    double[] doubleTemp = new double[temp.length];
+
+                    if (i == 0){
+                        realCol = temp.length; //
+                        res.setCol(realCol);
+                        res.setMat(1000, realCol);
+                    }
+                    for (int j = 0; j < temp.length; j++) {
+                        doubleTemp[j] = myUtils.strToDouble(temp[j]);
+                        if (Double.isNaN(doubleTemp[j])) {
+                            System.out.println("Tolong input ulang file yang berisi nilai double yang valid.\n");
+                            fileContentValid = false ;
+                            break;
+                        }
+                    } 
+
+                    if (!(matrixContainsArray(res, doubleTemp, i -cntNonUnique))) {
+                        res.setRowELMT(i -cntNonUnique, doubleTemp);
+                    } else {
+                        cntNonUnique ++ ;
+                    }
+                    i++;
+                }
+
+                if (fileContentValid) {
+                    res.setRow(i - cntNonUnique);
+                    fScanner.close();
+                    pathValid = true; }
+
+            } catch (FileNotFoundException e) {
+            System.out.println("File tidak ditemukan. Harap pastikan nama file benar dan file berada di dalam folder D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\n");
+            }
+        }
+        return res;
+    }
+
 
     // Menyimpan Matrix m ke dalam sebuah file jika pengguna ingin menyimpan file.
     public static void matrixToFile(Matrix mSimpan) throws IOException {
