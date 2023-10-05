@@ -207,24 +207,35 @@ public class SPL {
       double tempDet;
       Matrix rootSolution = new Matrix(matSquare.getRow(), 1);
 
-      for (int i = 0; i < matSquare.getCol(); i++) {
-        for (int j = 0; j < matSquare.getRow(); j++) {
-          tempMatrix.setELMT(j, i, b.getELMT(j, 0));
-        }
+      if (detA == 0) {
+        boolean isUndef = false;
+        for (int i = 0; i < matSquare.getCol(); i++) {
+          for (int j = 0; j < matSquare.getRow(); j++) {
+            tempMatrix.setELMT(j, i, b.getELMT(j, 0));
+          }
 
-        tempDet = Matrix.detMatrixSegitiga(tempMatrix);
-        tempDet /= detA;
-        if (tempDet == -0.0) {
-          tempDet = 0.0;
-        }
-        rootSolution.setELMT(i, 0, tempDet);
+          tempDet = Matrix.detMatrixSegitiga(tempMatrix);
+          tempDet /= detA;
+          if (tempDet == -0.0) {
+            tempDet = 0.0;
+          } else if (Float.isNaN((float) tempDet) || Float.isInfinite((float) tempDet)) {
+            isUndef = true;
+          }
+          rootSolution.setELMT(i, 0, tempDet);
 
-        tempMatrix.copyMatrix(matSquare);
-      }
-      result = "Determinan: " + detA;
-      result = "\nSolusi dari persamaan linear tersebut adalah:";
-      for (int k = 0; k < rootSolution.getRow(); k++) {
-        result += "\nx" + (k + 1) + ": " + rootSolution.getELMT(k, 0);
+          tempMatrix.copyMatrix(matSquare);
+        }
+        if (!isUndef) {
+          result = "Determinan: " + detA;
+          result = "\nSolusi dari persamaan linear tersebut adalah:";
+          for (int k = 0; k < rootSolution.getRow(); k++) {
+            result += "\nx" + (k + 1) + ": " + rootSolution.getELMT(k, 0);
+          }
+        } else {
+          result = "UNDEFINITION (Tidak memiliki solusi unik)";
+        }
+      } else {
+        result = "Determinan A sama dengan 0.";
       }
     } else {
       result = "Matriks yang dimasukkan tidak bisa menggunakan Kaidah Cramer";
