@@ -69,8 +69,8 @@ public class DeterminantMenu {
 
         if (inputValid){
             if (!Double.isNaN(det)){
-                System.out.printf("Determinan: %.5f", det);
-                myUtils.strToFile(String.format("Determinan: %.5f", det));
+                System.out.printf("Determinan: %e", det);
+                myUtils.strToFile(String.format("Determinan: %e", det));
             }
         }
     }  

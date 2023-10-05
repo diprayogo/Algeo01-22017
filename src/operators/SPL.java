@@ -305,6 +305,7 @@ public class SPL {
     return isNonUnique;
   }
 
+  // Mengembalikan string dalam bentuk parametrik, xi = k + t1 + t2 + .. + ti dengan k adalah konstanta dan ti adalah parameter.
   public static String parametric(Matrix matrix) {
     String result = new String();
     int row = matrix.getRow();

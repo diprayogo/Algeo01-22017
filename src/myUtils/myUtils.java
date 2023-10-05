@@ -48,7 +48,7 @@ public class myUtils {
             fileName = scanner.nextLine();
             try {
                 File file = new File(
-                    "..\\test\\input\\" + fileName);
+                    "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\\" + fileName);
                 Scanner fScanner = new Scanner(file);
                 int i = 0, realCol = 0; // realcol adalah banyak kolom baris pertama matrix.
                 double val = 0;
@@ -114,7 +114,7 @@ public class myUtils {
             fileName = scanner.nextLine();
             try {
                 File file = new File(
-                        "..\\test\\input\\" + fileName);
+                        "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\\" + fileName);
                 Scanner fScanner = new Scanner(file);
                 boolean fileContentValid = true;
                 int i = 0, realCol = 0; // realcol adalah banyak kolom baris pertama matrix.
@@ -170,7 +170,7 @@ public class myUtils {
                 case "Y":
                     String path = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    path = "..\\test\\output\\"
+                    path = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\"
                             + scanner.nextLine()
                             + ".txt";
                     File file = new File(path);
@@ -220,7 +220,7 @@ public class myUtils {
                 case "Y":
                     String path = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    path = "..\\test\\output\\"
+                    path = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\"
                             + scanner.nextLine()
                             + ".txt";
                     File file = new File(path);
