@@ -1,0 +1,8 @@
+# Ignore log files
+*.log
+
+# Ignore backup files
+*.bak
+
+#Ignore custom testing-file
+*.txt
