@@ -40,7 +40,8 @@ public class BicubicMenu {
         }
         
         if (!fromFile) {
-            System.out.print("Masukkan jumlah titik konfigurasi nilai fungsi dan turunan berarah di sekitarnya,\ndiikuti dengan nilai a dan b untuk mencari taksiran f(a, b): \n");
+            System.out.println("Masukkan jumlah titik konfigurasi nilai fungsi dan turunan berarah di sekitarnya, ");
+            System.out.print("diikuti dengan nilai a dan b untuk mencari taksiran f(a, b): \n");
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
                     fMat.setELMT(4*i+j, 0, scanner.nextDouble());
@@ -51,7 +52,7 @@ public class BicubicMenu {
             a = scanner.nextDouble();
             b = scanner.nextDouble();
             bicubicOutput += "a = " + a + ", b = " + b + "\n";
-        } else if (fromFile ) {
+        } else if (fromFile) {
             Matrix matInput = new Matrix(0, 0);
             matInput = myUtils.readMatrixFromFile();
             a = matInput.getELMT(matInput.getRow() - 1, 0);
@@ -60,7 +61,7 @@ public class BicubicMenu {
 
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
-                    fMat.setELMT(4*i+j, 0, scanner.nextDouble());
+                    fMat.setELMT(4*i+j, 0, matInput.getELMT(i, j));
                     bicubicOutput += fMat.getELMT(4*i+j, 0) + " ";
                 }
                 bicubicOutput += "\n";
