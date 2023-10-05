@@ -13,7 +13,7 @@ Tugas besar ini berisi program dalam bahasa Java yang berisi fungsi-fungsi elimi
 
 ## File structure
 
-Algeo01-21017/ <br>
+Algeo01-22017/ <br>
 ┣ bin/ <br>
 ┃ ┣ Aplikasi/ <br>
 ┃ ┃ ┣ BicubicInterpolationApp.class <br>
@@ -56,20 +56,16 @@ Algeo01-21017/ <br>
 <h2 id="how-to-run">Cara Menggunakan Program</h2>
 ## How to run
 
-Clone this repo https://github.com/chaerla/Algeo01-22017.git
+Clone this repo https://github.com/diprayogo/Algeo01-22017.git
 
 ### *Compile*
 *Compile* program Java bisa dilakukan dengan cara:
-```bash
-sh compile.sh
 ```
-Atau, untuk *compile* program ke bytecode saja di folder bin bisa dengan:
-```bash
 cd src
 javac -d ../bin ./*.java
 ```
 Lalu, untuk *compile* hasil bytecode ke file .jar di folder bin bisa dengan:
-```bash
+```
 cd bin
 jar -cvfm matrix.jar ../src/META-INF/MANIFEST.MF *
 ```
@@ -87,7 +83,7 @@ java Main
 #### File .jar
 Sedangkan untuk menjalankan program dari file .jar bisa dengan:
 
-```bash
+```
 cd bin
 java -jar <jar-file-name>
 ```
