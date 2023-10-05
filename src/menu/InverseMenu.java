@@ -66,15 +66,28 @@ public class InverseMenu {
         }
 
         // masukkan keterangan input dulu
-        String inverseOutput = "Matriks Balikan dari matriks persegi di atas adalah: ";
-        int i, j, n, m;
-        n = inverseMatrix.getCol();
-        m = inverseMatrix.getRow();
-        for (i = 0; i < m; i++) {
-            for (j = 0; j < n; j++) {
-                inverseOutput += (inverseMatrix.getELMT(i, j) + " ");
+        String inverseOutput = "";
+        try {
+            if (inverseMatrix == null) {
+                inverseOutput += "Matriks tersebut bukan matriks persegi ataupun matriks augmented yang berbentuk persegi";
+            } else if (inverseMatrix.getRow() == 0) {
+                inverseOutput += "Matriks persegi di atas tidak memiliki invers";
+            } else { // HANYA MINTA INPUT KE FILE KALAU ADA SOLUSI
+                inverseOutput += "Matriks Balikan dari matriks persegi di atas adalah: \n";
+                int i, j, n, m;
+                n = inverseMatrix.getCol();
+                m = inverseMatrix.getRow();
+                for (i = 0; i < m; i++) {
+                    for (j = 0; j < n; j++) {
+                        double element = inverseMatrix.getELMT(i, j);
+                        inverseOutput += String.format("%.4f", (myUtils.setPrec(element, 5))) + " ";
+                    }
+                    inverseOutput += "\n";
+                }
+                // myUtils.matrixToFile(inverseMatrix);
             }
-            inverseOutput += "\n";
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         System.out.println(inverseOutput);
         myUtils.strToFile(inverseOutput);

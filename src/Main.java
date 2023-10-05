@@ -14,7 +14,7 @@ public class Main {
   static Scanner scanner = new Scanner(System.in);
 
   public static void main(String[] args) {
-    testing();
+    //testing();
     System.out.println("SELAMAT DATANG DI MATRIX CALCULATOR ");
     boolean isRunning = true;
 
@@ -28,7 +28,7 @@ public class Main {
         System.out.println("2. Determinan");
         System.out.println("3. Matriks Balikan");
         System.out.println("4. Interpolasi Polinom");
-        System.out.println("5. Interpolasi Bicubic");
+        System.out.println("5. Interpolasi Bicubic Spline");
         System.out.println("6. Regresi Linear Berganda");
         System.out.println("7. Keluar");
         System.out.print("Pilih Menu: ");
