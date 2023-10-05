@@ -13,12 +13,32 @@ public class DeterminantMenu {
 
         double det = 0 ;
         int method = 0  ;
-        boolean inputValid = false, fromFile;
-        fromFile = myUtils.inputSrcValidation();
+        boolean inputValid = false, fromFile = true;
+        int inputSrc = 0;
+        System.out.println("1. Masukan dari file");
+        System.out.println("2. Masukan dari keyboard ");
+        while (!inputValid) {
+            System.out.print("Pilih Sumber input : ");
+            try {
+                inputSrc = scanner.nextInt();
+                switch (inputSrc) {
+                case 1: // fromFile = true;
+                    inputValid = true;
+                    break;
+                case 2:
+                    inputValid = true;
+                    fromFile = false;
+                    break;
+                default:
+                    System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+                }
+            } catch (Exception e) {
+                scanner.nextLine();
+                System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+            }
+        }
 
-
-        inputValid = false ; 
-
+        inputValid = false ;  // re-assing untuk validasi metode
         System.out.println("\n1. Matrix Segitiga");
         System.out.println("2. Determinan Kofaktor");
         while (!inputValid){
@@ -49,9 +69,8 @@ public class DeterminantMenu {
 
         if (inputValid){
             if (!Double.isNaN(det)){
-                System.out.printf("Determinan: %.4f", det);
-                myUtils.strToFile(String.format("Determinan: %.4f", det));
-                System.out.println("\n");
+                System.out.printf("Determinan: %.5f", det);
+                myUtils.strToFile(String.format("Determinan: %.5f", det));
             }
         }
     }  
