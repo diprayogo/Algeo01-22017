@@ -1,36 +1,37 @@
 package operators;
 import java.util.Scanner;
 
-
 import myUtils.myUtils;
 
 public class RegresiLinearBerganda {
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void readRegresiFromKeyboard(Matrix ret, Matrix peubah) {
-        // I.S : Matrix ret dan Matrix peubah bebas
-        //F.S : Matrix ret berisi sample data yang terdiri dari peubah dan hasilnya, matrix peubah berisi nilai yang ingin ditaksir
+    // //
+    // public static void readRegresiFromKeyboard(Matrix ret, Matrix peubah) {
+    //     // I.S : Matrix ret dan Matrix peubah bebas
+    //     //F.S : Matrix ret berisi sample data yang terdiri dari peubah dan hasilnya, matrix peubah berisi nilai yang ingin ditaksir
 
-        int n, m;
-        System.out.print("Masukkan jumlah peubah (n): ");
-        n = scanner.nextInt();
-        System.out.print("Masukkan jumlah sampel (m): ");
-        m = scanner.nextInt();
-        System.out.println("Masukkan x1i, x2i,... xni, y: ");
+    //     int n, m;
+    //     System.out.print("Masukkan jumlah peubah (n): ");
+    //     n = scanner.nextInt();
+    //     System.out.print("Masukkan jumlah sampel (m): ");
+    //     m = scanner.nextInt();
+    //     System.out.println("Masukkan x1i, x2i,... xni, y: ");
 
-        // create matrix ret
-        ret.setRow(m); ret.setCol(n + 1); ret.setMat(ret.getRow(), ret.getCol());
-        ret.readMatrix(ret.getRow(), ret.getCol());
+    //     // create matrix ret
+    //     // minta input matrix dari user, readUniqueMat akan mengeluarkan matrix yang row-nya unique
+    //     ret = Matrix.readUniqueMat(m, n + 1);
 
-        peubah.setRow(1); peubah.setCol(n); peubah.setMat(peubah.getRow(), peubah.getCol());
-        
-        System.out.printf("Masukkan nilai yang ingin ditaksir yaitu sebanyak %d peubah\n", n);
-        int j;
-        for (j = 0; j < peubah.getCol(); j++) {
-            System.out.printf("Masukkan nilai peubah ke-%d : ", j + 1);
-            peubah.setELMT(0, j, scanner.nextDouble());
-        }
-    }
+    //     // peubah
+    //     peubah.setRow(1); peubah.setCol(n); peubah.setMat(peubah.getRow(), peubah.getCol());
+    //     System.out.printf("Masukkan nilai yang ingin ditaksir yaitu sebanyak %d peubah\n", n);
+    //     int j;
+    //     for (j = 0; j < peubah.getCol(); j++) {
+    //         System.out.printf("Masukkan nilai peubah ke-%d : ", j + 1);
+    //         peubah.setELMT(0, j, scanner.nextDouble());
+    //     }
+    // }
+    // //
 
     public static Matrix getNormalEst(Matrix Maug){
         // Mengembalikan Persamaan Normal Estimasi dari Matrix Maug
@@ -68,22 +69,46 @@ public class RegresiLinearBerganda {
         if (fromFile){
             // isi matrix ret dengan nilai dari file. Matrix ret akan berisi matrix yang ingin dicari dan nilai-nilai 
             // peubah untuk taksiran
-            ret = myUtils.readMatrixFromFile();
-
+            ret = myUtils.uniqueMatrixFromFile();
             // isi matrix peubah dengan baris terakhir matrix ret
             peubah.setRow(1); peubah.setCol(ret.getCol() -1); peubah.setMat(peubah.getRow(), peubah.getCol());
             int j ;
             for (j = 0 ; j < peubah.getCol(); j ++){
                 peubah.setELMT(0, j, ret.getELMT(ret.getRow() -1, j));
             }
-
+            
             // hilangkan baris terakhir ret
             ret.setRow(ret.getRow() - 1);
+            Matrix.printMatrix(ret); 
             
-        }
-        else{
-            // masukan dari keyboard akan langsung menghasilkan matrix ret dan matrix peubah
-            RegresiLinearBerganda.readRegresiFromKeyboard(ret, peubah);
+        } else{
+            // I.S : Matrix ret dan Matrix peubah bebas
+            //F.S : Matrix ret berisi sample data yang terdiri dari peubah dan hasilnya, matrix peubah berisi nilai yang ingin ditaksir
+
+            int n, m;
+            System.out.print("Masukkan jumlah peubah (n): ");
+            n = scanner.nextInt();
+            System.out.print("Masukkan jumlah sampel (m): ");
+            m = scanner.nextInt();
+            System.out.println("Masukkan x1i, x2i,... xni, y: ");
+
+            // create matrix ret
+            // minta input matrix dari user, readUniqueMat akan mengeluarkan matrix yang row-nya unique
+            // ret.setCol(n +1); ret.setRow(m); ret.setMat(n+ 1, m);
+            // ret = Matrix.readUniqueMat(m, n + 1);
+
+            // create matrix ret
+            ret.setRow(m); ret.setCol(n + 1); ret.setMat(ret.getRow(), ret.getCol());
+            ret.readUniqueMat(m, n + 1);
+
+            // peubah
+            peubah.setRow(1); peubah.setCol(n); peubah.setMat(peubah.getRow(), peubah.getCol());
+            System.out.printf("Masukkan nilai yang ingin ditaksir yaitu sebanyak %d peubah\n", n);
+            int j;
+            for (j = 0; j < peubah.getCol(); j++) {
+                System.out.printf("Masukkan nilai peubah ke-%d : ", j + 1);
+                peubah.setELMT(0, j, scanner.nextDouble());
+            }
         }
         
         // Matrix ret dan matrix peubah dari masukan file ataupun keyboard akan sama
@@ -115,10 +140,10 @@ public class RegresiLinearBerganda {
 
         String output = persamaan + ", " + taksiran;
         System.out.println(output);
-
+        Matrix.printMatrix(ret);
         return output ;
-
     }
 }
+
 
 

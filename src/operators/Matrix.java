@@ -1,5 +1,6 @@
 package operators;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -475,6 +476,33 @@ public class Matrix {
   // ----------------------------//
 
   // ------------------------------ IO ------------------------------//
+  public void readUniqueMat(int row, int col){
+    int i, j, cntUnique = 0 ; 
+    double[] temp = new double[col];
+    this.setRow(row);
+    this.setCol(col);
+    for (i = 0; i < row ; i++) {
+      for (j = 0; j < col; j++) {
+        if (i == 0) {
+          this.setELMT(i, j, scan.nextDouble());
+          if (j == col -1) cntUnique ++;
+        }
+        else {
+          temp[j] = scan.nextDouble();
+        }
+      }
+
+      if (i != 0){
+        if (!(myUtils.matrixContainsArray(this, temp, cntUnique))){
+          cntUnique ++ ;
+          double[] tempCopy = Arrays.copyOf(temp, col);
+          this.setRowELMT(cntUnique - 1, tempCopy);
+        }
+      }
+    }
+    this.setRow(cntUnique);
+  }
+  
   public void readMatrix(int row, int col) {
     int i, j;
     this.setRow(row);
