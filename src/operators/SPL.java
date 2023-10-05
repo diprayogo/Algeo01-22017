@@ -174,7 +174,7 @@ public class SPL {
       if (inversMat == null) {
         result = "Matriks yang dimasukkan tidak bisa menggunakan metode Inverse";
       } else {
-        Matrix.printMatrix(inversMat);
+        // Matrix.printMatrix(inversMat);
         Matrix rootSolution = inversMat.multiplyMatrix(b);
         result = "Solusi dari persamaan linear tersebut adalah:";
         for (int k = 0; k < rootSolution.getRow(); k++) {
