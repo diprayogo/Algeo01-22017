@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": "Algeo01-22017_884108d0"
+    },
+    {
+      "type": "java",
+      "name": "Bicubic",
+      "request": "launch",
+      "mainClass": "operators.Bicubic",
+      "projectName": "Algeo01-22017_884108d0"
+    },
+    {
+      "name": "Attach to Chrome",
+      "port": 9222,
+      "request": "attach",
+      "type": "chrome",
+      "webRoot": "${workspaceFolder}",
+      "miDebuggerPath": "C:\\msys64\\mingw64\\bin\\gcc"
+    }
+  ]
+}
