@@ -1,10 +1,11 @@
 package operators;
-// import operators.Matrix;
+
 import java.lang.Math;
-
-
+import java.util.*;
+import myUtils.myUtils;
 
 public class Bicubic {
+  private static Scanner scanner = new Scanner(System.in);
 
   public static void main(String[] args){
     Matrix.printMatrix(getBicubicPolynomialMatrix());
@@ -163,10 +164,45 @@ public class Bicubic {
     double fResult = 0;
     for (j = 0; j < 4; j++) {
       for (i = 0; i < 4; i++) {
-        System.out.printf("DISINIIIIIII %d \n", 4*i+j);
+        // System.out.printf("DISINIIIIIII %d \n", 4*i+j);
         fResult += bicubicCoef.getELMT(4*i + j, 0) * Math.pow(x, i) + Math.pow(j, y);
       }
     }
     return fResult;
+  }
+
+  public void menuBicubic() {
+    System.out.println();
+    System.out.println("                          ANDA BERADA DI SUBMENU INTERPOLASI BICUBIC SPLINE");
+
+    Matrix fMat = new Matrix(4, 4);
+    double a = 1, b = 1;
+    boolean fromfile = myUtils.inputSrcValidation();
+
+    if (fromfile) {
+      fMat = myUtils.readMatrixFromFile();
+      a = fMat.getELMT(4, 0);
+      b = fMat.getELMT(4, 1);
+      fMat.setRow(4);
+      fMat.inverseGaussJordan();
+      Matrix.printMatrix(fMat);
+      // System.out.println("HALLO");
+    } else {
+      fMat.readMatrix(4, 4);
+      a = scanner.nextInt();
+      b = scanner.nextInt();
+      fMat = fMat.inverseGaussJordan();
+    }
+
+    try {
+      // System.out.println("APAKAH ADA SI DINI");
+      double result = getBicubicFunctionValue(fMat, a, b);
+      String resultString = String.format("f(%f, %f) = %f", a, b, result);
+      System.out.println(resultString);
+      myUtils.strToFile(resultString);
+      System.out.println("\n");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
   }
 }

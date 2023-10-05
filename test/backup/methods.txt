@@ -1,0 +1,45 @@
+methods notes
+
+GANTI SEMUA SET ROW/COL, SET/GET ELMT
+apakah elemen -0.0 sudah dihandle?
+apakah call getter setter tanpa this. sudah best practice? apa ada salah dan bugs?
+beautify identation!!! standar kami beda
+public jadiin protected kah?
+
+non-static: need OBJ.method(), objectnya pakai this.
+getter: get: 	Row(), Col(), ELMT(i, j), RowELMT(i), MatConst(Mat) // Ab -> A
+setter: set:	Row(row), Col(col), ELMT(i, j, val), RowELMT(row, rowELMT)
+operators:
+copyMatrix(Mat) -> prosedur copy Mat to this. obj
+getKofaktor(Mat, a, b) -> return det of kofaktor for row a, col b
+// 2 OBE procedure, aku yg bikin, gjd pake divideRow, keknya pake multRow-nya Dabbir
+swapRow(row1, row2)
+subtractRow(row, subtractorRow, subtractorMagnitude)
+
+// Tambahanku
+multRow(row, scale) -> return Row, hati2 beda ukuran
+addRow(row1, row2, scale) -> prosedur row 1 <- row1 + scale*row2
+
+// Tambahanku metode Invers
+
+
+// Fungsi belum terpakai
+readMatrix(row n, col m)
+transpose() -> return transposed matrix
+plus(M2) -> return matrix <- this + M2
+minus(M2) -> return matrix <- this - M2
+mult(M2) -> return matrix <- this * M2
+scalarMultiply(M2) -> return matrix <- scale*this
+isSquare() -> return
+// commented, not used before
+printMatrix(row n, col m)
+
+
+static: majority in functions (no obj created, obj in param)
+getMinorMatrix(Mat, a, b) -> return minor matrix for row a, col b
+detKofaktor(Mat) -> return det of Mat using recursive kofaktor
+detMatrixSegitiga(Mat) -> return det of Mat using Gauss forming triangular Mat
+// Mending atas ini gausah pake prekondisi isAugmented
+
+// Fungsi belum terpakai
+isSingular(Mat) -> return

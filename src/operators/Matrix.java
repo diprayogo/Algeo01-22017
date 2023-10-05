@@ -1,5 +1,6 @@
 package operators;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -139,7 +140,6 @@ public class Matrix {
     setRowELMT(row1, getRowELMT(row2));
     setRowELMT(row2, temp);
   }
-
   // TUGAS SET PRESISI
   public void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
     for (int j = 0; j < getCol(); j++) {
@@ -273,7 +273,6 @@ public class Matrix {
     Madj.transpose();
     return Madj;
   }
-
   // TUGASSSS SET PRESISI DI SINI
   public void scalarMultiply(double scale) { // Mengalikan Matrix dengan konstanta scale
     int i, j;
@@ -283,7 +282,6 @@ public class Matrix {
         // handle negative zero values
         if (getELMT(j, i) == -0.0)
           setELMT(j, i, 0.0);
-        // SET PRESIIIIIIIIISIIIIIII INI AKHIRAN INVERSEKSKOF
       }
     }
   }
@@ -305,7 +303,6 @@ public class Matrix {
         Matrix invMat = this.getAdj();
         System.out.printf("adjoinnya (sblm dibagi det %f): \n", det);
         printMatrix(invMat);
-
         // ALGORITMA
         invMat.scalarMultiply(1 / det);
         return invMat;
@@ -430,7 +427,6 @@ public class Matrix {
           AugmentedMatrix.setELMT(i, j, getELMT(i, j));
         }
       }
-
       // copy matriks identitas bagian kanan
       for (i = 0; i < AugmentedMatrix.getRow(); i++) {
         for (j = getRow(); j < AugmentedMatrix.getCol(); j++) {
@@ -443,7 +439,6 @@ public class Matrix {
       }
       // AugmentedMatrix.strictGauss();
       // printMatrix(AugmentedMatrix);
-
       // lakukan operasi Gauss Jordan agar diperoleh submatriks identitas kiri
       AugmentedMatrix.strictGaussJordan();
       for (i = 0; i < AugmentedMatrix.getRow(); i++) {
@@ -481,6 +476,33 @@ public class Matrix {
   // ----------------------------//
 
   // ------------------------------ IO ------------------------------//
+  public void readUniqueMat(int row, int col){
+    int i, j, cntUnique = 0 ; 
+    double[] temp = new double[col];
+    this.setRow(row);
+    this.setCol(col);
+    for (i = 0; i < row ; i++) {
+      for (j = 0; j < col; j++) {
+        if (i == 0) {
+          this.setELMT(i, j, scan.nextDouble());
+          if (j == col -1) cntUnique ++;
+        }
+        else {
+          temp[j] = scan.nextDouble();
+        }
+      }
+
+      if (i != 0){
+        if (!(myUtils.matrixContainsArray(this, temp, cntUnique))){
+          cntUnique ++ ;
+          double[] tempCopy = Arrays.copyOf(temp, col);
+          this.setRowELMT(cntUnique - 1, tempCopy);
+        }
+      }
+    }
+    this.setRow(cntUnique);
+  }
+  
   public void readMatrix(int row, int col) {
     int i, j;
     this.setRow(row);
@@ -538,13 +560,11 @@ public class Matrix {
     n = Mat.getCol();
     for (i = 0; i < m; i++) {
       for (j = 0; j < n; j++) {
-        if (Mat.getELMT(i, j) == -0.0) {
-          Mat.setELMT(i, j, 0.0);
-          double element = Mat.getELMT(i, j);
-          System.out.printf(String.format("%.4f", (myUtils.setPrec(element, 5))));
-          System.out.print(" ");
-        }
-        System.out.print(Mat.getELMT(i, j) + " ");
+        if (Mat.getELMT(i, j) == -0.0) Mat.setELMT(i, j, 0.0); 
+        double element = Mat.getELMT(i, j);
+        System.out.printf(String.format("%.4f", (myUtils.setPrec(element, 5))));
+        System.out.print(" ");
+        // System.out.print(Mat.getELMT(i, j) + " ");
       }
       System.out.println();
     }

@@ -40,7 +40,7 @@ public class InterpolasiPolinom {
       // isi matrix matrixPoint dengan nilai dari file. Matrix matrixPoint akan berisi
       // matrix yang
       // ingin dicari
-      matrixPoint = myUtils.readMatrixFromFile();
+      matrixPoint = myUtils.uniqueMatrixFromFile();
 
       titik = matrixPoint.getELMT(matrixPoint.getRow() - 1, 0);
 
@@ -76,7 +76,7 @@ public class InterpolasiPolinom {
     double taksir = taksirNilai(rootSolution, titik);
 
     // Mencetak polinomial interpolasi
-    result = String.format("Polinom interpolasi yang melalui ke-%d buah titik tersebut adalah\np_%d(x) = ",
+    result = String.format("Polinom interpolasi yang melalui ke-%d buah titik unik tersebut adalah\np_%d(x) = ",
         matrixPoint.getRow(), matrixPoint.getRow() - 1);
 
     boolean isFirstTerm = true;
@@ -119,9 +119,10 @@ public class InterpolasiPolinom {
 
     System.out.print("Masukkan jumlah titik: ");
     int n = scanner.nextInt();
-    Matrix matInput = new Matrix(n, 2);
-    matInput.readMatrix(n, 2);
 
+    Matrix matInput = new Matrix(n, 2);
+    System.out.println("Masukkan titik-titiknya : ");
+    matInput.readUniqueMat(n, 2);
     return matInput;
 
   }
