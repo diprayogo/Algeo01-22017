@@ -207,7 +207,7 @@ public class SPL {
       double tempDet;
       Matrix rootSolution = new Matrix(matSquare.getRow(), 1);
 
-      if (detA == 0) {
+      if (detA != 0) {
         boolean isUndef = false;
         for (int i = 0; i < matSquare.getCol(); i++) {
           for (int j = 0; j < matSquare.getRow(); j++) {
