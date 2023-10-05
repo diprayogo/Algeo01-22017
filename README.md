@@ -56,7 +56,7 @@ Algeo01-21017/ <br>
 <h2 id="how-to-run">Cara Menggunakan Program</h2>
 ## How to run
 
-Clone this repo https://github.com/chaerla/Algeo01-21044.git
+Clone this repo https://github.com/chaerla/Algeo01-22017.git
 
 ### *Compile*
 *Compile* program Java bisa dilakukan dengan cara:
