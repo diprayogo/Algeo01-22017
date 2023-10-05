@@ -66,12 +66,11 @@ public class myUtils {
         boolean pathValid = false;
 
         // buat matrix res dengan colom 1000 dan row 1000 dan elemennya belum diisi
-        Matrix res = new Matrix(0, 0); 
-        res.setCol(1000); res.setRow(1000); res.setMat(1000, 1000);
-
-        // validasi file masukan user
-        fileName = scanner.nextLine();
-        while (!pathValid){
+        Matrix res = new Matrix(0, 0);
+        res.setCol(1000);
+        res.setRow(1000);
+        res.setMat(1000, 1000);
+        while (!pathValid) {
             System.out.print("Masukkan nama file: ");
             fileName = scanner.nextLine();
             try {
