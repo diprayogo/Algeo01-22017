@@ -6,33 +6,7 @@ import myUtils.myUtils;
 public class RegresiLinearBerganda {
     private static Scanner scanner = new Scanner(System.in);
 
-    // //
-    // public static void readRegresiFromKeyboard(Matrix ret, Matrix peubah) {
-    //     // I.S : Matrix ret dan Matrix peubah bebas
-    //     //F.S : Matrix ret berisi sample data yang terdiri dari peubah dan hasilnya, matrix peubah berisi nilai yang ingin ditaksir
-
-    //     int n, m;
-    //     System.out.print("Masukkan jumlah peubah (n): ");
-    //     n = scanner.nextInt();
-    //     System.out.print("Masukkan jumlah sampel (m): ");
-    //     m = scanner.nextInt();
-    //     System.out.println("Masukkan x1i, x2i,... xni, y: ");
-
-    //     // create matrix ret
-    //     // minta input matrix dari user, readUniqueMat akan mengeluarkan matrix yang row-nya unique
-    //     ret = Matrix.readUniqueMat(m, n + 1);
-
-    //     // peubah
-    //     peubah.setRow(1); peubah.setCol(n); peubah.setMat(peubah.getRow(), peubah.getCol());
-    //     System.out.printf("Masukkan nilai yang ingin ditaksir yaitu sebanyak %d peubah\n", n);
-    //     int j;
-    //     for (j = 0; j < peubah.getCol(); j++) {
-    //         System.out.printf("Masukkan nilai peubah ke-%d : ", j + 1);
-    //         peubah.setELMT(0, j, scanner.nextDouble());
-    //     }
-    // }
-    // //
-
+    // Mengembalikan Persamaan Normal Estimasi dari Matrix Maug
     public static Matrix getNormalEst(Matrix Maug){
         // Mengembalikan Persamaan Normal Estimasi dari Matrix Maug
         Matrix Mnorm  = new Matrix(Maug.getCol(), Maug.getCol() + 1);
@@ -51,6 +25,7 @@ public class RegresiLinearBerganda {
         return Mnorm ; 
     }
 
+    // Mengembalikan hasil taksiran dari Matrix param berdasarkan data yang ingin di taksir pada Matrix input
     public static double taksir(Matrix param, Matrix input){
         // Mengembalikan hasil taksiran dari Matrix param berdasarkan data yang ingin di taksir pada Matrix input
         // param.getCol() = input.getCol()  + 1 
@@ -62,6 +37,8 @@ public class RegresiLinearBerganda {
         return res ;
     }
 
+    // Mengembalikan output berupa string yang berisi persamaan dan hasil taksiran dari data peubah yang di-input  oleh user. 
+    // Parameter fromFile akan menentukan source input user. Jika true, maka dari file, jika false maka dari keyboard
     public static String isRegresiFromFile(boolean fromFile){
         Matrix ret = new Matrix(0, 0) ;
         Matrix peubah = new Matrix(0, 0) ;

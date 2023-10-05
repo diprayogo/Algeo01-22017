@@ -6,18 +6,6 @@ import myUtils.myUtils;
 
 public class Bicubic {
   private static Scanner scanner = new Scanner(System.in);
-
-  // public static void main(String[] args){
-  //   Matrix.printMatrix(getBicubicPolynomialMatrix());
-  //   Matrix.printMatrix(getInverseBicubicPolynomialMatrix());
-  //   Matrix.printMatrix(getImageMatrix());
-  //   Matrix.printMatrix(getInverseBicubicPolynomialMatrix().mult(getImageMatrix()));
-  //   Matrix m = new Matrix(2, 2);
-  //   m.readMatrix(2, 2);
-  //   Matrix.printMatrix(m);
-  //   m.inverseGaussJordan();
-  //   Matrix.printMatrix(m.inverseGaussJordan());
-  // }
   
   public static Matrix getBicubicPolynomialMatrix() {
     // Generate X in y = Xa, X is BicubicPolynomialMatrix
@@ -142,8 +130,6 @@ public class Bicubic {
   }
 
   public static Matrix getImageValue(Matrix I) {
-    // generate a = X^-1 DI, input from I the value of 16 points (squared) images in size of 16x1
-    // get image value of y
     Matrix imageValue = new Matrix(16, 1); // return in (also) size of 16x1
     imageValue = getInverseBicubicPolynomialMatrix().mult(getImageMatrix().mult(I));
     return imageValue;
@@ -151,17 +137,6 @@ public class Bicubic {
 
   public static double getBicubicFunctionValue(Matrix fMat, double x, double y) {
     int i, j;
-    // read nilai matrix f fx fy fxy nya dulu, this must be 16 x 1
-    // 4 x 4 dibaca 16 x 1 biar bisa langsung dikali
-    // Matrix fAsSquareValue = new Matrix(16, 1);
-
-    // ga jadi handle inputan 4x4
-    // Matrix fMatARow = new Matrix(16, 1);
-    // for (i = 0; i < 4; i++) {
-    //   for (j = 0; j < 4; j++) {
-    //     fMatARow.setELMT(4*i + j, 0, fMat.getELMT(i, j));
-    //   }
-    // }
     Matrix bicubicCoef = getInverseBicubicPolynomialMatrix().mult(fMat);
     double fResult = 0;
     for (j = 0; j < 4; j++) {
@@ -170,40 +145,5 @@ public class Bicubic {
       }
     }
     return fResult;
-  }
-
-  public void menuBicubic() {
-    System.out.println();
-    System.out.println("                          ANDA BERADA DI SUBMENU INTERPOLASI BICUBIC SPLINE");
-
-    Matrix fMat = new Matrix(4, 4);
-    double a = 1, b = 1;
-    boolean fromfile = myUtils.inputSrcValidation();
-
-    if (fromfile) {
-      fMat = myUtils.readMatrixFromFile();
-      a = fMat.getELMT(4, 0);
-      b = fMat.getELMT(4, 1);
-      fMat.setRow(4);
-      fMat.inverseGaussJordan();
-      Matrix.printMatrix(fMat);
-      // System.out.println("HALLO");
-    } else {
-      fMat.readMatrix(4, 4);
-      a = scanner.nextInt();
-      b = scanner.nextInt();
-      fMat = fMat.inverseGaussJordan();
-    }
-
-    try {
-      // System.out.println("APAKAH ADA SI DINI");
-      double result = getBicubicFunctionValue(fMat, a, b);
-      String resultString = String.format("f(%f, %f) = %f", a, b, result);
-      System.out.println(resultString);
-      myUtils.strToFile(resultString);
-      System.out.println("\n");
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
   }
 }

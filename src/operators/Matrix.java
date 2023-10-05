@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-//import org.jcp.xml.dsig.internal.dom.Utils;
 
 import myUtils.myUtils;
 
@@ -34,8 +33,8 @@ public class Matrix {
 
   // overloading for default params, but protected (?)
   Matrix() {
-    setCol(10);
-    setRow(10);
+    setCol(0);
+    setRow(0);
     this.Mat = new double[rowSize][colSize];
 
     int i, j;
@@ -97,6 +96,8 @@ public class Matrix {
   }
 
   // ------------------------------ OPERATORS ------------------------------//
+  // I.S.	: Matrix terdefinisi
+  // F.S.	: Matrix ditransposisikan dan atribut disesuaikan
   public void transpose() {
     int i, j;
     Matrix tempMat = new Matrix(getCol(), getRow());
@@ -110,6 +111,8 @@ public class Matrix {
     copyMatrix(tempMat); // copy tempMat ke this
   }
 
+  //  I.S.	: Matrix terdefinisi
+  // F.S.	: Baris pada matrix ke-row1 dan ke-row2 ditukar
   public void copyMatrix(Matrix Mat) { // Prosedur salin matrix Mat ke matrix this
     this.setRow(Mat.getRow());
     this.setCol(Mat.getCol());
@@ -121,6 +124,7 @@ public class Matrix {
     }
   }
 
+  // Mengembalikan salinan matrix Mat
   public static Matrix copyMatrix2(Matrix Mat) { // Fungsi mengembalikan matriks Mat
     Matrix copyMat = new Matrix(Mat.getRow(), Mat.getCol());
     int i, j;
@@ -133,6 +137,9 @@ public class Matrix {
   }
 
   // 2 Operators OBE
+  // I.S.	: Matrix terdefinisi
+  // F.S.	: Baris pada matrix ke-row1 dan ke-row2 ditukar
+
   public void swapRow(int row1, int row2) {
     // swap baris
     double[] temp;
@@ -140,7 +147,9 @@ public class Matrix {
     setRowELMT(row1, getRowELMT(row2));
     setRowELMT(row2, temp);
   }
-  // TUGAS SET PRESISI
+
+  // I.S.	: Matrix terdefinisi
+  // F.S.	: Baris pada matrix ke-row dikurangi subtractorMagnitude kali baris ke- substractorRow
   public void subtractRow(int row, int subtractorRow, double subtractorMagnitude) {
     for (int j = 0; j < getCol(); j++) {
       setELMT(row, j, getELMT(row, j) - (getELMT(subtractorRow, j) * subtractorMagnitude));
@@ -150,11 +159,12 @@ public class Matrix {
     }
   }
 
-  // jadi, tidak perlu memakai atribut isSquare
+  // Mengembalikan kebenaran apakah matrix this adalah matrix persegi (berukuran n x n)
   public boolean isSquare() {
     return getRow() == getCol();
   }
 
+  // Prekondisi: matriks persegi dan bukan matriks augmented . Mengembalikan matrix minor untuk baris ke-row dan kolom ke-col
   public static Matrix getMinorMat(Matrix Mat, int row, int col) { // Mengembalikan Matrix Minor
     // Prekondisi : not isAugmented, isSquare
     Matrix MinorMat = new Matrix(Mat.getRow() - 1, Mat.getCol() - 1);
@@ -175,6 +185,8 @@ public class Matrix {
     return MinorMat;
   }
 
+  // Prekondisi: matriks persegi dan bukan matriks augmented
+  // Mengembalikan matrix minor untuk baris ke-row dan kolom ke-col
   public static double getKofaktor(Matrix Mat, int row, int col) { // Mengembalikan Kofaktor
     // Prekondisi not isAugmented
     return detKofaktor((Matrix.getMinorMat(Mat, row, col)));
@@ -182,8 +194,10 @@ public class Matrix {
     // return detMatrixSegitiga((Matrix.getMinorMat(Mat, row, col)));
   }
 
-  // ------------------------------ MENCARI DETERMINAN
-  // -------------------------------- //
+  // ------------------------------ MENCARI DETERMINAN // -------------------------------- //
+
+  // Prekondisi: Matrix persegi dan bukan matriks augmented
+  //Mengembalikan determinan dari matrix mat menggunakan metode ekspansi kofaktor
   public static double detKofaktor(Matrix Mat) {
     // Prekondisi not isAugmented
     // check isSquare
@@ -208,6 +222,8 @@ public class Matrix {
     }
   }
 
+  // Prekondisi: Matrix persegi dan bukan matriks augmented. 
+  // Mengembalikan determinan dari matrix mat menggunakan OBE dan aturan determinannya supaya menjadi matrix segitiga
   public static double detMatrixSegitiga(Matrix MatTemp) {
     // prekondisi not isAugmented
     // check isSquare
@@ -258,8 +274,10 @@ public class Matrix {
     return det;
   }
 
-  // ------------------------------ MENCARI INVERS/BALIKAN
-  // ------------------------------ //
+  // ------------------------------ MENCARI INVERS/BALIKAN // ------------------------------ //
+
+  // Prekondisi: matriks persegi dan bukan matriks augmented
+  //Mengembalikan matrix adjoint
   public Matrix getAdj() {
     Matrix Madj = new Matrix(getRow(), getCol()); // getCol() - 1 handle di fungsi inverse
     int i, j;
@@ -273,7 +291,9 @@ public class Matrix {
     Madj.transpose();
     return Madj;
   }
-  // TUGASSSS SET PRESISI DI SINI
+
+  // I.S.	: Matrix terdefinisi
+  //F.S.	: Semua elemen matrix dikali dengan konstanta scale
   public void scalarMultiply(double scale) { // Mengalikan Matrix dengan konstanta scale
     int i, j;
     for (i = 0; i < getRow(); i++) {
@@ -286,6 +306,8 @@ public class Matrix {
     }
   }
 
+  // Prekondisi: matriks persegi atau matrix augmented yang bisa dibuat persegi
+  //Mengembalikan matrix balikan menggunakan metode ekspansi kofaktor
   public Matrix inverseEkspansiCofactor() {
     // Prekondisi isSquared, also whenever isAugmented
     // Check isSquare || isSquare whenever this isAugmented
@@ -301,7 +323,7 @@ public class Matrix {
       // printMatrix(this);
       if (det != 0) {
         Matrix invMat = this.getAdj();
-        // System.out.printf("adjoinnya (sblm dibagi det %f): \n", det);
+// System.out.printf("adjoinnya (sblm dibagi det %f): \n", det);
         // printMatrix(invMat);
         // ALGORITMA
         invMat.scalarMultiply(1 / det);
@@ -314,8 +336,8 @@ public class Matrix {
     }
   }
 
-  // Prosedur eliminasi Gauss untuk operasi augmented matrix [I A] ke tujuan
-  // invers [A^-1 I] SET PRESISI DI SINI JUGA
+  // I.S.	: Matrix terdefinisi
+  // F.S.	: Baris ke-row pada matrix dikali dengan scale
   public void pMultRow(int row, double scale) {
     for (int j = 0; j < this.getCol(); j++) {
       // by default, ini udah ada this.
@@ -325,7 +347,8 @@ public class Matrix {
     }
   }
 
-  // strictGauss: leading 1 must be perfectly diagonalized
+  // I.S.	: Matrix terdefinisi, dipastikan matrix harus memiliki invers
+  // F.S.	: Matrix eselon baris dengan leading 1 terdiagonalisasi sempurna
   public void strictGauss() {
     /**
      * Prekondisi: isSquare dan leading one diagonal sempurna
@@ -360,19 +383,13 @@ public class Matrix {
           this.subtractRow(j, i, getELMT(j, i));
         }
       }
-      // } else { // ELSE KASUS PRARAMETRIK SESUAI KETERANGAN SEBELUM BLOK IF INI
-      // System.out.println("Ini di dalam metode strict Gauss:\nMatriks tidak memiliki
-      // solusi unik/merupakan matriks singular alias tidak memiliki
-      // invers/determinannya 0, ");
-      // System.out.println("Sehingga matriks tidak dapat menggunakan metode strict
-      // berikut yang menghasilkan matriks leading 1 yang terdiagonalisasi
-      // sempurna.");
-      // }
     }
   }
 
-  // strictGaussJordan: leading 1 must be perfectly diagonalized
+  // I.S.	: Matrix terdefinisi
+  // F.S.	: Matrix eselon baris tereduksi dengan leading 1 terdiagonalisasi sempurna
   public void strictGaussJordan() {
+    // strictGaussJordan: leading 1 must be perfectly diagonalized
     this.strictGauss();
     for (int i = 1; i < getRow(); i++) { // for each steps of back phase, i is pivotRow
       // leading 1 pada diagonal untuk mengurangi baris2 di atas agar lebih tereduksi
@@ -385,27 +402,8 @@ public class Matrix {
     }
   }
 
-  // UDAH GA PERLU, krn udah handled sbg asumsi prekond
-  public void toSquareMatrix() { // only change row, col
-    // untuk mencari invers matriks persegi terbesar yang memungkinkan dari asumsi
-    // matriks augmented atau persegi panjang
-    // int i, j;
-    // Matrix tempMat = this;
-    // to square matrix without last col as b
-    // atributnya blum diganti, bodo amat, kita butuh atribut row col aja :)
-    if (getCol() > getRow()) { // col > row case
-      setCol(getRow());
-    } else if (getCol() < getRow()) { // col < row case
-      setRow(getCol() - 1);
-      setCol(getCol() - 1);
-    } // else if already squared, then do nothing
-    // for (i = 0; i < getRow(); i++) {
-    // for (j = 0; j < getCol(); j++) {
-    // this.setELMT(i, j, tempMat.getELMT(i, j));
-    // }
-    // }
-  }
-
+  // Prekondisi: matriks persegi atau matrix augmented yang bisa dibuat persegi
+  // Mengembalikan matrix balikan menggunakan metode eliminasi Gauss-Jordan
   public Matrix inverseGaussJordan() {
     int i, j; // iterator
     boolean hasInverse = true;
@@ -469,13 +467,67 @@ public class Matrix {
 
   }
 
-  // ------------------------------ Mencari SPL ----------------------------//
-  // class SPL dibikinin Dabbir
 
-  // ------------------------------ Mencari Regresi Linier Berganda
-  // ----------------------------//
+  // ------------------------------ IO ------------------------------//  
+  
+  // I.S.	: Matrix sembarang
+  // F.S.	: Matrix terisi sesuai masukan pengguna dengan ukuran row x col
+  public void readMatrix(int row, int col) {
+    int i, j;
+    this.setRow(row);
+    this.setCol(col);
+    for (i = 0; i < row; i++) {
+      for (j = 0; j < col; j++) {
+        setELMT(i, j, scan.nextDouble());
+      }
+    }
+  }
 
-  // ------------------------------ IO ------------------------------//
+  // Mengembalikan matrix augmented sesuai masukan pengguna (untuk input menu SPL)
+  public static Matrix readMatNXM() {
+    System.out.printf("\nAnda akan menginput matriks augmented dengan ukuran n x m.\n");
+    System.out.print("Masukkan jumlah n: ");
+    int nRow = 0;
+    try {
+      nRow = scan.nextInt();
+    } catch (InputMismatchException e) {
+      e.printStackTrace();
+    }
+    System.out.print("Masukkan jumlah m: ");
+    int nCol = 0;
+    try {
+      nCol = scan.nextInt();
+    } catch (InputMismatchException e) {
+      e.printStackTrace();
+    }
+    Matrix matrixAugmented = new Matrix(nRow, nCol);
+    matrixAugmented.readMatrix(nRow, nCol);
+
+    return matrixAugmented;
+  }
+
+  // Mengembalikan matrix persegi sesuai masukan pengguna (untuk input menu determinan dan matriks invers)
+  public static Matrix readMatSquare() {
+    int n = 0;
+    System.out.print("Anda akan menginput matriks segi empat dengan ukuran n x n. \nMasukkan n: ");
+    try {
+      n = scan.nextInt();
+    } catch (InputMismatchException e) {
+      e.printStackTrace();
+    }
+    Matrix MatSquare = new Matrix(n, n);
+    // MatSquare.setRow(n);
+    // MatSquare.setCol(n);
+    // MatSquare.Mat = new double[MatSquare.getRow()][MatSquare.getCol()];
+    System.out.printf("Masukkan matriks dengan ukuran %d x %d:\n", n, n);
+    MatSquare.readMatrix(n, n);
+
+    return MatSquare;
+  }
+
+  // I.S.	: Matrix sembarang
+  // F.S.	: Terbentuk matrix yang dengan array suatu baris dengan baris lainnya berbeda (unik) 
+  //        Ukuran matrix menjadi unique * col atau (n - nonUniqe) * m 
   public void readUniqueMat(int row, int col){
     int i, j, cntUnique = 0 ; 
     double[] temp = new double[col];
@@ -502,58 +554,8 @@ public class Matrix {
     }
     this.setRow(cntUnique);
   }
+
   
-  public void readMatrix(int row, int col) {
-    int i, j;
-    this.setRow(row);
-    this.setCol(col);
-    for (i = 0; i < row; i++) {
-      for (j = 0; j < col; j++) {
-        setELMT(i, j, scan.nextDouble());
-      }
-    }
-  }
-
-  public static Matrix readMatNXM() {
-    System.out.printf("\nAnda akan menginput matriks augmented dengan ukuran n x m.\n");
-    System.out.print("Masukkan jumlah n: ");
-    int nRow = 0;
-    try {
-      nRow = scan.nextInt();
-    } catch (InputMismatchException e) {
-      e.printStackTrace();
-    }
-    System.out.print("Masukkan jumlah m: ");
-    int nCol = 0;
-    try {
-      nCol = scan.nextInt();
-    } catch (InputMismatchException e) {
-      e.printStackTrace();
-    }
-    Matrix matrixAugmented = new Matrix(nRow, nCol);
-    matrixAugmented.readMatrix(nRow, nCol);
-
-    return matrixAugmented;
-  }
-
-  public static Matrix readMatSquare() {
-    int n = 0;
-    System.out.print("Anda akan menginput matriks segi empat dengan ukuran n x n. \nMasukkan n: ");
-    try {
-      n = scan.nextInt();
-    } catch (InputMismatchException e) {
-      e.printStackTrace();
-    }
-    Matrix MatSquare = new Matrix(n, n);
-    // MatSquare.setRow(n);
-    // MatSquare.setCol(n);
-    // MatSquare.Mat = new double[MatSquare.getRow()][MatSquare.getCol()];
-    System.out.printf("Masukkan matriks dengan ukuran %d x %d:\n", n, n);
-    MatSquare.readMatrix(n, n);
-
-    return MatSquare;
-  }
-
   public static void printMatrix(Matrix Mat) {
     int i, j, m, n;
     m = Mat.getRow();
@@ -564,7 +566,6 @@ public class Matrix {
         double element = Mat.getELMT(i, j);
         System.out.printf(String.format("%.4f", (myUtils.setPrec(element, 5))));
         System.out.print(" ");
-        // System.out.print(Mat.getELMT(i, j) + " ");
       }
       System.out.println();
     }
@@ -662,10 +663,5 @@ public class Matrix {
         setELMT(row, j, temp);
       }
     }
-  }
-
-  // calculate determinant, here in class Java
-  public static boolean isSingular(Matrix Mat) {
-    return detMatrixSegitiga(Mat) == 0;
   }
 }
