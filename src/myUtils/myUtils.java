@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class myUtils {
     private static Scanner scanner = new Scanner(System.in);
+
     // Membuat presisi sebuah double sesuai dengan decPlaces
     public static double setPrec(double num, int decPlaces) {
         BigDecimal bd = new BigDecimal(num).setScale(decPlaces, RoundingMode.HALF_UP);
@@ -35,16 +36,18 @@ public class myUtils {
         boolean pathValid = false;
 
         // buat matrix res dengan colom 1000 dan row 1000 dan elemennya belum diisi
-        Matrix res = new Matrix(0, 0); 
-        res.setCol(1000); res.setRow(1000); res.setMat(1000, 1000);
+        Matrix res = new Matrix(0, 0);
+        res.setCol(1000);
+        res.setRow(1000);
+        res.setMat(1000, 1000);
 
         // validasi file masukan user
-        while (!pathValid){
+        while (!pathValid) {
             System.out.print("Masukkan nama file: ");
             fileName = scanner.nextLine();
             try {
                 File file = new File(
-                        "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\\" + fileName);
+                        "D:\\⭐⭐Kuliah Informatika⭐⭐\\Algeo\\Tubes\\Algeo01-22017\\test\\input\\" + fileName);
                 Scanner fScanner = new Scanner(file);
                 int i = 0, realCol = 0; // realcol adalah banyak kolom baris pertama matrix.
                 double val = 0;
@@ -58,7 +61,7 @@ public class myUtils {
                         val = myUtils.strToDouble(temp[j]);
                         if (Double.isNaN(val)) {
                             System.out.println("Tolong input ulang file yang berisi nilai double yang valid.\n");
-                            fileContentValid = false ;
+                            fileContentValid = false;
                             break;
                         } else
                             res.setELMT(i, j, val);
@@ -73,7 +76,8 @@ public class myUtils {
                 }
 
             } catch (FileNotFoundException e) {
-                System.out.println("File tidak ditemukan. Harap pastikan nama file benar dan file berada di dalam folder D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\n");
+                System.out.println(
+                        "File tidak ditemukan. Harap pastikan nama file benar dan file berada di dalam folder D:\\⭐⭐Kuliah Informatika⭐⭐\\Algeo\\Tubes\\Algeo01-22017\\test\\input\n");
             }
         }
         return res;
@@ -90,7 +94,7 @@ public class myUtils {
                 case "Y":
                     String path = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    path = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\"
+                    path = "D:\\⭐⭐Kuliah Informatika⭐⭐\\Algeo\\Tubes\\Algeo01-22017\\test\\output\\"
                             + scanner.nextLine()
                             + ".txt";
                     File file = new File(path);
@@ -133,14 +137,14 @@ public class myUtils {
         System.out.println();
         boolean isValid = false;
         System.out.print("Apakah Anda ingin menyimpan hasil ke dalam sebuah file (Y/N)? ");
-        String validation ;
+        String validation;
         while (!isValid) {
             validation = (scanner.nextLine()).toUpperCase();
             switch (validation) {
                 case "Y":
                     String path = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    path = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\"
+                    path = "D:\\⭐⭐Kuliah Informatika⭐⭐\\Algeo\\Tubes\\Algeo01-22017\\test\\output\\"
                             + scanner.nextLine()
                             + ".txt";
                     File file = new File(path);
