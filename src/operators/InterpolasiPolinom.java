@@ -76,12 +76,12 @@ public class InterpolasiPolinom {
     double taksir = taksirNilai(rootSolution, titik);
 
     // Mencetak polinomial interpolasi
-    result = String.format("Polinom interpolasi yang melalui ke-%d buah titik tersebut adalah p_%d(x) = ",
+    result = String.format("Polinom interpolasi yang melalui ke-%d buah titik tersebut adalah\np_%d(x) = ",
         matrixPoint.getRow(), matrixPoint.getRow() - 1);
 
     boolean isFirstTerm = true;
 
-    for (int i = 0; i < rootSolution.length; i++) {
+    for (int i = rootSolution.length - 1; i >= 0; i--) {
       if (rootSolution[i] != 0) {
         if (!isFirstTerm) {
           if (rootSolution[i] > 0) {
@@ -91,6 +91,9 @@ public class InterpolasiPolinom {
           }
         } else {
           isFirstTerm = false;
+          if (rootSolution[i] < 0) {
+            result += "-";
+          }
         }
 
         double coef = Math.abs(rootSolution[i]);
@@ -106,8 +109,7 @@ public class InterpolasiPolinom {
       }
     }
 
-    result += "\nf(" + titik + ") = ";
-    result += String.format("%.4f", taksir);
+    result += String.format("\np_%d(%.4f) = %.4f", matrixPoint.getRow() - 1, titik, taksir);
 
     return result;
 
