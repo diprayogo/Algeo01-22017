@@ -26,7 +26,6 @@ public class SPL {
     } else {
       if (isNonUnique(matrix) && matrix.getRow() < matrix.getCol()) {
         result = parametric(matrix);
-        // SPL2.SolveManySolution(matrix);
       } else {
         if (matrix.getRow() > matrix.getCol()) {
           // Subtitusi mundur
@@ -95,7 +94,6 @@ public class SPL {
     } else {
       if (isNonUnique(matrix) && matrix.getRow() < matrix.getCol()) {
         result = parametric(matrix);
-        // SPL2.SolveManySolution(matrix);
       } else {
         if (matrix.getRow() > matrix.getCol()) {
           // Subtitusi mundur
@@ -164,7 +162,7 @@ public class SPL {
 
       Matrix inversMat = matSquare.inverseGaussJordan();
       if (inversMat == null) {
-        result = "Matriks yang dimasukkan tidak bisa menggunakan metode ini";
+        result = "Matriks yang dimasukkan tidak bisa menggunakan metode Inverse";
       } else {
         Matrix.printMatrix(inversMat);
         Matrix rootSolution = inversMat.multiplyMatrix(b);
@@ -174,7 +172,7 @@ public class SPL {
         }
       }
     } else {
-      result = "Matriks yang dimasukkan tidak bisa menggunakan metode ini";
+      result = "Matriks yang dimasukkan tidak bisa menggunakan metode Inverse";
     }
 
     return result;
@@ -229,7 +227,7 @@ public class SPL {
         result += "\nx" + (k + 1) + ": " + rootSolution.getELMT(k, 0);
       }
     } else {
-      result = "Matriks yang dimasukkan tidak bisa menggunakan metode ini";
+      result = "Matriks yang dimasukkan tidak bisa menggunakan Kaidah Cramer";
     }
 
     return result;
