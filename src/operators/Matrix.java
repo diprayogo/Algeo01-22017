@@ -246,10 +246,8 @@ public class Matrix {
     // Terbentuk matrix segitiga bawah
     int l;
     det = (cntSwap % 2 == 0) ? 1 : -1;
-    printMatrix(Mat);
     for (l = 0; l < Mat.getRow(); l++) {
       det *= Mat.getELMT(l, l);
-      System.out.printf("%f ", det);
     }
 
     // special case

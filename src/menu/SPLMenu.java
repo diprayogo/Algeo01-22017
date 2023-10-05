@@ -6,41 +6,6 @@ import java.util.*;
 import myUtils.myUtils;
 
 public class SPLMenu {
-  // public static void menu() {
-  // System.out.println();
-  // System.out.println(" ANDA BERADA DI SUBMENU SISTEM PERSAMAAN LINEAR");
-
-  // System.out.print("Pilih Metode penyelesaian :");
-
-  // boolean inputValid = true;
-  // int method = 0;
-  // try {
-  // method = scanner.nextInt();
-  // } catch (Exception e) {
-  // e.printStackTrace();
-  // }
-
-  // switch (method) {
-  // case 1:
-  // result = spl.metodeGauss(matrixAugmented);
-  // break;
-  // case 2:
-  // result = spl.metodeGaussJordan(matrixAugmented);
-  // break;
-  // case 3:
-  // result = spl.metodeMatriksBalikan(matrixAugmented);
-  // break;
-  // case 4:
-  // result = spl.kaidahCramer(matrixAugmented);
-  // break;
-  // default:
-  // inputValid = false;
-  // System.out.println("Input tidak valid. Mohon hanya masukkan 1 sampai 4.\n");
-  // }
-  // if (inputValid) {
-  // System.out.println(result);
-  // }
-  // }
   private static Scanner scanner = new Scanner(System.in);
 
   public static void menu() {
@@ -50,10 +15,33 @@ public class SPLMenu {
     // SPL spl = new SPL();
     String result = new String();
 
-    boolean fromFile ;
-    fromFile = myUtils.inputSrcValidation();
+    boolean inputValid = false, fromFile = true;
+    int inputSrc = 0;
+    System.out.println("1. Masukan dari file");
+    System.out.println("2. Masukan dari keyboard ");
+    while (!inputValid) {
+        System.out.print("Pilih Sumber input : ");
+        try {
+            inputSrc = scanner.nextInt();
+            switch (inputSrc) {
+            case 1: // fromFile = true;
+                inputValid = true;
+                break;
+            case 2:
+                inputValid = true;
+                fromFile = false;
+                break;
+            default:
+                System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+            }
+        } catch (Exception e) {
+            scanner.nextLine();
+            System.out.println("Input tidak valid. Mohon hanya masukkan 1 atau 2.\n");
+        }
+    }
 
-    boolean inputValid = false;
+    // re-assign value dari inputValid untuk validasi masukan metode
+    inputValid = false;
     int method = 0;
     System.out.println("\n1. Metode eliminasi Gauss");
     System.out.println("2. Metode eliminasi Gauss-Jordan");
@@ -108,7 +96,8 @@ public class SPLMenu {
     if (inputValid) {
       System.out.println(result);
       myUtils.strToFile(result);
-      System.out.println("\n");
     }
+
+    
   }
 }

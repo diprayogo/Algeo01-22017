@@ -66,16 +66,16 @@ public class myUtils {
         boolean pathValid = false;
 
         // buat matrix res dengan colom 1000 dan row 1000 dan elemennya belum diisi
-        Matrix res = new Matrix(0, 0);
-        res.setCol(1000);
-        res.setRow(1000);
-        res.setMat(1000, 1000);
-        while (!pathValid) {
+        Matrix res = new Matrix(0, 0); 
+        res.setCol(1000); res.setRow(1000); res.setMat(1000, 1000);
+
+        // validasi file masukan user
+        while (!pathValid){
             System.out.print("Masukkan nama file: ");
             fileName = scanner.nextLine();
             try {
                 File file = new File(
-                        "D:\\⭐⭐Kuliah Informatika⭐⭐\\Algeo\\Tubes\\Algeo01-22017\\test\\input\\" + fileName);
+                        "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\input\\" + fileName);
                 Scanner fScanner = new Scanner(file);
                 int i = 0, realCol = 0; // realcol adalah banyak kolom baris pertama matrix.
                 double val = 0;
@@ -121,7 +121,7 @@ public class myUtils {
                 case "Y":
                     String path = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    path = "D:\\⭐⭐Kuliah Informatika⭐⭐\\Algeo\\Tubes\\Algeo01-22017\\test\\output\\"
+                    path = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\"
                             + scanner.nextLine()
                             + ".txt";
                     File file = new File(path);
@@ -141,7 +141,7 @@ public class myUtils {
                     } catch (IOException e) {
                         System.out.print(e.getMessage());
                     }
-                    System.out.printf("Anda telah menyimpan matrix ke %s", path);
+                    System.out.printf("Anda telah menyimpan matrix hasil ke %s", path);
                     isValid = true;
                     break;
                 case "N":
@@ -149,9 +149,12 @@ public class myUtils {
                     isValid = true;
                     break;
                 default:
-                    System.out.println("Masukan tidak valid. Mohon hanya masukkan (Y/N)\n");
+                    System.out.print("Masukan tidak valid. Mohon hanya masukkan (Y/N)\n");
             }
         }
+        // Tunggu input pengguna sebelum kembali ke menu utama
+        System.out.println("\nTekan Enter untuk kembali ke menu utama...");
+        scanner.nextLine();
     }
 
     // I.S. : String s terdefinisi
@@ -161,13 +164,14 @@ public class myUtils {
         System.out.println();
         boolean isValid = false;
         System.out.print("Apakah Anda ingin menyimpan hasil ke dalam sebuah file (Y/N)? ");
-        String validation = (scanner.nextLine()).toUpperCase();
+        String validation ;
         while (!isValid) {
+            validation = (scanner.nextLine()).toUpperCase();
             switch (validation) {
                 case "Y":
                     String path = new String();
                     System.out.print("Masukkan nama file(tanpa format ekstensi file): ");
-                    path = "D:\\⭐⭐Kuliah Informatika⭐⭐\\Algeo\\Tubes\\Algeo01-22017\\test\\output\\"
+                    path = "D:\\.Kuliah\\.Semester 3\\ALGEO\\TUBES\\Algeo01-22017\\test\\output\\"
                             + scanner.nextLine()
                             + ".txt";
                     File file = new File(path);
@@ -178,7 +182,7 @@ public class myUtils {
                     } catch (IOException e) {
                         System.out.print(e.getMessage());
                     }
-                    System.out.printf("Anda telah menyimpan string ke %s\n", path);
+                    System.out.printf("Anda telah menyimpan string hasil ke %s", path);
                     isValid = true;
                     break;
                 case "N":
@@ -186,10 +190,12 @@ public class myUtils {
                     isValid = true;
                     break;
                 default:
-                    System.out.println("Input tidak dikenali. Mohon hanya masukkan (Y/N)");
+                    System.out.print("\nInput tidak dikenali. Mohon hanya masukkan (Y/N)");
                     break;
             }
         }
-        System.out.println();
+        // Tunggu input pengguna sebelum kembali ke menu utama
+        System.out.println("\nTekan Enter untuk kembali ke menu utama...");
+        scanner.nextLine();
     }
 }
