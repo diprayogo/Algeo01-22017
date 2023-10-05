@@ -8,6 +8,9 @@ public class RegresiLinearBerganda {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void readRegresiFromKeyboard(Matrix ret, Matrix peubah) {
+        // I.S : Matrix ret dan Matrix peubah bebas
+        //F.S : Matrix ret berisi sample data yang terdiri dari peubah dan hasilnya, matrix peubah berisi nilai yang ingin ditaksir
+
         int n, m;
         System.out.print("Masukkan jumlah peubah (n): ");
         n = scanner.nextInt();
@@ -30,6 +33,7 @@ public class RegresiLinearBerganda {
     }
 
     public static Matrix getNormalEst(Matrix Maug){
+        // Mengembalikan Persamaan Normal Estimasi dari Matrix Maug
         Matrix Mnorm  = new Matrix(Maug.getCol(), Maug.getCol() + 1);
         int i,j,n;
         for(i = 0; i< Mnorm.getRow(); i++){
@@ -47,6 +51,7 @@ public class RegresiLinearBerganda {
     }
 
     public static double taksir(Matrix param, Matrix input){
+        // Mengembalikan hasil taksiran dari Matrix param berdasarkan data yang ingin di taksir pada Matrix input
         // param.getCol() = input.getCol()  + 1 
         double res = 0 ;
         for (int j = 0; j < input.getCol(); j++) {
