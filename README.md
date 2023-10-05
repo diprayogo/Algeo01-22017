@@ -31,6 +31,7 @@ Algeo01-22017/ <br>
 ┃ ┃ ┗ Utils.class <br>
 ┃ ┗ Main.class <br> 
 ┣ lib/ <br>
+┃ ┣ FinalApp.jar
 ┣ src/ <br>
 ┃ ┣ Aplikasi/ <br>
 ┃ ┃ ┣ BicubicInterpolationApp.java <br> 
@@ -67,7 +68,7 @@ javac -d ../bin ./*.java
 Lalu, untuk *compile* hasil bytecode ke file .jar di folder bin bisa dengan:
 ```
 cd bin
-jar -cvfm matrix.jar ../src/META-INF/MANIFEST.MF *
+java -jar FinalApp.jar
 ```
 
 ### *Run*
@@ -85,5 +86,5 @@ Sedangkan untuk menjalankan program dari file .jar bisa dengan:
 
 ```
 cd bin
-java -jar <jar-file-name>
+java -jar FinalApp.jar
 ```
