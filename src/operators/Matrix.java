@@ -301,8 +301,8 @@ public class Matrix {
       // printMatrix(this);
       if (det != 0) {
         Matrix invMat = this.getAdj();
-        System.out.printf("adjoinnya (sblm dibagi det %f): \n", det);
-        printMatrix(invMat);
+        // System.out.printf("adjoinnya (sblm dibagi det %f): \n", det);
+        // printMatrix(invMat);
         // ALGORITMA
         invMat.scalarMultiply(1 / det);
         return invMat;

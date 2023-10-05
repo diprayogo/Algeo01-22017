@@ -7,17 +7,17 @@ import myUtils.myUtils;
 public class Bicubic {
   private static Scanner scanner = new Scanner(System.in);
 
-  public static void main(String[] args){
-    Matrix.printMatrix(getBicubicPolynomialMatrix());
-    Matrix.printMatrix(getInverseBicubicPolynomialMatrix());
-    Matrix.printMatrix(getImageMatrix());
-    Matrix.printMatrix(getInverseBicubicPolynomialMatrix().mult(getImageMatrix()));
-    Matrix m = new Matrix(2, 2);
-    m.readMatrix(2, 2);
-    Matrix.printMatrix(m);
-    m.inverseGaussJordan();
-    Matrix.printMatrix(m.inverseGaussJordan());
-  }
+  // public static void main(String[] args){
+  //   Matrix.printMatrix(getBicubicPolynomialMatrix());
+  //   Matrix.printMatrix(getInverseBicubicPolynomialMatrix());
+  //   Matrix.printMatrix(getImageMatrix());
+  //   Matrix.printMatrix(getInverseBicubicPolynomialMatrix().mult(getImageMatrix()));
+  //   Matrix m = new Matrix(2, 2);
+  //   m.readMatrix(2, 2);
+  //   Matrix.printMatrix(m);
+  //   m.inverseGaussJordan();
+  //   Matrix.printMatrix(m.inverseGaussJordan());
+  // }
   
   public static Matrix getBicubicPolynomialMatrix() {
     // Generate X in y = Xa, X is BicubicPolynomialMatrix
@@ -154,18 +154,19 @@ public class Bicubic {
     // read nilai matrix f fx fy fxy nya dulu, this must be 16 x 1
     // 4 x 4 dibaca 16 x 1 biar bisa langsung dikali
     // Matrix fAsSquareValue = new Matrix(16, 1);
-    Matrix fMatARow = new Matrix(16, 1);
-    for (i = 0; i < 4; i++) {
-      for (j = 0; j < 4; j++) {
-        fMatARow.setELMT(4*i + j, 0, fMat.getELMT(i, j));
-      }
-    }
-    Matrix bicubicCoef = getInverseBicubicPolynomialMatrix().mult(fMatARow);
+
+    // ga jadi handle inputan 4x4
+    // Matrix fMatARow = new Matrix(16, 1);
+    // for (i = 0; i < 4; i++) {
+    //   for (j = 0; j < 4; j++) {
+    //     fMatARow.setELMT(4*i + j, 0, fMat.getELMT(i, j));
+    //   }
+    // }
+    Matrix bicubicCoef = getInverseBicubicPolynomialMatrix().mult(fMat);
     double fResult = 0;
     for (j = 0; j < 4; j++) {
       for (i = 0; i < 4; i++) {
-        // System.out.printf("DISINIIIIIII %d \n", 4*i+j);
-        fResult += bicubicCoef.getELMT(4*i + j, 0) * Math.pow(x, i) + Math.pow(j, y);
+        fResult += bicubicCoef.getELMT(4*i + j, 0) * Math.pow(x, i) * Math.pow(y, j);
       }
     }
     return fResult;
